@@ -2,7 +2,7 @@
 
 ## Introduction
 
-Photo Session allows allows you to pause the game, move around with the camera and capture screenshots. It works in the Editor's Play mode and in the Build.
+Photo Session allows you to pause the game, move around with the camera and capture screenshots. It works in the Editor's Play mode and in the Build.
 
 Malbers released his awesome Realistic Wolves and I wanted to capture close screenshot of those beautiful furry models. 
 I tried to use NVidia's Ansel for the capturing, but it turned out that Ansel is unsupported for Unity and the version on the Unity Asset Store doesn't work for HDRP.
