@@ -66,6 +66,7 @@ This asset was created for personal purposes, but I thought you guys might find 
 * use supersize
 * capture stereo
 * capture 360 degree (e. g. using Unity's Frame Recorder)
+* slow down time instead of just pausing
 * ...
 
 Lots of possibilities. Feel free to fork, enhance and share.
