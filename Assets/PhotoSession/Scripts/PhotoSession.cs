@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Rowlan.PhotoSession
 {
@@ -54,6 +55,11 @@ namespace Rowlan.PhotoSession
         [Tooltip("Objects (e. g. Scripts) which should be disabled when photo mode is activated")]
         public Object[] disabledComponents;
 
+        [Header("User Interface")]
+
+        [Tooltip("An optional canvas with a white stretched image. The alpha value of the image will be used to simulate a flash effect. The canvas can be hidden")]
+        public Canvas canvas = null;
+
         private PhotoMode photoMode = PhotoMode.Game;
 
         /// <summary>
@@ -81,6 +87,11 @@ namespace Rowlan.PhotoSession
         /// </summary>
         private Screenshot screenshot = new Screenshot();
 
+        /// <summary>
+        /// A <see cref="CameraFlash"/> scene gameobject which will be used to simulate a flash.
+        /// </summary>
+        private CameraFlash cameraFlash = null;
+
         void Awake()
         {
             screenshot.SetupPath();
@@ -88,6 +99,7 @@ namespace Rowlan.PhotoSession
 
         void Start()
         {
+            cameraFlash = new CameraFlash(canvas);
         }
 
         void PauseGame()
@@ -242,13 +254,19 @@ namespace Rowlan.PhotoSession
                 // left mouse button takes screenshots
                 if (Input.GetMouseButtonDown(0))
                 {
+                    cameraFlash.StopCameraFlash( this);
+
                     screenshot.Capture();
+
+                    cameraFlash.StartCameraFlash(this);
                 }
 
                 #endregion Screenshot
                 
             }
         }
+
+ 
 
         /// <summary>
         /// Container for the transform data of the camera
