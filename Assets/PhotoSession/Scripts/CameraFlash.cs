@@ -18,6 +18,8 @@ namespace Rowlan.PhotoSession
         private Coroutine flashCoroutine = null;
         private bool initialCanvasEnabled = false;
 
+        public bool IsPlaying { get; set; }
+
         public CameraFlash( Canvas canvas) {
 
             this.canvas = canvas;
@@ -61,10 +63,12 @@ namespace Rowlan.PhotoSession
             {
                 monoBehaviour.StopCoroutine(flashCoroutine);
             }
+
         }
 
         IEnumerator FlashCoroutine()
         {
+            IsPlaying = true;
 
             float timeElapsed = 0;
 
@@ -79,11 +83,21 @@ namespace Rowlan.PhotoSession
                 yield return null;
             }
 
+            StopCameraFlashNow();
+        }
+
+        public void StopCameraFlashNow() {
+
             SetFlashColorAlpha(0f);
             SetCanvasActive(initialCanvasEnabled);
+
+            IsPlaying = false;
         }
 
         void SetFlashColorAlpha( float alpha) {
+
+            if (!flashImage)
+                return;
 
             Color color = flashImage.color;
             color.a = alpha;

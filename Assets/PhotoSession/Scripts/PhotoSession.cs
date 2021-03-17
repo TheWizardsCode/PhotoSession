@@ -19,6 +19,16 @@ namespace Rowlan.PhotoSession
             Photo
         }
 
+        /// <summary>
+        /// Capturing must happen in multiple frames. We can't have the capture happen while the flash is playing
+        /// </summary>
+        enum CaptureStep {
+            Idle,
+            Prepare,
+            Capture,
+            Flash
+		}
+
         [Header("Input")]
 
         [Tooltip("Input key which toggles the photo mode")]
@@ -91,6 +101,9 @@ namespace Rowlan.PhotoSession
         /// A <see cref="CameraFlash"/> scene gameobject which will be used to simulate a flash.
         /// </summary>
         private CameraFlash cameraFlash = null;
+
+        private CaptureStep nextCaptureStep = CaptureStep.Idle;
+
 
         void Awake()
         {
@@ -254,19 +267,56 @@ namespace Rowlan.PhotoSession
                 // left mouse button takes screenshots
                 if (Input.GetMouseButtonDown(0))
                 {
-                    cameraFlash.StopCameraFlash( this);
-
-                    screenshot.Capture();
-
-                    cameraFlash.StartCameraFlash(this);
+                    if( nextCaptureStep == CaptureStep.Idle) {
+                        nextCaptureStep = CaptureStep.Prepare;
+                    }
+                    
                 }
 
                 #endregion Screenshot
                 
             }
+
+            PerformCaptureStep();
+
         }
 
- 
+        /// <summary>
+        /// The capture process must happen in multiple frames
+        /// + frame 1: stop the flash animation
+        /// + frame 2: capture screenshot (without flash)
+        /// + frame 3: start flash
+        /// + frame 4: set capture step back to idle
+        /// </summary>
+        void PerformCaptureStep() 
+        {
+            // don't allow the flash step being set to idle until the flash animation stopped playing
+            if (cameraFlash.IsPlaying)
+                return;
+
+            // stop the flash animation
+            if (nextCaptureStep == CaptureStep.Prepare)
+            {
+                cameraFlash.StopCameraFlash(this);
+
+                nextCaptureStep = CaptureStep.Capture;
+            }
+            // flash animation is stopped, now capture a screenshot
+            else if (nextCaptureStep == CaptureStep.Capture)
+            {
+                screenshot.Capture();
+
+                nextCaptureStep = CaptureStep.Flash;
+            }
+            // screenshot is capture, now start the flash animation
+            else if (nextCaptureStep == CaptureStep.Flash)
+            {
+                cameraFlash.StartCameraFlash(this);
+
+                nextCaptureStep = CaptureStep.Idle;
+            }
+        }
+
 
         /// <summary>
         /// Container for the transform data of the camera
