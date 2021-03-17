@@ -292,7 +292,7 @@ namespace Rowlan.PhotoSession
             if (!canvas)
                 return;
 
-            bool canvasActive = photoMode == PhotoMode.Photo && nextCaptureStep == CaptureStep.Idle;
+            bool canvasActive = photoMode == PhotoMode.Photo && nextCaptureStep != CaptureStep.Capture;
 
             canvas.gameObject.SetActive(canvasActive);
         }
