@@ -16,7 +16,6 @@ namespace Rowlan.PhotoSession
         private Image flashImage = null;
 
         private Coroutine flashCoroutine = null;
-        private bool initialCanvasEnabled = false;
 
         public bool IsPlaying { get; set; }
 
@@ -27,26 +26,15 @@ namespace Rowlan.PhotoSession
             if (canvas)
             {
                 this.flashImage = canvas.GetComponentInChildren<Image>();
-                this.initialCanvasEnabled = canvas.enabled;
             }
             
         }
-
-        private void SetCanvasActive( bool active) {
-
-            if (!canvas)
-                return;
-
-            canvas.gameObject.SetActive(active);
-		}
 
         public void StartCameraFlash( MonoBehaviour monoBehaviour)
         {
 
             if (!flashImage)
                 return;
-
-            SetCanvasActive(true);
 
             StopCameraFlash(monoBehaviour);
 
@@ -89,7 +77,6 @@ namespace Rowlan.PhotoSession
         public void StopCameraFlashNow() {
 
             SetFlashColorAlpha(0f);
-            SetCanvasActive(initialCanvasEnabled);
 
             IsPlaying = false;
         }

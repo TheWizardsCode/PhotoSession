@@ -199,6 +199,9 @@ namespace Rowlan.PhotoSession
                 }
             }
 
+            // photo canvas visibility
+            UpdateCanvasVisibility();
+
             // apply photo mode logic
             if (photoMode == PhotoMode.Photo)
             {
@@ -279,6 +282,19 @@ namespace Rowlan.PhotoSession
 
             PerformCaptureStep();
 
+        }
+
+        /// <summary>
+        /// Show photo mode indicator in photo mode, otherwise hide the canvas
+        /// </summary>
+        void UpdateCanvasVisibility() {
+
+            if (!canvas)
+                return;
+
+            bool canvasActive = photoMode == PhotoMode.Photo && nextCaptureStep == CaptureStep.Idle;
+
+            canvas.gameObject.SetActive(canvasActive);
         }
 
         /// <summary>
