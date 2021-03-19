@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using static Rowlan.PhotoSession.ImageResolution;
 
 namespace Rowlan.PhotoSession
 {
@@ -8,7 +9,6 @@ namespace Rowlan.PhotoSession
     /// </summary>
     public class PhotoSession : MonoBehaviour
     {
-
         /// <summary>
         /// The mode the photo session is currently in.
         /// </summary>
@@ -17,6 +17,10 @@ namespace Rowlan.PhotoSession
             Game,
             Photo
         }
+
+        [Header("Image")]
+
+        public ImageResolutionType resolution = ImageResolutionType.Game;
 
         [Header("Input")]
 
@@ -42,12 +46,6 @@ namespace Rowlan.PhotoSession
 
         [Tooltip("Mouse wheel zoom amount when shift is pressed")]
         public float zoomSensitivityFast = 20;
-
-        [Header("Resolution")]
-
-        public int imageWidth = -1;
-
-        public int imageHeight = -1;
 
         [Header("Initialization")]
 
@@ -340,7 +338,7 @@ namespace Rowlan.PhotoSession
             yield return new WaitForEndOfFrame();
 
 			// effectively save the screenshot
-			screenshot.Capture( photoCamera, imageWidth, imageHeight);
+			screenshot.Capture( photoCamera, resolution.GetImageResolution().Width, resolution.GetImageResolution().Height);
 
             // show canvas for flashlight effect
             canvas.gameObject.SetActive(true);
