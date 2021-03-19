@@ -22,6 +22,8 @@ namespace Rowlan.PhotoSession
 
         public ImageResolutionType resolution = ImageResolutionType.Game;
 
+        public Output.Format outputFormat = Output.Format.JPG;
+
         [Header("Input")]
 
         [Tooltip("Input key which toggles the photo mode")]
@@ -338,7 +340,7 @@ namespace Rowlan.PhotoSession
             yield return new WaitForEndOfFrame();
 
 			// effectively save the screenshot
-			screenshot.Capture( photoCamera, resolution.GetImageResolution().Width, resolution.GetImageResolution().Height);
+			screenshot.Capture( photoCamera, resolution.GetImageResolution().Width, resolution.GetImageResolution().Height, outputFormat);
 
             // show canvas for flashlight effect
             canvas.gameObject.SetActive(true);
