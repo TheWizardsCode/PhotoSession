@@ -92,6 +92,22 @@ namespace Rowlan.PhotoSession
         /// </summary>
         private CameraFlash cameraFlash = null;
 
+        /// <summary>
+        /// Seconds for which the photo mode input will be delayed.
+        /// This is used so that eg when you are in running mode with shift the shift doesn't get applied to the photo mode input and you move away from the current camera position.
+        /// </summary>
+        private float delayedPhotoModeInputTime = 0.3f;
+
+        /// <summary>
+        /// Whether input controls are active or not in photo mode
+        /// </summary>
+        private bool photoModeInputActive = false;
+
+        /// <summary>
+        /// Reference for the delayed input coroutine which allows us to stop it
+        /// </summary>
+        private Coroutine delayedPhotoModeInputCoroutine = null;
+
         void Awake()
         {
             screenshot.SetupPath();
@@ -116,6 +132,8 @@ namespace Rowlan.PhotoSession
 
         void EnablePhotoCamera()
         {
+            delayedPhotoModeInputCoroutine = StartCoroutine(DelayedPhotoModeInput());
+
             // save the cursor's state, hide and lock it
             cursorState.Save();
             cursorState.Lock();
@@ -141,8 +159,28 @@ namespace Rowlan.PhotoSession
             }
         }
 
+        /// <summary>
+        /// Delay the input controls for photo mode
+        /// </summary>
+        /// <returns></returns>
+        IEnumerator DelayedPhotoModeInput() {
+
+            // need to use unscaled time
+            yield return new WaitForSecondsRealtime(delayedPhotoModeInputTime);
+
+            photoModeInputActive = true;
+
+        }
+
         void DisablePhotoCamera()
         {
+            if (delayedPhotoModeInputCoroutine != null)
+            {
+                StopCoroutine(delayedPhotoModeInputCoroutine);
+            }
+
+            photoModeInputActive = false;
+
             /// restore the previous cursor state
             cursorState.Restore();
 
@@ -188,6 +226,10 @@ namespace Rowlan.PhotoSession
 
             // photo canvas visibility
             UpdateCanvasVisibility();
+
+            // disable photo mode input for the specified time
+            if (!photoModeInputActive)
+                return;
 
             // apply photo mode logic
             if (photoMode == PhotoMode.Photo)
