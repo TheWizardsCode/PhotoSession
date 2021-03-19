@@ -1,7 +1,5 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace Rowlan.PhotoSession
 {
@@ -10,10 +8,11 @@ namespace Rowlan.PhotoSession
     /// </summary>
     public class PhotoSession : MonoBehaviour
     {
+
         /// <summary>
         /// The mode the photo session is currently in.
         /// </summary>
-        enum PhotoMode
+        public enum PhotoMode
         {
             Game,
             Photo
@@ -44,6 +43,11 @@ namespace Rowlan.PhotoSession
         [Tooltip("Mouse wheel zoom amount when shift is pressed")]
         public float zoomSensitivityFast = 20;
 
+        [Header("Resolution")]
+
+        public int imageWidth = -1;
+
+        public int imageHeight = -1;
 
         [Header("Initialization")]
 
@@ -335,8 +339,8 @@ namespace Rowlan.PhotoSession
             // capturing must only happen when everything was drawn (including the flashlight overlay removed)
             yield return new WaitForEndOfFrame();
 
-            // effectively save the screenshot
-            screenshot.Capture();
+			// effectively save the screenshot
+			screenshot.Capture( photoCamera, imageWidth, imageHeight);
 
             // show canvas for flashlight effect
             canvas.gameObject.SetActive(true);
@@ -344,12 +348,12 @@ namespace Rowlan.PhotoSession
             // start flashlight effect
             cameraFlash.StartCameraFlash(this);
 
-        }
+		}
 
-        /// <summary>
-        /// Container for the transform data of the camera
-        /// </summary>
-        private class TransformState
+		/// <summary>
+		/// Container for the transform data of the camera
+		/// </summary>
+		private class TransformState
         {
 
             private Transform parent = null;
@@ -400,5 +404,5 @@ namespace Rowlan.PhotoSession
             }
 
         }
-    }
+	}
 }
