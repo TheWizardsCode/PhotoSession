@@ -19,16 +19,6 @@ namespace Rowlan.PhotoSession
             Photo
         }
 
-        /// <summary>
-        /// Capturing must happen in multiple frames. We can't have the capture happen while the flash is playing
-        /// </summary>
-        enum CaptureStep {
-            Idle,
-            Prepare,
-            Capture,
-            Flash
-		}
-
         [Header("Input")]
 
         [Tooltip("Input key which toggles the photo mode")]
@@ -101,9 +91,6 @@ namespace Rowlan.PhotoSession
         /// A <see cref="CameraFlash"/> scene gameobject which will be used to simulate a flash.
         /// </summary>
         private CameraFlash cameraFlash = null;
-
-        private CaptureStep nextCaptureStep = CaptureStep.Idle;
-
 
         void Awake()
         {
@@ -270,17 +257,12 @@ namespace Rowlan.PhotoSession
                 // left mouse button takes screenshots
                 if (Input.GetMouseButtonDown(0))
                 {
-                    if( nextCaptureStep == CaptureStep.Idle) {
-                        nextCaptureStep = CaptureStep.Prepare;
-                    }
-                    
+                    StartCoroutine( CaptureScreenshot());
                 }
 
                 #endregion Screenshot
                 
             }
-
-            PerformCaptureStep();
 
         }
 
@@ -292,57 +274,34 @@ namespace Rowlan.PhotoSession
             if (!canvas)
                 return;
 
-            bool canvasActive = photoMode == PhotoMode.Photo && nextCaptureStep != CaptureStep.Capture;
+            bool canvasActive = photoMode == PhotoMode.Photo;
 
             canvas.gameObject.SetActive(canvasActive);
         }
 
         /// <summary>
-        /// The capture process must happen in multiple frames
-        /// + frame 1: stop the flash animation
-        /// + frame 2: capture screenshot (without flash)
-        /// + frame 3: start flash
-        /// + frame 4: set capture step back to idle
+        /// Capture a screenshot and simulate a flashlight effect
         /// </summary>
-        void PerformCaptureStep() 
+        IEnumerator CaptureScreenshot() 
         {
-            // don't allow the flash step being set to idle until the flash animation stopped playing
-            if (cameraFlash.IsPlaying)
-                return;
+            // stop flashlight, we don't want anything of the flashlight in the screenshot
+            cameraFlash.StopCameraFlash(this);
 
-            // stop the flash animation
-            if (nextCaptureStep == CaptureStep.Prepare)
-            {
-                cameraFlash.StopCameraFlash(this);
+            // hide the canvas, we don't want anything of it (eg photo mode text) in the screenshot
+            canvas.gameObject.SetActive(false);
 
-                nextCaptureStep = CaptureStep.Capture;
-            }
-            // flash animation is stopped, now capture a screenshot
-            else if (nextCaptureStep == CaptureStep.Capture)
-            {
-                StartCoroutine(CaptureAtEndOfFrame());
-            }
-            // screenshot is capture, now start the flash animation
-            else if (nextCaptureStep == CaptureStep.Flash)
-            {
-                cameraFlash.StartCameraFlash(this);
-
-                nextCaptureStep = CaptureStep.Idle;
-            }
-        }
-
-        /// <summary>
-        /// Capture a screenshot at the end of the frame, when all was rendered
-        /// </summary>
-        /// <returns></returns>
-        private IEnumerator CaptureAtEndOfFrame()
-        {
-
+            // capturing must only happen when everything was drawn (including the flashlight overlay removed)
             yield return new WaitForEndOfFrame();
 
+            // effectively save the screenshot
             screenshot.Capture();
 
-            nextCaptureStep = CaptureStep.Flash;
+            // show canvas for flashlight effect
+            canvas.gameObject.SetActive(true);
+
+            // start flashlight effect
+            cameraFlash.StartCameraFlash(this);
+
         }
 
         /// <summary>
