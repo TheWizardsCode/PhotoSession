@@ -320,9 +320,7 @@ namespace Rowlan.PhotoSession
             // flash animation is stopped, now capture a screenshot
             else if (nextCaptureStep == CaptureStep.Capture)
             {
-                screenshot.Capture();
-
-                nextCaptureStep = CaptureStep.Flash;
+                StartCoroutine(CaptureAtEndOfFrame());
             }
             // screenshot is capture, now start the flash animation
             else if (nextCaptureStep == CaptureStep.Flash)
@@ -333,6 +331,19 @@ namespace Rowlan.PhotoSession
             }
         }
 
+        /// <summary>
+        /// Capture a screenshot at the end of the frame, when all was rendered
+        /// </summary>
+        /// <returns></returns>
+        private IEnumerator CaptureAtEndOfFrame()
+        {
+
+            yield return new WaitForEndOfFrame();
+
+            screenshot.Capture();
+
+            nextCaptureStep = CaptureStep.Flash;
+        }
 
         /// <summary>
         /// Container for the transform data of the camera
