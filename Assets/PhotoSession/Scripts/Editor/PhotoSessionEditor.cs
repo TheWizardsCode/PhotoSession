@@ -176,19 +176,21 @@ namespace Rowlan.PhotoSession
 
             List<Component> components = new List<Component>();
 
-            GameObject root = photoCamera.transform.root.gameObject;
-
             foreach (string scriptName in script_Blacklist) {
 
-                Component component = root.GetComponent(scriptName);
+                // recursively search the blacklisted objects from the photo camera gameobject up to the root
+                Transform transform = photoCamera.transform;
+                while(transform) {
 
-                if (!component)
-                    continue;
+                    Component component = transform.gameObject.GetComponent(scriptName);
 
-                components.Add(component);
+                    if( component)
+                        components.Add(component);
 
+                    transform = transform.parent;
+                }
             }
-            
+
             // set the disabled components in the serializedObject
             this.disabledComponents.ClearArray();
 
