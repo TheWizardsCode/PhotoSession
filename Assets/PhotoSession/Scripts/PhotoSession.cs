@@ -308,7 +308,7 @@ namespace Rowlan.PhotoSession
             yield return new WaitForEndOfFrame();
 
 			// effectively save the screenshot
-			screenshot.Capture(settings.photoCamera, settings.resolution.GetImageResolution( settings.aspectRatio).Width, settings.resolution.GetImageResolution( settings.aspectRatio).Height, settings.outputFormat, settings.fieldOfViewOverride, settings.fieldOfView);
+			screenshot.Capture(settings);
 
             // show canvas for flashlight effect
             SetCanvasVisible(true);

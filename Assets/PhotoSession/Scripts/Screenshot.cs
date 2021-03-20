@@ -49,10 +49,16 @@ namespace Rowlan.PhotoSession
 		/// <param name="camera"></param>
 		/// <param name="width"></param>
 		/// <param name="height"></param>
-		public void Capture(Camera camera, int width, int height, Output.Format format, bool fieldOfViewOverride, float fieldOfView)
+		public void Capture( PhotoSessionSettings settings)
 		{
+			Camera camera = settings.photoCamera;
+			int width = settings.resolution.GetImageResolution(settings.aspectRatio).Width;
+			int height = settings.resolution.GetImageResolution(settings.aspectRatio).Height;
+			Output.Format format = settings.outputFormat;
+			bool fieldOfViewOverride = settings.fieldOfViewOverride;
+			float fieldOfView = settings.fieldOfView;
 
-			if (width <= 0 || height <= 0)
+			if ( width <= 0 || height <= 0)
 			{
 				width = Screen.width;
 				height = Screen.height;
