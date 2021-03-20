@@ -148,8 +148,15 @@ namespace Rowlan.PhotoSession
             // disable components (eg scripts)
             foreach (Object script in disabledComponents)
             {
+
                 if (script is Behaviour behaviour)
+                {
                     behaviour.enabled = false;
+                }
+                else if (script is GameObject go)
+                {
+                    go.SetActive( false);
+                }
             }
 
             // detach from parent
@@ -199,7 +206,13 @@ namespace Rowlan.PhotoSession
             foreach (Object script in disabledComponents)
             {
                 if (script is Behaviour behaviour)
+                {
                     behaviour.enabled = true;
+                }
+                else if (script is GameObject go)
+                {
+                    go.SetActive(true);
+                }
             }
         }
 
