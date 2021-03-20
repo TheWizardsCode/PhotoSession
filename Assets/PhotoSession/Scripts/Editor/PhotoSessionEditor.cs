@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEditorInternal;
 using UnityEngine;
+using static Rowlan.PhotoSession.ImageResolution;
 
 namespace Rowlan.PhotoSession
 {
@@ -20,6 +21,7 @@ namespace Rowlan.PhotoSession
         PhotoSessionEditor editor;
 
         SerializedProperty resolution;
+        SerializedProperty aspectRatio;
         SerializedProperty outputFormat;
         SerializedProperty toggleKey;
         SerializedProperty photoCamera;
@@ -38,6 +40,7 @@ namespace Rowlan.PhotoSession
             editorTarget = (PhotoSession)target;
 
             resolution = FindProperty(x => x.settings.resolution);
+            aspectRatio = FindProperty(x => x.settings.aspectRatio);
             outputFormat = FindProperty(x => x.settings.outputFormat);
             toggleKey = FindProperty(x => x.settings.toggleKey);
             photoCamera = FindProperty(x => x.settings.photoCamera);
@@ -60,6 +63,11 @@ namespace Rowlan.PhotoSession
                 EditorGUILayout.LabelField("Image", GUIStyles.BoxTitleStyle);
 
                 EditorGUILayout.PropertyField(resolution, new GUIContent("Resolution"));
+
+                if (resolution.intValue != (int) ImageResolutionType.Game)
+                {
+                    EditorGUILayout.PropertyField(aspectRatio, new GUIContent("Aspect Ratio"));
+                }
 
                 EditorGUILayout.PropertyField(outputFormat, new GUIContent("Output Format"));
             }

@@ -21,6 +21,8 @@ namespace Rowlan.PhotoSession
 
         public ImageResolutionType resolution = ImageResolutionType.Game;
 
+        public AspectRatio aspectRatio = AspectRatio.AR_16_9;
+
         public Output.Format outputFormat = Output.Format.JPG;
 
         // Input
