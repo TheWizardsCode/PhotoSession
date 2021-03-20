@@ -5,6 +5,7 @@ using UnityEngine;
 
 namespace Rowlan.PhotoSession
 {
+	[System.Serializable]
 	public class ImageResolution
 	{
 		public static ImageResolution PresetGame = new ImageResolution(ImageResolutionType.Game, -1, -1);

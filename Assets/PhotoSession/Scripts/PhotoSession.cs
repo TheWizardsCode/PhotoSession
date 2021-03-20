@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using static Rowlan.PhotoSession.ImageResolution;
+using static Rowlan.PhotoSession.PhotoSessionSettings;
 
 namespace Rowlan.PhotoSession
 {
@@ -10,60 +11,14 @@ namespace Rowlan.PhotoSession
     public class PhotoSession : MonoBehaviour
     {
         /// <summary>
-        /// The mode the photo session is currently in.
+        /// The settings for this photo session
         /// </summary>
-        public enum PhotoMode
-        {
-            Game,
-            Photo
-        }
+        [HideInInspector]
+        public PhotoSessionSettings settings = new PhotoSessionSettings();
 
-        [Header("Image")]
-
-        public ImageResolutionType resolution = ImageResolutionType.Game;
-
-        public Output.Format outputFormat = Output.Format.JPG;
-
-        [Header("Input")]
-
-        [Tooltip("Input key which toggles the photo mode")]
-        public KeyCode toggleKey = KeyCode.F12;
-
-        [Header("Camera Settings")]
-
-        [Tooltip("The camera that will be used for the photo session. Usually the main camera")]
-        public Camera photoCamera;
-
-        [Tooltip("Normal camera movement speed")]
-        public float movementSpeed = 4;
-
-        [Tooltip("Camera movement speed when shift is pressed")]
-        public float movementSpeedFast = 20;
-
-        [Tooltip("Mouse look sensitivity")]
-        public float freeLookSensitivity = 2f;
-
-        [Tooltip("Normal mouse wheel zoom amount")]
-        public float zoomSensitivity = 5;
-
-        [Tooltip("Mouse wheel zoom amount when shift is pressed")]
-        public float zoomSensitivityFast = 20;
-
-        [Header("Initialization")]
-
-        [Tooltip("Keep the photo camera position and rotation the way it was in the previous session")]
-        public bool reusePreviousCameraTransform = false;
-
-        [Space]
-
-        [Tooltip("Objects (e. g. Scripts) which should be disabled when photo mode is activated")]
-        public Object[] disabledComponents;
-
-        [Header("User Interface")]
-
-        [Tooltip("An optional canvas with a white stretched image. The alpha value of the image will be used to simulate a flash effect. The canvas can be hidden")]
-        public Canvas canvas = null;
-
+        /// <summary>
+        /// The current mode, either game or photo
+        /// </summary>
         private PhotoMode photoMode = PhotoMode.Game;
 
         /// <summary>
@@ -119,7 +74,7 @@ namespace Rowlan.PhotoSession
 
         void Start()
         {
-            cameraFlash = new CameraFlash(canvas);
+            cameraFlash = new CameraFlash(settings.canvas);
         }
 
         void PauseGame()
@@ -143,10 +98,10 @@ namespace Rowlan.PhotoSession
             cursorState.Lock();
 
             // player photo camera state so that it can be restored after we leave the session
-            playerCameraState.Save( photoCamera.transform);
+            playerCameraState.Save(settings.photoCamera.transform);
 
             // disable components (eg scripts)
-            foreach (Object script in disabledComponents)
+            foreach (Object script in settings.disabledComponents)
             {
 
                 if (script is Behaviour behaviour)
@@ -160,13 +115,13 @@ namespace Rowlan.PhotoSession
             }
 
             // detach from parent
-            photoCamera.transform.parent = null;
+            settings.photoCamera.transform.parent = null;
 
             // in case of reuse of the previous photo session we restore the previous camera transform
-            if (reusePreviousCameraTransform && previousPhotoCameraInitialized)
+            if (settings.reusePreviousCameraTransform && previousPhotoCameraInitialized)
             {
                 // reuse previous camera transform
-                previousPhotoCameraState.Restore(photoCamera.transform);
+                previousPhotoCameraState.Restore(settings.photoCamera.transform);
             }
         }
 
@@ -196,14 +151,14 @@ namespace Rowlan.PhotoSession
             cursorState.Restore();
 
             // save current transform of photoshoot camera
-            previousPhotoCameraState.Save(photoCamera.transform);
+            previousPhotoCameraState.Save(settings.photoCamera.transform);
             previousPhotoCameraInitialized = true;
 
             // restore the original camera's transform
-            playerCameraState.Restore(photoCamera.transform);
+            playerCameraState.Restore(settings.photoCamera.transform);
 
             // re-enable components
-            foreach (Object script in disabledComponents)
+            foreach (Object script in settings.disabledComponents)
             {
                 if (script is Behaviour behaviour)
                 {
@@ -219,7 +174,7 @@ namespace Rowlan.PhotoSession
         void Update()
         {
             // check input key and toggle game <> photo mode
-            if (Input.GetKeyDown(toggleKey))
+            if (Input.GetKeyDown(settings.toggleKey))
             {
                 // toggle mode
                 photoMode = photoMode == PhotoMode.Game ? PhotoMode.Photo : PhotoMode.Game;
@@ -254,11 +209,11 @@ namespace Rowlan.PhotoSession
                 // we are in pause mode => we need to use Time.unscaledDeltaTime instead of Time.deltaTime or otherwise the camera couldn't move
                 float time = Time.unscaledDeltaTime;
 
-                Transform cameraTransform = photoCamera.transform;
+                Transform cameraTransform = settings.photoCamera.transform;
 
                 // determine speed
                 var fastMode = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
-                var movementSpeed = fastMode ? this.movementSpeedFast : this.movementSpeed;
+                var movementSpeed = fastMode ? this.settings.movementSpeedFast : this.settings.movementSpeed;
 
 				#region Keyboard
 
@@ -296,15 +251,15 @@ namespace Rowlan.PhotoSession
 
                 #region Mouse Movement
 
-                float newRotationX = cameraTransform.localEulerAngles.y + Input.GetAxis("Mouse X") * freeLookSensitivity;
-                float newRotationY = cameraTransform.localEulerAngles.x - Input.GetAxis("Mouse Y") * freeLookSensitivity;
+                float newRotationX = cameraTransform.localEulerAngles.y + Input.GetAxis("Mouse X") * settings.freeLookSensitivity;
+                float newRotationY = cameraTransform.localEulerAngles.x - Input.GetAxis("Mouse Y") * settings.freeLookSensitivity;
 
                 cameraTransform.localEulerAngles = new Vector3(newRotationY, newRotationX, 0f);
 
                 float axis = Input.GetAxis("Mouse ScrollWheel");
                 if (axis != 0)
                 {
-                    var zoomSensitivity = fastMode ? this.zoomSensitivityFast : this.zoomSensitivity;
+                    var zoomSensitivity = fastMode ? this.settings.zoomSensitivityFast : this.settings.zoomSensitivity;
 
                     cameraTransform.position += cameraTransform.forward * axis * zoomSensitivity;
                 }
@@ -330,12 +285,12 @@ namespace Rowlan.PhotoSession
         /// </summary>
         void UpdateCanvasVisibility() {
 
-            if (!canvas)
+            if (!settings.canvas)
                 return;
 
             bool canvasActive = photoMode == PhotoMode.Photo;
 
-            canvas.gameObject.SetActive(canvasActive);
+            settings.canvas.gameObject.SetActive(canvasActive);
         }
 
         /// <summary>
@@ -347,21 +302,29 @@ namespace Rowlan.PhotoSession
             cameraFlash.StopCameraFlash(this);
 
             // hide the canvas, we don't want anything of it (eg photo mode text) in the screenshot
-            canvas.gameObject.SetActive(false);
+            SetCanvasVisible(false);
 
             // capturing must only happen when everything was drawn (including the flashlight overlay removed)
             yield return new WaitForEndOfFrame();
 
 			// effectively save the screenshot
-			screenshot.Capture( photoCamera, resolution.GetImageResolution().Width, resolution.GetImageResolution().Height, outputFormat);
+			screenshot.Capture(settings.photoCamera, settings.resolution.GetImageResolution().Width, settings.resolution.GetImageResolution().Height, settings.outputFormat);
 
             // show canvas for flashlight effect
-            canvas.gameObject.SetActive(true);
+            SetCanvasVisible(true);
 
             // start flashlight effect
             cameraFlash.StartCameraFlash(this);
 
 		}
+
+        private void SetCanvasVisible( bool visible) {
+            
+            if (!settings.canvas)
+                return;
+
+            settings.canvas.gameObject.SetActive(visible);
+        }
 
 		/// <summary>
 		/// Container for the transform data of the camera

@@ -44,16 +44,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49828cdf90ef41a42ba43007a753f0de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  toggleKey: 293
-  photoCamera: {fileID: 0}
-  movementSpeed: 4
-  movementSpeedFast: 20
-  freeLookSensitivity: 2
-  zoomSensitivity: 5
-  zoomSensitivityFast: 20
-  reusePreviousCameraTransform: 0
-  disabledComponents: []
-  canvas: {fileID: 6043806534718527021}
+  settings:
+    resolution: 0
+    outputFormat: 1
+    toggleKey: 293
+    photoCamera: {fileID: 0}
+    movementSpeed: 4
+    movementSpeedFast: 20
+    freeLookSensitivity: 2
+    zoomSensitivity: 5
+    zoomSensitivityFast: 20
+    reusePreviousCameraTransform: 0
+    disabledComponents: []
+    canvas: {fileID: 6043806534718527021}
 --- !u!1001 &2951393921161548102
 PrefabInstance:
   m_ObjectHideFlags: 0
