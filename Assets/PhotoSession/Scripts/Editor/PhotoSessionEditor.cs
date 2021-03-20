@@ -30,6 +30,7 @@ namespace Rowlan.PhotoSession
         SerializedProperty freeLookSensitivity;
         SerializedProperty zoomSensitivity;
         SerializedProperty zoomSensitivityFast;
+        SerializedProperty pauseTime;
         SerializedProperty reusePreviousCameraTransform;
         SerializedProperty disabledComponents;
         SerializedProperty canvas;
@@ -49,6 +50,7 @@ namespace Rowlan.PhotoSession
             freeLookSensitivity = FindProperty(x => x.settings.freeLookSensitivity);
             zoomSensitivity = FindProperty(x => x.settings.zoomSensitivity);
             zoomSensitivityFast = FindProperty(x => x.settings.zoomSensitivityFast);
+            pauseTime = FindProperty(x => x.settings.pauseTime);
             reusePreviousCameraTransform = FindProperty(x => x.settings.reusePreviousCameraTransform);
             disabledComponents = FindProperty(x => x.settings.disabledComponents);
             canvas = FindProperty(x => x.settings.canvas);
@@ -98,6 +100,14 @@ namespace Rowlan.PhotoSession
                 EditorGUILayout.PropertyField(zoomSensitivity, new GUIContent("Zoom Sensitivity", "Normal mouse wheel zoom amount"));
 
                 EditorGUILayout.PropertyField(zoomSensitivityFast, new GUIContent("Zoom Sensitivity Fast", "Mouse wheel zoom amount when shift is pressed"));
+            }
+            GUILayout.EndVertical();
+
+            GUILayout.BeginVertical("box");
+            {
+                EditorGUILayout.LabelField("Pause", GUIStyles.BoxTitleStyle);
+
+                EditorGUILayout.PropertyField(pauseTime, new GUIContent("Time Scale", "The scaled time factor in Photo Mode. Use 0 for full pause"));
             }
             GUILayout.EndVertical();
 

@@ -50,6 +50,12 @@ namespace Rowlan.PhotoSession
         // Mouse wheel zoom amount when shift is pressed
         public float zoomSensitivityFast = 20;
 
+        // Pause
+
+        // the scaled time factor that's being used in photo mode
+        [Range(0f,1f)]
+        public float pauseTime = 0f;
+
         // Initialization
 
         // Keep the photo camera position and rotation the way it was in the previous session

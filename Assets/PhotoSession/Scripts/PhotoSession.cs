@@ -79,7 +79,7 @@ namespace Rowlan.PhotoSession
 
         void PauseGame()
         {
-            Time.timeScale = 0f;
+            Time.timeScale = settings.pauseTime;
             AudioListener.pause = true;
         }
 
