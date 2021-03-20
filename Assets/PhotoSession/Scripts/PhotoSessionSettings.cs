@@ -25,6 +25,11 @@ namespace Rowlan.PhotoSession
 
         public Output.Format outputFormat = Output.Format.JPG;
 
+        public bool fieldOfViewOverride = false;
+
+        [Range(0.1f, 180f)]
+        public float fieldOfView = 60f;
+
         // Input
 
         // Input key which toggles the photo mode

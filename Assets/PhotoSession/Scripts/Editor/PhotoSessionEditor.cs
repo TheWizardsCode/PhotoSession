@@ -23,6 +23,8 @@ namespace Rowlan.PhotoSession
         SerializedProperty resolution;
         SerializedProperty aspectRatio;
         SerializedProperty outputFormat;
+        SerializedProperty fieldOfViewOverride;
+        SerializedProperty fieldOfView;
         SerializedProperty toggleKey;
         SerializedProperty photoCamera;
         SerializedProperty movementSpeed;
@@ -43,6 +45,8 @@ namespace Rowlan.PhotoSession
             resolution = FindProperty(x => x.settings.resolution);
             aspectRatio = FindProperty(x => x.settings.aspectRatio);
             outputFormat = FindProperty(x => x.settings.outputFormat);
+            fieldOfViewOverride = FindProperty(x => x.settings.fieldOfViewOverride);
+            fieldOfView = FindProperty(x => x.settings.fieldOfView);
             toggleKey = FindProperty(x => x.settings.toggleKey);
             photoCamera = FindProperty(x => x.settings.photoCamera);
             movementSpeed = FindProperty(x => x.settings.movementSpeed);
@@ -72,6 +76,17 @@ namespace Rowlan.PhotoSession
                 }
 
                 EditorGUILayout.PropertyField(outputFormat, new GUIContent("Output Format"));
+
+                GUILayout.BeginHorizontal();
+                {
+                    EditorGUILayout.PropertyField(fieldOfViewOverride, new GUIContent("Field of View"));
+                    if (fieldOfViewOverride.boolValue)
+                    {
+                        EditorGUILayout.PropertyField(fieldOfView, GUIContent.none);
+                    }
+                }
+                GUILayout.EndHorizontal();
+
             }
             GUILayout.EndVertical();
 

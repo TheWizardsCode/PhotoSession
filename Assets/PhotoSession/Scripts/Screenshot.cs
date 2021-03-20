@@ -43,22 +43,13 @@ namespace Rowlan.PhotoSession
 		}
 
 		/// <summary>
-		/// Create a screenshot using the specified camera with resolution of the current screen size. 
-		/// </summary>
-		/// <param name="camera"></param>
-		public void Capture(Camera camera, Output.Format format)
-		{
-			Capture(camera, -1, -1, format);
-		}
-
-		/// <summary>
 		/// Create a custom resolution screenshot using the specified camera. 
 		/// The resolution can be higher than the screen size.
 		/// </summary>
 		/// <param name="camera"></param>
 		/// <param name="width"></param>
 		/// <param name="height"></param>
-		public void Capture(Camera camera, int width, int height, Output.Format format)
+		public void Capture(Camera camera, int width, int height, Output.Format format, bool fieldOfViewOverride, float fieldOfView)
 		{
 
 			if (width <= 0 || height <= 0)
@@ -71,6 +62,7 @@ namespace Rowlan.PhotoSession
 			RenderTexture prevRenderTexture = RenderTexture.active;
 			RenderTexture prevCameraTargetTexture = camera.targetTexture;
 			bool prevCameraEnabled = camera.enabled;
+			float prevFieldOfView = camera.fieldOfView;
 
 			// create rendertexture
 			int msaaSamples = 1;
@@ -81,6 +73,12 @@ namespace Rowlan.PhotoSession
 				// disabling the camera is important, otherwise you get e. g. a blurry image with different focus than the one the camera displays
 				// see https://docs.unity3d.com/ScriptReference/Camera.Render.html
 				camera.enabled = false;
+
+				// fov
+				if (fieldOfViewOverride)
+				{
+					camera.fieldOfView = fieldOfView;
+				}
 
 				// set rendertexture into which the camera renders
 				camera.targetTexture = renderTexture;
@@ -117,6 +115,7 @@ namespace Rowlan.PhotoSession
 				RenderTexture.active = prevRenderTexture;
 				camera.targetTexture = prevCameraTargetTexture;
 				camera.enabled = prevCameraEnabled;
+				camera.fieldOfView = prevFieldOfView;
 
 			}
 
