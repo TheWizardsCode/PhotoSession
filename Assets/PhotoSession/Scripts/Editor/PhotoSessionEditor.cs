@@ -13,6 +13,7 @@ namespace Rowlan.PhotoSession
         private static readonly string tag_MainCamera = "MainCamera";
 
         private static readonly string[] script_Blacklist = {
+            "SimpleCameraController", // Unity HDRP Demo
             "MFreeLookCamera", // Malbers FreeLookCameraRig
             "CameraWallStop", // Malbers FreeLookCameraRig
             };
@@ -36,6 +37,8 @@ namespace Rowlan.PhotoSession
         SerializedProperty reusePreviousCameraTransform;
         SerializedProperty disabledComponents;
         SerializedProperty canvas;
+
+        bool disabledComponentsExpanded = true;
 
         public void OnEnable()
         {
@@ -63,6 +66,8 @@ namespace Rowlan.PhotoSession
         public override void OnInspectorGUI()
         {
             serializedObject.Update();
+
+            // base.DrawDefaultInspector();
 
             GUILayout.BeginVertical("box");
             {
@@ -136,7 +141,22 @@ namespace Rowlan.PhotoSession
 
             GUILayout.BeginVertical("box");
             {
-                EditorGUILayout.PropertyField(disabledComponents, new GUIContent("Disabled Components", "Objects(e.g.Scripts) which should be disabled when photo mode is activated"));
+                EditorGUILayout.LabelField("GameObject Modification", GUIStyles.BoxTitleStyle);
+
+                // TODO: find out how to use Unity's internal mechanism for arrays
+                // EditorGUILayout.PropertyField(disabledComponents, new GUIContent("Disabled Components", "Objects(e.g.Scripts) which should be disabled when photo mode is activated"));
+
+                disabledComponentsExpanded = EditorGUILayout.Foldout(disabledComponentsExpanded, new GUIContent( "Disabled Components"), true);
+                if (disabledComponentsExpanded)
+                {
+                    disabledComponents.arraySize = EditorGUILayout.IntField("Size", disabledComponents.arraySize);
+                    EditorGUI.indentLevel++;
+                    for (int i = 0; i < disabledComponents.arraySize; i++)
+                    {
+                        EditorGUILayout.PropertyField(disabledComponents.GetArrayElementAtIndex(i), new GUIContent(string.Format("Element {0}", i)));
+                    }
+                    EditorGUI.indentLevel--;
+                }
             }
             GUILayout.EndVertical();
 
@@ -227,7 +247,7 @@ namespace Rowlan.PhotoSession
             // set the disabled components in the serializedObject
             this.disabledComponents.ClearArray();
 
-            for ( int i=0; i <components.Count; i++) {
+            for ( int i=0; i < components.Count; i++) {
 
                 this.disabledComponents.InsertArrayElementAtIndex(i);
                 this.disabledComponents.GetArrayElementAtIndex(i).objectReferenceValue = components[i];
