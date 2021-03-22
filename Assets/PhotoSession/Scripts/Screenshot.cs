@@ -102,6 +102,10 @@ namespace Rowlan.PhotoSession
 				// save the image
 				byte[] bytes = format.Encode( screenShot);
 
+				// destroy the texture
+				UnityEngine.Object.Destroy(screenShot);
+				screenShot = null;
+
 				string filepath = Path.Combine(this.screenshotPath, GetFilename( format));
 
 				System.IO.File.WriteAllBytes(filepath, bytes);
