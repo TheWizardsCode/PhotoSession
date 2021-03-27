@@ -14,6 +14,9 @@ namespace Rowlan.PhotoSession
 
         private static readonly string[] script_Blacklist = {
             "SimpleCameraController", // Unity HDRP Demo
+            "LookWithMouse", // Unity HDRP Demo
+            "CharacterController", // Unity HDRP Demo
+            "PlayerMovement", // Unity HDRP Demo
             "MFreeLookCamera", // Malbers FreeLookCameraRig
             "CameraWallStop", // Malbers FreeLookCameraRig
             };

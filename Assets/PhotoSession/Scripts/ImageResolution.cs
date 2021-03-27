@@ -11,12 +11,15 @@ namespace Rowlan.PhotoSession
 	public class ImageResolution
 	{
 		public static ImageResolution PresetGame = new ImageResolution(ImageResolutionType.Game, -1, -1);
-		public static ImageResolution PresetFullHd = new ImageResolution(ImageResolutionType.FullHd, 1920, 1080);
-		public static ImageResolution PresetFourK = new ImageResolution(ImageResolutionType.FourK, 3840, 2160);
-		public static ImageResolution PresetEightK = new ImageResolution(ImageResolutionType.EightK, 7680, 4320);
+		public static ImageResolution Preset1080p = new ImageResolution(ImageResolutionType.Resolution_1080p, 120 * 16, 120 * 9);
+		public static ImageResolution Preset4K = new ImageResolution(ImageResolutionType.Resolution_4K, 120 * 16 * 2, 120 * 9 * 2);
+		public static ImageResolution Preset8K = new ImageResolution(ImageResolutionType.Resolution_8K, 120 * 16 * 4, 120 * 9 * 4);
+		public static ImageResolution Preset10K = new ImageResolution(ImageResolutionType.Resolution_10K, 120 * 16 * 5, 120 * 9 * 5);
+		public static ImageResolution Preset12K = new ImageResolution(ImageResolutionType.Resolution_12K, 120 * 16 * 6, 120 * 9 * 6);
+		public static ImageResolution Preset16K = new ImageResolution(ImageResolutionType.Resolution_16K, 120 * 16 * 8, 120 * 9 * 8);
 
 		public static ImageResolution[] imageResolutions = new ImageResolution[] {
-			PresetGame, PresetFullHd, PresetFourK, PresetEightK
+			PresetGame, Preset1080p, Preset4K, Preset8K
 		};
 
 		public enum AspectRatio {
@@ -46,14 +49,23 @@ namespace Rowlan.PhotoSession
 			[InspectorName("Game Screen")]
 			Game,
 
-			[InspectorName("Full HD (1920 x 1080)")]
-			FullHd,
+			[InspectorName("1080p (1920 x 1080)")]
+			Resolution_1080p,
 
 			[InspectorName("4K (3840 x 2160)")]
-			FourK,
+			Resolution_4K,
 
 			[InspectorName("8K (7680 x 4320)")]
-			EightK,
+			Resolution_8K,
+
+			[InspectorName("10K (9600 x 5400)")]
+			Resolution_10K,
+
+			[InspectorName("12K (11520 x 6480)")]
+			Resolution_12K,
+
+			[InspectorName("16K (15360 x 8640)")]
+			Resolution_16K,
 
 		}
 
