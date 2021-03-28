@@ -19,7 +19,7 @@ namespace Rowlan.PhotoSession
 		public static ImageResolution Preset16K = new ImageResolution(ImageResolutionType.Resolution_16K, 120 * 16 * 8, 120 * 9 * 8);
 
 		public static ImageResolution[] imageResolutions = new ImageResolution[] {
-			PresetGame, Preset1080p, Preset4K, Preset8K
+			PresetGame, Preset1080p, Preset4K, Preset8K, Preset10K, Preset12K, Preset16K
 		};
 
 		public enum AspectRatio {
