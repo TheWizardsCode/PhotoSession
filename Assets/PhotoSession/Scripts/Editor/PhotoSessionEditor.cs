@@ -21,6 +21,8 @@ namespace Rowlan.PhotoSession
             "CameraWallStop", // Malbers FreeLookCameraRig
             };
 
+        HdrpDepthOfFieldModuleEditor hdrpDepthOfFieldModuleEditor = new HdrpDepthOfFieldModuleEditor();
+
         PhotoSession editorTarget;
         PhotoSessionEditor editor;
 
@@ -41,6 +43,8 @@ namespace Rowlan.PhotoSession
         SerializedProperty disabledComponents;
         SerializedProperty canvas;
 
+        SerializedProperty hdrpDepthOfFieldSettings;
+
         bool disabledComponentsExpanded = true;
 
         public void OnEnable()
@@ -48,6 +52,7 @@ namespace Rowlan.PhotoSession
             editor = this;
             editorTarget = (PhotoSession)target;
 
+            // properties
             resolution = FindProperty(x => x.settings.resolution);
             aspectRatio = FindProperty(x => x.settings.aspectRatio);
             outputFormat = FindProperty(x => x.settings.outputFormat);
@@ -64,6 +69,12 @@ namespace Rowlan.PhotoSession
             reusePreviousCameraTransform = FindProperty(x => x.settings.reusePreviousCameraTransform);
             disabledComponents = FindProperty(x => x.settings.disabledComponents);
             canvas = FindProperty(x => x.settings.canvas);
+
+            // modules            
+            hdrpDepthOfFieldModuleEditor.OnEnable(editor, editorTarget);
+
+            hdrpDepthOfFieldSettings = FindProperty(x => x.settings.hdrpDepthOfFieldSettings);
+
         }
 
         public override void OnInspectorGUI()
@@ -171,10 +182,16 @@ namespace Rowlan.PhotoSession
             }
             GUILayout.EndVertical();
 
-            EditorGUILayout.Space();
+			#region Modules
 
-            EditorGUILayout.BeginVertical();
+			OnInspectorGUIModules();
+
+			#endregion Modules
+
+			EditorGUILayout.BeginVertical( "box");
             {
+                EditorGUILayout.LabelField("Tools", GUIStyles.BoxTitleStyle);
+
                 EditorGUILayout.BeginHorizontal();
                 {
                     if (GUILayout.Button("Auto Setup"))
@@ -185,8 +202,18 @@ namespace Rowlan.PhotoSession
                 EditorGUILayout.EndHorizontal();
             }
             EditorGUILayout.EndVertical();
-            
+
             serializedObject.ApplyModifiedProperties();
+        }
+
+        private void OnInspectorGUIModules() {
+
+#if USING_HDRP
+
+            hdrpDepthOfFieldModuleEditor.OnInspectorGUI();
+
+#endif
+
         }
 
         private void PerformAutoSetup()

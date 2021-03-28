@@ -73,5 +73,11 @@ namespace Rowlan.PhotoSession
 
         // An optional canvas with a white stretched image. The alpha value of the image will be used to simulate a flash effect. The canvas can be hidden
         public Canvas canvas = null;
+
+        #region HDRP
+
+        public HdrpDepthOfFieldSettings hdrpDepthOfFieldSettings;
+
+        #endregion HDRP
     }
 }

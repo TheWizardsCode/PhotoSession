@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using static Rowlan.PhotoSession.ImageResolution;
 using static Rowlan.PhotoSession.PhotoSessionSettings;
@@ -67,6 +68,8 @@ namespace Rowlan.PhotoSession
         /// </summary>
         private Coroutine delayedPhotoModeInputCoroutine = null;
 
+        private List<IPhotoSessionModule> modules = new List<IPhotoSessionModule>();
+
         void Awake()
         {
             screenshot.SetupPath();
@@ -75,9 +78,20 @@ namespace Rowlan.PhotoSession
         void Start()
         {
             cameraFlash = new CameraFlash(settings.canvas);
+
+            RegisterModules();
+            StartModules();
+
         }
 
-        void PauseGame()
+        private void RegisterModules() {
+
+#if USING_HDRP                
+            modules.Add(new HdrpDepthOfFieldModule());
+#endif
+        }
+
+    void PauseGame()
         {
             Time.timeScale = settings.pauseTime;
             AudioListener.pause = true;
@@ -182,6 +196,8 @@ namespace Rowlan.PhotoSession
                 // game mode: disable photo camera and resume game
                 if (photoMode == PhotoMode.Game)
                 {
+                    DisableModules();
+
                     DisablePhotoCamera();
 
                     ResumeGame();
@@ -193,6 +209,8 @@ namespace Rowlan.PhotoSession
                     PauseGame();
 
                     EnablePhotoCamera();
+
+                    EnableModules();
                 }
             }
 
@@ -278,6 +296,7 @@ namespace Rowlan.PhotoSession
                 
             }
 
+            UpdateModules();
         }
 
         /// <summary>
@@ -326,10 +345,38 @@ namespace Rowlan.PhotoSession
             settings.canvas.gameObject.SetActive(visible);
         }
 
-		/// <summary>
-		/// Container for the transform data of the camera
-		/// </summary>
-		private class TransformState
+        void OnDrawGizmos()
+        {
+            OnDrawGizmosModules();
+        }
+
+        void StartModules()
+        {
+            modules.ForEach(x => x.Start(this));
+        }
+
+        void UpdateModules()
+        {
+            modules.ForEach(x => x.Update());
+        }
+
+        void OnDrawGizmosModules() {
+            modules.ForEach(x => x.OnDrawGizmos());
+        }
+
+        void EnableModules()
+        {
+            modules.ForEach(x => x.OnEnable());
+        }
+
+        void DisableModules() {
+            modules.ForEach(x => x.OnDisable());
+        }
+
+        /// <summary>
+        /// Container for the transform data of the camera
+        /// </summary>
+        private class TransformState
         {
 
             private Transform parent = null;
