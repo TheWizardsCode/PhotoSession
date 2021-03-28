@@ -31,7 +31,8 @@ namespace Rowlan.PhotoSession
 #endif
         }
 
-        public void OnInspectorGUI() {
+        public void OnInspectorGUI() 
+        {
 #if USING_HDRP
             GUILayout.BeginVertical("box");
             {
@@ -39,7 +40,8 @@ namespace Rowlan.PhotoSession
 
                 EditorGUILayout.PropertyField(featureEnabled, new GUIContent("Enabled", ""));
 
-                if (featureEnabled.boolValue) { 
+                if (featureEnabled.boolValue) 
+                { 
 
                     EditorGUILayout.PropertyField(volume, new GUIContent("Volume", "The volume with the Depth of Field settings"));
 
@@ -55,7 +57,7 @@ namespace Rowlan.PhotoSession
                 }
             }
             GUILayout.EndVertical();
-        }
 #endif
+        }
     }
 }
