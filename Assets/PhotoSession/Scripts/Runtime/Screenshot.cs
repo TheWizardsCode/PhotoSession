@@ -1,6 +1,8 @@
 ﻿using System;
 using System.IO;
+using UnityEditor.Build.Content;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
 
 namespace Rowlan.PhotoSession
@@ -42,19 +44,36 @@ namespace Rowlan.PhotoSession
 			return string.Format("{0} - {1:yyyy.MM.dd - HH.mm.ss.ff}.{2}", sceneName, DateTime.Now, format.GetExtension());
 		}
 
-		/// <summary>
-		/// Create a custom resolution screenshot using the specified camera. 
-		/// The resolution can be higher than the screen size.
-		/// </summary>
-		/// <param name="camera"></param>
-		/// <param name="width"></param>
-		/// <param name="height"></param>
-		public void Capture( PhotoSessionSettings settings)
+		private void WriteToFile(PhotoSessionSettings settings, RenderTexture outputTexture)
+		{
+			Output.Format format = settings.outputFormat;
+
+			// create image using the camera's render texture
+			RenderTexture.active = outputTexture;
+
+			Texture2D screenShot = new Texture2D(outputTexture.width, outputTexture.height, settings.outputFormat.GetTextureFormat(), false);
+			screenShot.ReadPixels(new Rect(0, 0, outputTexture.width, outputTexture.height), 0, 0);
+			screenShot.Apply();
+
+			// save the image
+			byte[] bytes = format.Encode( screenShot);
+
+			// destroy the texture
+			UnityEngine.Object.Destroy(screenShot);
+			screenShot = null;
+
+			string filepath = Path.Combine(this.screenshotPath, GetFilename( format));
+
+			System.IO.File.WriteAllBytes(filepath, bytes);
+
+			Debug.Log(string.Format("[<color=blue>Screenshot</color>]Screenshot captured\n<color=grey>{0}</color>", filepath));
+		}
+
+		private void CaptureFlat(PhotoSessionSettings settings)
 		{
 			Camera camera = settings.photoCamera;
 			int width = settings.resolution.GetImageResolution(settings.aspectRatio).Width;
 			int height = settings.resolution.GetImageResolution(settings.aspectRatio).Height;
-			Output.Format format = settings.outputFormat;
 			bool fieldOfViewOverride = settings.fieldOfViewOverride;
 			float fieldOfView = settings.fieldOfView;
 
@@ -92,26 +111,7 @@ namespace Rowlan.PhotoSession
 				// render a single frame
 				camera.Render();
 
-				// create image using the camera's render texture
-				RenderTexture.active = camera.targetTexture;
-
-				Texture2D screenShot = new Texture2D(width, height, format.GetTextureFormat(), false);
-				screenShot.ReadPixels(new Rect(0, 0, width, height), 0, 0);
-				screenShot.Apply();
-
-				// save the image
-				byte[] bytes = format.Encode( screenShot);
-
-				// destroy the texture
-				UnityEngine.Object.Destroy(screenShot);
-				screenShot = null;
-
-				string filepath = Path.Combine(this.screenshotPath, GetFilename( format));
-
-				System.IO.File.WriteAllBytes(filepath, bytes);
-
-				Debug.Log(string.Format("[<color=blue>Screenshot</color>]Screenshot captured\n<color=grey>{0}</color>", filepath));
-
+				WriteToFile(settings, renderTexture);
 			}
 			catch (Exception ex)
 			{
@@ -128,7 +128,49 @@ namespace Rowlan.PhotoSession
 				camera.fieldOfView = prevFieldOfView;
 
 			}
+		}
 
+		private void Capture360(PhotoSessionSettings settings)
+		{
+			int width = settings.resolution.GetImageResolution(settings.aspectRatio).Width;
+			int height = settings.resolution.GetImageResolution(settings.aspectRatio).Height;
+
+			if ( width <= 0 || height <= 0)
+			{
+				width = Screen.width;
+				height = Screen.height;
+			}
+
+			int max = Mathf.Max(width, height);
+			int size = (int) Mathf.Pow(2, Mathf.Ceil(Mathf.Log(max)/Mathf.Log(2)));
+			int msaaSamples = 8;
+			Debug.Log("Size: " + size);
+			RenderTexture cubemap = RenderTexture.GetTemporary(size, size, 24, RenderTextureFormat.ARGB32, RenderTextureReadWrite.Default, msaaSamples);
+			Debug.Log("Cubemap size: " + cubemap.width + "x" + cubemap.height);
+			cubemap.dimension = TextureDimension.Cube;
+			RenderTexture equirect = RenderTexture.GetTemporary(size * 2, size, 24, RenderTextureFormat.ARGB32, RenderTextureReadWrite.Default, msaaSamples);
+			settings.photoCamera.RenderToCubemap(cubemap);
+			cubemap.ConvertToEquirect(equirect);
+			
+			WriteToFile(settings, equirect);
+		}
+
+		/// <summary>
+		/// Create a custom resolution screenshot using the specified camera. 
+		/// The resolution can be higher than the screen size.
+		/// </summary>
+		/// <param name="settings"></param>
+		public void Capture( PhotoSessionSettings settings)
+		{
+			switch (settings.photoType)
+			{
+				case PhotoSessionSettings.PhotoType.Flat:
+					CaptureFlat(settings);
+					break;
+				case PhotoSessionSettings.PhotoType.Mono360:
+					Capture360(settings);
+					break;
+			}
 		}
 
 		/// <summary>

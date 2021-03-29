@@ -29,6 +29,7 @@ namespace Rowlan.PhotoSession
 
         SerializedProperty resolution;
         SerializedProperty aspectRatio;
+        SerializedProperty photoType;
         SerializedProperty outputFormat;
         SerializedProperty fieldOfViewOverride;
         SerializedProperty fieldOfView;
@@ -57,6 +58,7 @@ namespace Rowlan.PhotoSession
             // properties
             resolution = FindProperty(x => x.settings.resolution);
             aspectRatio = FindProperty(x => x.settings.aspectRatio);
+            photoType = FindProperty(x => x.settings.photoType);
             outputFormat = FindProperty(x => x.settings.outputFormat);
             fieldOfViewOverride = FindProperty(x => x.settings.fieldOfViewOverride);
             fieldOfView = FindProperty(x => x.settings.fieldOfView);
@@ -104,6 +106,8 @@ namespace Rowlan.PhotoSession
                 }
 
                 EditorGUILayout.PropertyField(outputFormat, new GUIContent("Output Format"));
+                
+                EditorGUILayout.PropertyField(photoType, new GUIContent("Photo Type"));
 
                 GUILayout.BeginHorizontal();
                 {

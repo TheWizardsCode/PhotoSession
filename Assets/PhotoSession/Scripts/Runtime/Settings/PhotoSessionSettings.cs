@@ -17,9 +17,20 @@ namespace Rowlan.PhotoSession
             Photo
         }
 
+        /// <summary>
+        /// The type of photo that will be stored mono and VR modes
+        /// </summary>
+        public enum PhotoType
+        {
+            Flat,
+            Mono360
+        }
+
         // Image
 
         public ImageResolutionType resolution = ImageResolutionType.Game;
+
+        public PhotoType photoType = PhotoType.Flat;
 
         public AspectRatio aspectRatio = AspectRatio.AR_16_9;
 
