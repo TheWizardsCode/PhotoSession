@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-namespace Rowlan.PhotoSession
+namespace Rowlan.PhotoSession.Hdrp
 {
-    public class HdrpDepthOfFieldModuleEditor
+    public class DepthOfFieldModuleEditor
     {
         private PhotoSession editorTarget;
         private PhotoSessionEditor editor;
@@ -36,7 +36,7 @@ namespace Rowlan.PhotoSession
 #if USING_HDRP
             GUILayout.BeginVertical("box");
             {
-                EditorGUILayout.LabelField("HDRP Depth of Field", GUIStyles.BoxTitleStyle);
+                EditorGUILayout.LabelField("Depth of Field", GUIStyles.BoxTitleStyle);
 
                 EditorGUILayout.PropertyField(featureEnabled, new GUIContent("Enabled", ""));
 
