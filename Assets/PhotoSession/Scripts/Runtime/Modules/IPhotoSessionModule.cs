@@ -7,11 +7,11 @@ namespace Rowlan.PhotoSession
 	public interface IPhotoSessionModule
 	{
 
-		public void Start(PhotoSession photoSession);
-		public void Update();
-		public void OnEnable();
-		public void OnDisable();
-		public void OnDrawGizmos();
+		void Start(PhotoSession photoSession);
+		void Update();
+		void OnEnable();
+		void OnDisable();
+		void OnDrawGizmos();
 
 	}
 }
