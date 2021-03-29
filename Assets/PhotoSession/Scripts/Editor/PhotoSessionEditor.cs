@@ -22,6 +22,7 @@ namespace Rowlan.PhotoSession
             };
 
         HdrpDepthOfFieldModuleEditor hdrpDepthOfFieldModuleEditor = new HdrpDepthOfFieldModuleEditor();
+        UrpDepthOfFieldModuleEditor urpDepthOfFieldModuleEditor = new UrpDepthOfFieldModuleEditor();
 
         PhotoSession editorTarget;
         PhotoSessionEditor editor;
@@ -44,6 +45,7 @@ namespace Rowlan.PhotoSession
         SerializedProperty canvas;
 
         SerializedProperty hdrpDepthOfFieldSettings;
+        SerializedProperty urpDepthOfFieldSettings;
 
         bool disabledComponentsExpanded = true;
 
@@ -70,10 +72,17 @@ namespace Rowlan.PhotoSession
             disabledComponents = FindProperty(x => x.settings.disabledComponents);
             canvas = FindProperty(x => x.settings.canvas);
 
-            // modules            
-            hdrpDepthOfFieldModuleEditor.OnEnable(editor, editorTarget);
+			// modules            
 
+			#region HDRP
+			hdrpDepthOfFieldModuleEditor.OnEnable(editor, editorTarget);
             hdrpDepthOfFieldSettings = FindProperty(x => x.settings.hdrpDepthOfFieldSettings);
+            #endregion HDRP
+
+            #region URP
+            urpDepthOfFieldModuleEditor.OnEnable(editor, editorTarget);
+            urpDepthOfFieldSettings = FindProperty(x => x.settings.urpDepthOfFieldSettings);
+            #endregion URP
 
         }
 
@@ -211,6 +220,12 @@ namespace Rowlan.PhotoSession
 #if USING_HDRP
 
             hdrpDepthOfFieldModuleEditor.OnInspectorGUI();
+
+#endif
+
+#if USING_URP
+
+            urpDepthOfFieldModuleEditor.OnInspectorGUI();
 
 #endif
 

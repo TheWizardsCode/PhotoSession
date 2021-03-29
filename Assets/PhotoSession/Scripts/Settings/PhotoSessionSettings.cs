@@ -79,5 +79,12 @@ namespace Rowlan.PhotoSession
         public HdrpDepthOfFieldSettings hdrpDepthOfFieldSettings;
 
         #endregion HDRP
+
+        #region URP
+
+        public UrpDepthOfFieldSettings urpDepthOfFieldSettings;
+
+        #endregion URP
+
     }
 }

@@ -89,9 +89,12 @@ namespace Rowlan.PhotoSession
 #if USING_HDRP                
             modules.Add(new HdrpDepthOfFieldModule());
 #endif
+#if USING_URP
+            modules.Add(new UrpDepthOfFieldModule());
+#endif
         }
 
-    void PauseGame()
+        void PauseGame()
         {
             Time.timeScale = settings.pauseTime;
             AudioListener.pause = true;
