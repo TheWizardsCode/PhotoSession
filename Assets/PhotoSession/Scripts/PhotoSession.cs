@@ -87,7 +87,7 @@ namespace Rowlan.PhotoSession
         private void RegisterModules() {
 
 #if USING_HDRP                
-            modules.Add(new Hdrp.HdrpDepthOfFieldModule());
+            modules.Add(new Hdrp.DepthOfFieldModule());
 #endif
 #if USING_URP
             modules.Add(new Urp.DepthOfFieldModule());
