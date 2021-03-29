@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
 
@@ -33,21 +31,21 @@ namespace Rowlan.PhotoSession.Urp
 #if USING_URP
             this.photoSession = photoSession;
 
-			Urp.DepthOfFieldSettings hdrpSettings = photoSession.settings.urpDepthOfFieldSettings;
+			Urp.DepthOfFieldSettings dofSettings = photoSession.settings.urpDepthOfFieldSettings;
 
             // check if user enabled the feature
-            if (!hdrpSettings.featureEnabled)
+            if (!dofSettings.featureEnabled)
                 return;
 
             // get the dof profile
-            featureActive = hdrpSettings.volume.profile.TryGet(out depthOfField);
+            featureActive = dofSettings.volume.profile.TryGet(out depthOfField);
             if (!featureActive)
             {
                 Debug.Log("HDRP DepthOfField enabled, but volume undefined");
                 return;
             }
 
-            this.volume = hdrpSettings.volume;
+            this.volume = dofSettings.volume;
 
 #endif
         }
@@ -90,8 +88,10 @@ namespace Rowlan.PhotoSession.Urp
             if (!featureActive)
                 return;
 
-            ray = new Ray(photoSession.settings.photoCamera.transform.position, photoSession.settings.photoCamera.transform.forward * photoSession.settings.urpDepthOfFieldSettings.maxFocusDistance);
-            bool hasTarget = Physics.Raycast(ray, out hit, photoSession.settings.urpDepthOfFieldSettings.maxFocusDistance);
+            Urp.DepthOfFieldSettings dofSettings = photoSession.settings.urpDepthOfFieldSettings;
+
+            ray = new Ray(photoSession.settings.photoCamera.transform.position, photoSession.settings.photoCamera.transform.forward * dofSettings.maxFocusDistance);
+            bool hasTarget = Physics.Raycast(ray, out hit, dofSettings.maxFocusDistance);
             if (hasTarget)
             {
                 hitDistance = Vector3.Distance(photoSession.settings.photoCamera.transform.position, hit.point);
@@ -128,7 +128,7 @@ namespace Rowlan.PhotoSession.Urp
 
         private void UpdateFocusSettings(float targetDistance)
         {
-			Urp.DepthOfFieldSettings urpSettings = photoSession.settings.urpDepthOfFieldSettings;
+			Urp.DepthOfFieldSettings dofSettings = photoSession.settings.urpDepthOfFieldSettings;
 
             switch (depthOfField.mode.value)
             {
@@ -142,13 +142,13 @@ namespace Rowlan.PhotoSession.Urp
                 case DepthOfFieldMode.Bokeh:
                     
                     depthOfField.focusDistance.overrideState = true;
-                    depthOfField.focusDistance.value = targetDistance + urpSettings.focusDistanceOffset;
+                    depthOfField.focusDistance.value = targetDistance + dofSettings.focusDistanceOffset;
 
                     depthOfField.focalLength.overrideState = true;
-                    depthOfField.focalLength.value = urpSettings.focalLength;
+                    depthOfField.focalLength.value = dofSettings.focalLength;
 
                     depthOfField.aperture.overrideState = true;
-                    depthOfField.aperture.value = urpSettings.aperture;
+                    depthOfField.aperture.value = dofSettings.aperture;
 
                     break;
                 default:

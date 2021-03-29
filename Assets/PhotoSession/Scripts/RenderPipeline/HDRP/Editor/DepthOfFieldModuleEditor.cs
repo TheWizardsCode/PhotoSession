@@ -36,7 +36,7 @@ namespace Rowlan.PhotoSession.Hdrp
 #if USING_HDRP
             GUILayout.BeginVertical("box");
             {
-                EditorGUILayout.LabelField("HDRP Depth of Field", GUIStyles.BoxTitleStyle);
+                EditorGUILayout.LabelField("Depth of Field", GUIStyles.BoxTitleStyle);
 
                 EditorGUILayout.PropertyField(featureEnabled, new GUIContent("Enabled", ""));
 

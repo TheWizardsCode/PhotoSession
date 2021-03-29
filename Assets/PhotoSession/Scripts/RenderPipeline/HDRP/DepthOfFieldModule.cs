@@ -33,21 +33,21 @@ namespace Rowlan.PhotoSession.Hdrp
 #if USING_HDRP
             this.photoSession = photoSession;
 
-            HdrpDepthOfFieldSettings hdrpSettings = photoSession.settings.hdrpDepthOfFieldSettings;
+            Hdrp.DepthOfFieldSettings dofSettings = photoSession.settings.hdrpDepthOfFieldSettings;
 
             // check if user enabled the feature
-            if (!hdrpSettings.featureEnabled)
+            if (!dofSettings.featureEnabled)
                 return;
 
             // get the dof profile
-            featureActive = hdrpSettings.volume.profile.TryGet(out depthOfField);
+            featureActive = dofSettings.volume.profile.TryGet(out depthOfField);
             if (!featureActive)
             {
-                Debug.Log("HDRP DepthOfField enabled, but volume undefined");
+                Debug.Log("DepthOfField enabled, but volume undefined");
                 return;
             }
 
-            this.volume = hdrpSettings.volume;
+            this.volume = dofSettings.volume;
 
 #endif
         }
@@ -90,8 +90,10 @@ namespace Rowlan.PhotoSession.Hdrp
             if (!featureActive)
                 return;
 
-            ray = new Ray(photoSession.settings.photoCamera.transform.position, photoSession.settings.photoCamera.transform.forward * photoSession.settings.hdrpDepthOfFieldSettings.maxFocusDistance);
-            bool hasTarget = Physics.Raycast(ray, out hit, photoSession.settings.hdrpDepthOfFieldSettings.maxFocusDistance);
+            Hdrp.DepthOfFieldSettings dofSettings = photoSession.settings.hdrpDepthOfFieldSettings;
+
+            ray = new Ray(photoSession.settings.photoCamera.transform.position, photoSession.settings.photoCamera.transform.forward * dofSettings.maxFocusDistance);
+            bool hasTarget = Physics.Raycast(ray, out hit, dofSettings.maxFocusDistance);
             if (hasTarget)
             {
                 hitDistance = Vector3.Distance(photoSession.settings.photoCamera.transform.position, hit.point);
@@ -128,7 +130,7 @@ namespace Rowlan.PhotoSession.Hdrp
 
         private void UpdateFocusSettings(float targetDistance)
         {
-            HdrpDepthOfFieldSettings hdrpSettings = photoSession.settings.hdrpDepthOfFieldSettings;
+            Hdrp.DepthOfFieldSettings dofSettings = photoSession.settings.hdrpDepthOfFieldSettings;
 
             switch (depthOfField.focusMode.value)
             {
@@ -145,12 +147,12 @@ namespace Rowlan.PhotoSession.Hdrp
                     depthOfField.nearFocusStart.overrideState = true;
                     depthOfField.nearFocusStart.value = 0f;
                     depthOfField.nearFocusEnd.overrideState = true;
-                    depthOfField.nearFocusEnd.value = targetDistance + hdrpSettings.hitDistanceNearFocusEndOffset;
+                    depthOfField.nearFocusEnd.value = targetDistance + dofSettings.hitDistanceNearFocusEndOffset;
 
                     depthOfField.farFocusStart.overrideState = true;
-                    depthOfField.farFocusStart.value = targetDistance + hdrpSettings.hitDistanceFarFocusStartOffset;
+                    depthOfField.farFocusStart.value = targetDistance + dofSettings.hitDistanceFarFocusStartOffset;
                     depthOfField.farFocusEnd.overrideState = true;
-                    depthOfField.farFocusEnd.value = depthOfField.farFocusStart.value + hdrpSettings.hitDistanceFarFocusEndOffset;
+                    depthOfField.farFocusEnd.value = depthOfField.farFocusStart.value + dofSettings.hitDistanceFarFocusEndOffset;
                     break;
                 default:
                     throw new ArgumentOutOfRangeException("Unsupported enum " + depthOfField.focusMode.value);

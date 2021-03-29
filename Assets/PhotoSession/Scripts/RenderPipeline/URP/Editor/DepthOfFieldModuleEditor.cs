@@ -36,9 +36,9 @@ namespace Rowlan.PhotoSession.Urp
 #if USING_URP
             GUILayout.BeginVertical("box");
             {
-                EditorGUILayout.LabelField("URP Depth of Field", GUIStyles.BoxTitleStyle);
+                EditorGUILayout.LabelField("Depth of Field", GUIStyles.BoxTitleStyle);
 
-                EditorGUILayout.HelpBox("The URP DoF effect is experimental and highly depends on your settings.", MessageType.Warning);
+                EditorGUILayout.HelpBox("The DoF effect is experimental and highly depends on your settings.", MessageType.Warning);
 
                 EditorGUILayout.PropertyField(featureEnabled, new GUIContent("Enabled", ""));
 
