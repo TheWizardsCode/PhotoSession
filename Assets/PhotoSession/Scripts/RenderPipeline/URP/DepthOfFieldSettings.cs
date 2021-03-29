@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
 
-namespace Rowlan.PhotoSession
+namespace Rowlan.PhotoSession.Urp
 {
     [System.Serializable]
-    public class HdrpDepthOfFieldSettings
+    public class DepthOfFieldSettings
     {
-#if USING_HDRP
+#if USING_URP
         /// <summary>
         /// Whether the feature is enabled or not at runtime
         /// </summary>
@@ -29,22 +29,21 @@ namespace Rowlan.PhotoSession
         public float maxFocusDistance = 10f;
 
         /// <summary>
-        /// When we hit a target, then the near focus end is set to the distance between camera and target.
-        /// This value is added to the distance. So if you want to move the near focus end in front of the target, you need to specify a negative offset.
+        /// When we hit a target, then the focus distance is set to the distance between camera and target.
+        /// This value is added to the distance. So if you want to move the focus distance in front of the target, you need to specify a negative offset.
         /// </summary>
-        public float hitDistanceNearFocusEndOffset = -0.5f;
+        public float focusDistanceOffset = -1f;
 
         /// <summary>
-        /// When we hit a target, then the far focus start is set to the distance between camera and target.
-        /// This value is added to the far focus start.
+        /// The focal length override for the Depth of Field settings
         /// </summary>
-        public float hitDistanceFarFocusStartOffset = 1f;
+        public float focalLength = 50f;
 
         /// <summary>
-        /// When we hit a target, then the far focus start is set to the distance between camera and target.
-        /// This value influences the far focus end value which is the far focus start plus this offset.
+        /// The aperture override for the length of the Depth of Field settings
         /// </summary>
-        public float hitDistanceFarFocusEndOffset = 10f;
+        public float aperture = 5.6f;
+
 #endif
     }
 }

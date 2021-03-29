@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-namespace Rowlan.PhotoSession
+namespace Rowlan.PhotoSession.Hdrp
 {
-    public class HdrpDepthOfFieldModuleEditor
+    public class DepthOfFieldModuleEditor
     {
         private PhotoSession editorTarget;
         private PhotoSessionEditor editor;

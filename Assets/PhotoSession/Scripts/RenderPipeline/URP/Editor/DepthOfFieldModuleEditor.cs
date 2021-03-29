@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-namespace Rowlan.PhotoSession
+namespace Rowlan.PhotoSession.Urp
 {
-    public class UrpDepthOfFieldModuleEditor
+    public class DepthOfFieldModuleEditor
     {
         private PhotoSession editorTarget;
         private PhotoSessionEditor editor;

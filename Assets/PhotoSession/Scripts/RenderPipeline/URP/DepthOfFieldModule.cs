@@ -8,9 +8,9 @@ using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 #endif
 
-namespace Rowlan.PhotoSession
+namespace Rowlan.PhotoSession.Urp
 {
-    public class UrpDepthOfFieldModule : IPhotoSessionModule
+    public class DepthOfFieldModule : IPhotoSessionModule
     {
 
 #if USING_URP
@@ -33,7 +33,7 @@ namespace Rowlan.PhotoSession
 #if USING_URP
             this.photoSession = photoSession;
 
-            UrpDepthOfFieldSettings hdrpSettings = photoSession.settings.urpDepthOfFieldSettings;
+			Urp.DepthOfFieldSettings hdrpSettings = photoSession.settings.urpDepthOfFieldSettings;
 
             // check if user enabled the feature
             if (!hdrpSettings.featureEnabled)
@@ -128,7 +128,7 @@ namespace Rowlan.PhotoSession
 
         private void UpdateFocusSettings(float targetDistance)
         {
-            UrpDepthOfFieldSettings urpSettings = photoSession.settings.urpDepthOfFieldSettings;
+			Urp.DepthOfFieldSettings urpSettings = photoSession.settings.urpDepthOfFieldSettings;
 
             switch (depthOfField.mode.value)
             {

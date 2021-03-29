@@ -8,9 +8,9 @@ using UnityEngine.Rendering;
 using UnityEngine.Rendering.HighDefinition;
 #endif
 
-namespace Rowlan.PhotoSession
+namespace Rowlan.PhotoSession.Hdrp
 {
-    public class HdrpDepthOfFieldModule : IPhotoSessionModule
+    public class DepthOfFieldModule : IPhotoSessionModule
     {
 
 #if USING_HDRP

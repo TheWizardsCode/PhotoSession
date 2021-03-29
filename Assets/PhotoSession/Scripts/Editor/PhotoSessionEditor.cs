@@ -21,8 +21,8 @@ namespace Rowlan.PhotoSession
             "CameraWallStop", // Malbers FreeLookCameraRig
             };
 
-        HdrpDepthOfFieldModuleEditor hdrpDepthOfFieldModuleEditor = new HdrpDepthOfFieldModuleEditor();
-        UrpDepthOfFieldModuleEditor urpDepthOfFieldModuleEditor = new UrpDepthOfFieldModuleEditor();
+        Hdrp.DepthOfFieldModuleEditor hdrpDepthOfFieldModuleEditor = new Hdrp.DepthOfFieldModuleEditor();
+        Urp.DepthOfFieldModuleEditor urpDepthOfFieldModuleEditor = new Urp.DepthOfFieldModuleEditor();
 
         PhotoSession editorTarget;
         PhotoSessionEditor editor;
