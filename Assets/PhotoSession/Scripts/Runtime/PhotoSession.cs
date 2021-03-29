@@ -110,10 +110,6 @@ namespace Rowlan.PhotoSession
         {
             delayedPhotoModeInputCoroutine = StartCoroutine(DelayedPhotoModeInput());
 
-            // save the cursor's state, hide and lock it
-            cursorState.Save();
-            cursorState.Lock();
-
             // player photo camera state so that it can be restored after we leave the session
             playerCameraState.Save(settings.photoCamera.transform);
 
@@ -163,9 +159,6 @@ namespace Rowlan.PhotoSession
             }
 
             photoModeInputActive = false;
-
-            /// restore the previous cursor state
-            cursorState.Restore();
 
             // save current transform of photoshoot camera
             previousPhotoCameraState.Save(settings.photoCamera.transform);
@@ -227,65 +220,84 @@ namespace Rowlan.PhotoSession
             // apply photo mode logic
             if (photoMode == PhotoMode.Photo)
             {
-                // we are in pause mode => we need to use Time.unscaledDeltaTime instead of Time.deltaTime or otherwise the camera couldn't move
-                float time = Time.unscaledDeltaTime;
-
-                Transform cameraTransform = settings.photoCamera.transform;
-
-                // determine speed
-                var fastMode = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
-                var movementSpeed = fastMode ? this.settings.movementSpeedFast : this.settings.movementSpeed;
-
-				#region Keyboard
-
-				if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
+                if (Input.GetMouseButtonDown(1))
                 {
-                    cameraTransform.position += -cameraTransform.right * movementSpeed * time;
+                    // save the cursor's state, hide and lock it
+                    cursorState.Save();
+                    cursorState.Lock();
                 }
 
-                if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
+                if (Input.GetMouseButtonUp(1))
                 {
-                    cameraTransform.position += cameraTransform.right * movementSpeed * time;
+                    /// restore the previous cursor state
+                    cursorState.Restore();
                 }
 
-                if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow))
+                if (Input.GetMouseButton(1))
                 {
-                    cameraTransform.position += cameraTransform.forward * movementSpeed * time;
+                    // we are in pause mode => we need to use Time.unscaledDeltaTime instead of Time.deltaTime or otherwise the camera couldn't move
+                    float time = Time.unscaledDeltaTime;
+
+                    Transform cameraTransform = settings.photoCamera.transform;
+
+                    // determine speed
+                    var fastMode = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
+                    var movementSpeed = fastMode ? this.settings.movementSpeedFast : this.settings.movementSpeed;
+
+                    #region Keyboard
+
+                    if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
+                    {
+                        cameraTransform.position += -cameraTransform.right * movementSpeed * time;
+                    }
+
+                    if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
+                    {
+                        cameraTransform.position += cameraTransform.right * movementSpeed * time;
+                    }
+
+                    if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow))
+                    {
+                        cameraTransform.position += cameraTransform.forward * movementSpeed * time;
+                    }
+
+                    if (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow))
+                    {
+                        cameraTransform.position += -cameraTransform.forward * movementSpeed * time;
+                    }
+
+                    if (Input.GetKey(KeyCode.E))
+                    {
+                        cameraTransform.position += cameraTransform.up * movementSpeed * time;
+                    }
+
+                    if (Input.GetKey(KeyCode.Q))
+                    {
+                        cameraTransform.position += -cameraTransform.up * movementSpeed * time;
+                    }
+
+                    #endregion Keyboard
+
+                    #region Mouse Movement
+
+                    float newRotationX = cameraTransform.localEulerAngles.y +
+                                         Input.GetAxis("Mouse X") * settings.freeLookSensitivity;
+                    float newRotationY = cameraTransform.localEulerAngles.x -
+                                         Input.GetAxis("Mouse Y") * settings.freeLookSensitivity;
+
+                    cameraTransform.localEulerAngles = new Vector3(newRotationY, newRotationX, 0f);
+
+                    float axis = Input.GetAxis("Mouse ScrollWheel");
+                    if (axis != 0)
+                    {
+                        var zoomSensitivity =
+                            fastMode ? this.settings.zoomSensitivityFast : this.settings.zoomSensitivity;
+
+                        cameraTransform.position += cameraTransform.forward * axis * zoomSensitivity;
+                    }
+
+                    #endregion Mouse Movement
                 }
-
-                if (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow))
-                {
-                    cameraTransform.position += -cameraTransform.forward * movementSpeed * time;
-                }
-
-                if (Input.GetKey(KeyCode.E))
-                {
-                    cameraTransform.position += cameraTransform.up * movementSpeed * time;
-                }
-
-                if (Input.GetKey(KeyCode.Q))
-                {
-                    cameraTransform.position += -cameraTransform.up * movementSpeed * time;
-                }
-
-                #endregion Keyboard
-
-                #region Mouse Movement
-
-                float newRotationX = cameraTransform.localEulerAngles.y + Input.GetAxis("Mouse X") * settings.freeLookSensitivity;
-                float newRotationY = cameraTransform.localEulerAngles.x - Input.GetAxis("Mouse Y") * settings.freeLookSensitivity;
-
-                cameraTransform.localEulerAngles = new Vector3(newRotationY, newRotationX, 0f);
-
-                float axis = Input.GetAxis("Mouse ScrollWheel");
-                if (axis != 0)
-                {
-                    var zoomSensitivity = fastMode ? this.settings.zoomSensitivityFast : this.settings.zoomSensitivity;
-
-                    cameraTransform.position += cameraTransform.forward * axis * zoomSensitivity;
-                }
-
-                #endregion Mouse Movement
 
                 #region Screenshot
 
