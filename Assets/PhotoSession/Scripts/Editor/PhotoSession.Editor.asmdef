@@ -1,5 +1,6 @@
 {
     "name": "PhotoSession.Editor",
+    "rootNamespace": "",
     "references": [
         "GUID:b28c03482b579d445aa281177909e20e"
     ],
@@ -11,7 +12,10 @@
     "overrideReferences": false,
     "precompiledReferences": [],
     "autoReferenced": true,
-    "defineConstraints": [],
+    "defineConstraints": [
+        "USING_HDRP",
+        "USING_URP"
+    ],
     "versionDefines": [],
     "noEngineReferences": false
 }
