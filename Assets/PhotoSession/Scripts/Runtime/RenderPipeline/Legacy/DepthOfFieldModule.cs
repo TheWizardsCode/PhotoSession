@@ -2,24 +2,22 @@ using System;
 using UnityEngine;
 using UnityEngine.Rendering;
 
-#if USING_URP
-using UnityEngine.Rendering.Universal;
+#if USING_LEGACY
+using UnityEngine.Rendering.PostProcessing;
 #endif
 
-namespace Rowlan.PhotoSession.Urp
+namespace Rowlan.PhotoSession.Legacy
 {
     public class DepthOfFieldModule : IPhotoSessionModule
     {
 
-#if USING_URP
+#if USING_LEGACY
         private PhotoSession photoSession;
-        private Volume volume;
+        private PostProcessVolume volume;
         private DepthOfField depthOfField;
         private DepthOfFieldSettings originalSettings;
 
         private bool featureActive = false;
-
-        private DepthOfFieldMode defaultDepthOfFieldMode = DepthOfFieldMode.Bokeh;
 
         private Ray ray;
         private RaycastHit hit;
@@ -28,17 +26,17 @@ namespace Rowlan.PhotoSession.Urp
 
         public void Start(PhotoSession photoSession)
         {
-#if USING_URP
+#if USING_LEGACY
             this.photoSession = photoSession;
 
-			Urp.DepthOfFieldSettings dofSettings = photoSession.settings.urpDepthOfFieldSettings;
+			Legacy.DepthOfFieldSettings dofSettings = photoSession.settings.legacyDepthOfFieldSettings;
 
             // check if user enabled the feature
             if (!dofSettings.featureEnabled)
                 return;
 
             // get the dof profile
-            featureActive = dofSettings.volume.profile.TryGet(out depthOfField);
+            featureActive = dofSettings.volume.profile.TryGetSettings(out depthOfField);
             if (!featureActive)
             {
                 Debug.Log("DepthOfField enabled, but volume undefined");
@@ -52,7 +50,7 @@ namespace Rowlan.PhotoSession.Urp
 
         public void OnEnable()
         {
-#if USING_URP
+#if USING_LEGACY
             // backup settings
             originalSettings = new DepthOfFieldSettings(volume, depthOfField);
 
@@ -67,7 +65,7 @@ namespace Rowlan.PhotoSession.Urp
 
         public void OnDisable()
         {
-#if USING_URP
+#if USING_LEGACY
 
             // restore settings (including active state)
             originalSettings.Restore(volume, depthOfField);
@@ -77,18 +75,18 @@ namespace Rowlan.PhotoSession.Urp
 
         public void OnDrawGizmos()
         {
-#if USING_URP
+#if USING_LEGACY
 #endif
         }
 
 
         public void Update()
         {
-#if USING_URP
+#if USING_LEGACY
             if (!featureActive)
                 return;
 
-            Urp.DepthOfFieldSettings dofSettings = photoSession.settings.urpDepthOfFieldSettings;
+            Legacy.DepthOfFieldSettings dofSettings = photoSession.settings.legacyDepthOfFieldSettings;
 
             ray = new Ray(photoSession.settings.photoCamera.transform.position, photoSession.settings.photoCamera.transform.forward * dofSettings.maxFocusDistance);
             bool hasTarget = Physics.Raycast(ray, out hit, dofSettings.maxFocusDistance);
@@ -103,7 +101,7 @@ namespace Rowlan.PhotoSession.Urp
 
         #region Private Methods and Classes
 
-#if USING_URP
+#if USING_LEGACY
 
         private void UpdateFocus(bool hasTarget, float hitDistance)
         {
@@ -115,45 +113,27 @@ namespace Rowlan.PhotoSession.Urp
         {
             if (hasTarget)
             {
-                depthOfField.mode.overrideState = true;
-                depthOfField.mode.value = defaultDepthOfFieldMode;
+                depthOfField.active = true;
             }
             else
             {
-                depthOfField.mode.overrideState = true;
-                depthOfField.mode.value = DepthOfFieldMode.Off;
+                depthOfField.active = false;
             }
 
         }
 
         private void UpdateFocusSettings(float targetDistance)
         {
-			Urp.DepthOfFieldSettings dofSettings = photoSession.settings.urpDepthOfFieldSettings;
+            Legacy.DepthOfFieldSettings dofSettings = photoSession.settings.legacyDepthOfFieldSettings;
 
-            switch (depthOfField.mode.value)
-            {
-                case DepthOfFieldMode.Off:
-                    // nothing to do
-                    break;
+            depthOfField.focusDistance.overrideState = true;
+            depthOfField.focusDistance.value = targetDistance + dofSettings.focusDistanceOffset;
 
-                case DepthOfFieldMode.Gaussian:
-                    throw new System.NotImplementedException("Gaussian DoF mode not implemented");
+            depthOfField.focalLength.overrideState = true;
+            depthOfField.focalLength.value = dofSettings.focalLength;
 
-                case DepthOfFieldMode.Bokeh:
-                    
-                    depthOfField.focusDistance.overrideState = true;
-                    depthOfField.focusDistance.value = targetDistance + dofSettings.focusDistanceOffset;
-
-                    depthOfField.focalLength.overrideState = true;
-                    depthOfField.focalLength.value = dofSettings.focalLength;
-
-                    depthOfField.aperture.overrideState = true;
-                    depthOfField.aperture.value = dofSettings.aperture;
-
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException("Unsupported enum " + depthOfField.mode.value);
-            }
+            depthOfField.aperture.overrideState = true;
+            depthOfField.aperture.value = dofSettings.aperture;
         }
 
         private class DepthOfFieldSettings
@@ -161,13 +141,11 @@ namespace Rowlan.PhotoSession.Urp
             private bool volumeActive;
             private bool depthOfFieldActive;
 
-            private DepthOfFieldModeParameter focusMode;
-
             private FloatParameter focusDistance;
             private FloatParameter focalLength;
             private FloatParameter aperture;
 
-            public DepthOfFieldSettings(Volume volume, DepthOfField depthOfField)
+            public DepthOfFieldSettings(PostProcessVolume volume, DepthOfField depthOfField)
             {
 
                 if (!depthOfField)
@@ -177,16 +155,28 @@ namespace Rowlan.PhotoSession.Urp
 
                 depthOfFieldActive = depthOfField.active; // important: don't use IsActive(), it's something different
 
-                focusMode = new DepthOfFieldModeParameter(depthOfField.mode.value, depthOfField.mode.overrideState);
+				focusDistance = new FloatParameter
+				{
+					value = depthOfField.focusDistance.value,
+					overrideState = depthOfField.focusDistance.overrideState
+				};
 
-                focusDistance = new FloatParameter(depthOfField.focusDistance.value, depthOfField.focusDistance.overrideState);
-                focalLength = new FloatParameter(depthOfField.focalLength.value, depthOfField.focalLength.overrideState);
-                aperture = new FloatParameter(depthOfField.aperture.value, depthOfField.aperture.overrideState);
+				focalLength = new FloatParameter()
+                {
+                    value = depthOfField.focalLength.value,
+                    overrideState = depthOfField.focalLength.overrideState
+                };
+
+                aperture = new FloatParameter()
+                {
+                    value = depthOfField.aperture.value,
+                    overrideState = depthOfField.aperture.overrideState
+                };
 
 
             }
 
-            public void Restore(Volume volume, DepthOfField depthOfField)
+            public void Restore(PostProcessVolume volume, DepthOfField depthOfField)
             {
 
                 if (!depthOfField)
@@ -195,9 +185,6 @@ namespace Rowlan.PhotoSession.Urp
                 volume.gameObject.SetActive( volumeActive);
 
                 depthOfField.active = depthOfFieldActive;
-
-                depthOfField.mode.overrideState = focusMode.overrideState;
-                depthOfField.mode.value = focusMode.value;
 
                 depthOfField.focusDistance.overrideState = focusDistance.overrideState;
                 depthOfField.focusDistance.value = focusDistance.value;

@@ -97,5 +97,11 @@ namespace Rowlan.PhotoSession
 
         #endregion URP
 
+        #region Legacy
+
+        public Legacy.DepthOfFieldSettings legacyDepthOfFieldSettings;
+
+        #endregion Legacy
+
     }
 }

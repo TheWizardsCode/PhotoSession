@@ -23,6 +23,7 @@ namespace Rowlan.PhotoSession
 
         Hdrp.DepthOfFieldModuleEditor hdrpDepthOfFieldModuleEditor = new Hdrp.DepthOfFieldModuleEditor();
         Urp.DepthOfFieldModuleEditor urpDepthOfFieldModuleEditor = new Urp.DepthOfFieldModuleEditor();
+        Legacy.DepthOfFieldModuleEditor legacyDepthOfFieldModuleEditor = new Legacy.DepthOfFieldModuleEditor();
 
         PhotoSession editorTarget;
         PhotoSessionEditor editor;
@@ -47,6 +48,7 @@ namespace Rowlan.PhotoSession
 
         SerializedProperty hdrpDepthOfFieldSettings;
         SerializedProperty urpDepthOfFieldSettings;
+        SerializedProperty legacyDepthOfFieldSettings;
 
         bool disabledComponentsExpanded = true;
 
@@ -85,6 +87,11 @@ namespace Rowlan.PhotoSession
             urpDepthOfFieldModuleEditor.OnEnable(editor, editorTarget);
             urpDepthOfFieldSettings = FindProperty(x => x.settings.urpDepthOfFieldSettings);
             #endregion URP
+
+            #region Legacy
+            legacyDepthOfFieldModuleEditor.OnEnable(editor, editorTarget);
+            legacyDepthOfFieldSettings = FindProperty(x => x.settings.legacyDepthOfFieldSettings);
+            #endregion Legacy
 
         }
 
@@ -230,6 +237,12 @@ namespace Rowlan.PhotoSession
 #if USING_URP
 
             urpDepthOfFieldModuleEditor.OnInspectorGUI();
+
+#endif
+
+#if USING_LEGACY
+
+            legacyDepthOfFieldModuleEditor.OnInspectorGUI();
 
 #endif
 

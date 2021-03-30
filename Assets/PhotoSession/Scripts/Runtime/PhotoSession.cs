@@ -92,6 +92,9 @@ namespace Rowlan.PhotoSession
 #if USING_URP
             modules.Add(new Urp.DepthOfFieldModule());
 #endif
+#if USING_LEGACY
+            modules.Add(new Legacy.DepthOfFieldModule());
+#endif
         }
 
         void PauseGame()

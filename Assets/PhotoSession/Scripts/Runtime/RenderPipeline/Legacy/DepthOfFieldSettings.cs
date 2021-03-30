@@ -3,16 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
 
-#if USING_LEGACY
-using UnityEngine.Rendering.PostProcessing;
-#endif
-
-namespace Rowlan.PhotoSession.Legacy
+namespace Rowlan.PhotoSession.Urp
 {
     [System.Serializable]
     public class DepthOfFieldSettings
     {
-#if USING_LEGACY
+#if USING_URP
         /// <summary>
         /// Whether the feature is enabled or not at runtime
         /// </summary>
@@ -25,7 +21,7 @@ namespace Rowlan.PhotoSession.Legacy
         /// + the gameobject is activated
         /// + the volume's depth of field script of the gameobject's volume is searched and activated.
         /// </summary>
-        public PostProcessVolume volume;
+        public Volume volume;
 
         /// <summary>
         /// The maximum focus distance for the raycast upon which we determine whether to activate the DoF mode or not
