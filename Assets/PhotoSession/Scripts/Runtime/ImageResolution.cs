@@ -13,13 +13,14 @@ namespace Rowlan.PhotoSession
 		public static ImageResolution PresetGame = new ImageResolution(ImageResolutionType.Game, -1, -1);
 		public static ImageResolution Preset1080p = new ImageResolution(ImageResolutionType.Resolution_1080p, 120 * 16, 120 * 9);
 		public static ImageResolution Preset4K = new ImageResolution(ImageResolutionType.Resolution_4K, 120 * 16 * 2, 120 * 9 * 2);
+		public static ImageResolution Preset5K = new ImageResolution(ImageResolutionType.Resolution_5K, 320 * 16, 320 * 9);
 		public static ImageResolution Preset8K = new ImageResolution(ImageResolutionType.Resolution_8K, 120 * 16 * 4, 120 * 9 * 4);
 		public static ImageResolution Preset10K = new ImageResolution(ImageResolutionType.Resolution_10K, 120 * 16 * 5, 120 * 9 * 5);
 		public static ImageResolution Preset12K = new ImageResolution(ImageResolutionType.Resolution_12K, 120 * 16 * 6, 120 * 9 * 6);
 		public static ImageResolution Preset16K = new ImageResolution(ImageResolutionType.Resolution_16K, 120 * 16 * 8, 120 * 9 * 8);
 
 		public static ImageResolution[] imageResolutions = new ImageResolution[] {
-			PresetGame, Preset1080p, Preset4K, Preset8K, Preset10K, Preset12K, Preset16K
+			PresetGame, Preset1080p, Preset4K, Preset5K, Preset8K, Preset10K, Preset12K, Preset16K
 		};
 
 		public enum AspectRatio {
@@ -54,6 +55,9 @@ namespace Rowlan.PhotoSession
 
 			[InspectorName("4K (3840 x 2160)")]
 			Resolution_4K,
+
+			[InspectorName("5K (5120 x 2880)")]
+			Resolution_5K,
 
 			[InspectorName("8K (7680 x 4320)")]
 			Resolution_8K,
