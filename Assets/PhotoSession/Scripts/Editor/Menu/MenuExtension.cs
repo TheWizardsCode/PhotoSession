@@ -7,12 +7,11 @@ namespace Rowlan.PhotoSession
     [ExecuteInEditMode]
     public class MenuExtension : MonoBehaviour
     {
-
         [MenuItem("GameObject/Photo Session/Add Prefab", false, 10)]
         static void AddPrefab(MenuCommand menuCommand)
         {
             // create new gameobject
-            GameObject go = Instantiate( Resources.Load("Prefabs/Photo Session")) as GameObject;
+            GameObject go = Instantiate( Resources.Load( Constants.PhotoSessionPrefabPath)) as GameObject;
 
             // settings
             go.name = "Photo Session";
