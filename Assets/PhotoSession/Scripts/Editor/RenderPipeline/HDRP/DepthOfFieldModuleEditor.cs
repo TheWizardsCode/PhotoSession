@@ -42,6 +42,7 @@ namespace Rowlan.PhotoSession.Hdrp
 
                 if (featureEnabled.boolValue) 
                 { 
+                    EditorGUILayout.HelpBox("The DoF effect is experimental and highly depends on your settings.", MessageType.Warning);
 
                     EditorGUILayout.PropertyField(volume, new GUIContent("Volume", "The volume with the Depth of Field settings"));
 
