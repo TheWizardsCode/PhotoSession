@@ -32,15 +32,19 @@ namespace Rowlan.PhotoSession
         SerializedProperty aspectRatio;
         SerializedProperty photoType;
         SerializedProperty outputFormat;
+
+        SerializedProperty photoCamera;
         SerializedProperty fieldOfViewOverride;
         SerializedProperty fieldOfView;
+
         SerializedProperty toggleKey;
-        SerializedProperty photoCamera;
+
         SerializedProperty movementSpeed;
         SerializedProperty movementSpeedFast;
         SerializedProperty freeLookSensitivity;
         SerializedProperty zoomSensitivity;
         SerializedProperty zoomSensitivityFast;
+
         SerializedProperty pauseTime;
         SerializedProperty reusePreviousCameraTransform;
         SerializedProperty disabledComponents;
@@ -117,6 +121,14 @@ namespace Rowlan.PhotoSession
                 EditorGUILayout.PropertyField(outputFormat, new GUIContent("Output Format"));
                 
                 EditorGUILayout.PropertyField(photoType, new GUIContent("Photo Type"));
+            }
+            GUILayout.EndVertical();
+
+            GUILayout.BeginVertical("box");
+            {
+                EditorGUILayout.LabelField("Camera", GUIStyles.BoxTitleStyle);
+
+                EditorGUILayout.PropertyField(photoCamera, new GUIContent("Photo Camera", "The camera that will be used for the photo session. Usually the main camera"));
 
                 GUILayout.BeginHorizontal();
                 {
@@ -127,7 +139,6 @@ namespace Rowlan.PhotoSession
                     }
                 }
                 GUILayout.EndHorizontal();
-
             }
             GUILayout.EndVertical();
 
@@ -141,9 +152,7 @@ namespace Rowlan.PhotoSession
 
             GUILayout.BeginVertical("box");
             {
-                EditorGUILayout.LabelField("Camera Settings", GUIStyles.BoxTitleStyle);
-
-                EditorGUILayout.PropertyField(photoCamera, new GUIContent("Photo Camera", "The camera that will be used for the photo session. Usually the main camera"));
+                EditorGUILayout.LabelField("Navigation", GUIStyles.BoxTitleStyle);
 
                 EditorGUILayout.PropertyField(movementSpeed, new GUIContent("Movement Speed", "Normal camera movement speed"));
 
@@ -205,13 +214,19 @@ namespace Rowlan.PhotoSession
             }
             GUILayout.EndVertical();
 
-			#region Modules
+            #region Modules
 
-			OnInspectorGUIModules();
+            GUILayout.BeginVertical("box");
+            {
+                EditorGUILayout.LabelField("Effects", GUIStyles.BoxTitleStyle);
 
-			#endregion Modules
+                OnInspectorGUIModules();
+            }
+            GUILayout.EndVertical();
 
-			EditorGUILayout.BeginVertical( "box");
+            #endregion Modules
+
+            EditorGUILayout.BeginVertical( "box");
             {
                 EditorGUILayout.LabelField("Tools", GUIStyles.BoxTitleStyle);
 

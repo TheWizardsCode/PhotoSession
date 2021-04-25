@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using UnityEditor;
 using UnityEngine;
 
 namespace Rowlan.PhotoSession
@@ -37,6 +36,21 @@ namespace Rowlan.PhotoSession
 
         public static Color DefaultBackgroundColor = GUI.backgroundColor;
         public static Color ErrorBackgroundColor = new Color( 1f,0f,0f,0.7f); // red tone
+
+		#region LabelFontStyle
+		private static FontStyle prevLabelFontStyle;
+
+        public static void BeginLabelFontStyle(FontStyle fontStyle) 
+        {
+            prevLabelFontStyle = EditorStyles.label.fontStyle;
+            EditorStyles.label.fontStyle = fontStyle;
+        }
+
+        public static void EndLabelFontStyle()
+        {
+            EditorStyles.label.fontStyle = prevLabelFontStyle;
+        }
+        #endregion LabelFontStyle
 
     }
 }

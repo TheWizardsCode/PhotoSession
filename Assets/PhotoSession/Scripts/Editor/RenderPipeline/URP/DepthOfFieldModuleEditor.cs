@@ -36,9 +36,11 @@ namespace Rowlan.PhotoSession.Urp
 #if USING_URP
             GUILayout.BeginVertical("box");
             {
-                EditorGUILayout.LabelField("Depth of Field", GUIStyles.BoxTitleStyle);
-
-                EditorGUILayout.PropertyField(featureEnabled, new GUIContent("Enabled", ""));
+                GUIStyles.BeginLabelFontStyle(FontStyle.Bold);
+                {
+                    EditorGUILayout.PropertyField(featureEnabled, new GUIContent("Depth of Field", ""));
+                }
+                GUIStyles.EndLabelFontStyle();
 
                 if (featureEnabled.boolValue) 
                 { 
