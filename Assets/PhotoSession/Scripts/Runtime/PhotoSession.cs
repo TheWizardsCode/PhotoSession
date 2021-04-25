@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static Rowlan.PhotoSession.ImageResolution;
 using static Rowlan.PhotoSession.PhotoSessionSettings;
 
 namespace Rowlan.PhotoSession
@@ -82,6 +81,8 @@ namespace Rowlan.PhotoSession
             RegisterModules();
             StartModules();
 
+            // update image settings display
+            UpdateImageSettingsText();
         }
 
         private void RegisterModules() {
@@ -315,6 +316,9 @@ namespace Rowlan.PhotoSession
             }
 
             UpdateModules();
+
+            // TODO: needs only be done on change
+            UpdateImageSettingsText();
         }
 
         /// <summary>
@@ -389,6 +393,18 @@ namespace Rowlan.PhotoSession
 
         void DisableModules() {
             modules.ForEach(x => x.OnDisable());
+        }
+
+        void UpdateImageSettingsText() {
+
+            if (!settings.imageSettingsText)
+                return;
+
+            string resolutionText = settings.resolution.GetEnumAttribute<InspectorNameAttribute>(settings.resolution).displayName;
+            string textString = string.Format("Type: {0}\nFormat: {1}\nResolution: {2}", settings.photoType, settings.outputFormat, resolutionText);
+
+            settings.imageSettingsText.text = textString;
+
         }
 
         /// <summary>

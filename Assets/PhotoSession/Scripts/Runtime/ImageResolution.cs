@@ -2,13 +2,15 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using UnityEngine;
 using static Rowlan.PhotoSession.ImageResolution;
 
 namespace Rowlan.PhotoSession
 {
 	[System.Serializable]
-	public class ImageResolution
+	[AttributeUsage(AttributeTargets.Field)]
+	public class ImageResolution : Attribute
 	{
 		public static ImageResolution PresetGame = new ImageResolution(ImageResolutionType.Game, -1, -1);
 		public static ImageResolution Preset1080p = new ImageResolution(ImageResolutionType.Resolution_1080p, 120 * 16, 120 * 9);
@@ -73,6 +75,7 @@ namespace Rowlan.PhotoSession
 
 		}
 
+
 		public ImageResolutionType Type { get; }
 		public int Width { get; }
 		public int Height { get; }
@@ -117,6 +120,18 @@ namespace Rowlan.PhotoSession
 			Debug.LogError("Resolution not found: " + baseImageResolution);
 
 			return ImageResolution.PresetGame;
+		}
+
+		/// <summary>
+		/// Get an enum's attribute, e. g. <code>InspectorName</code> in order to get the text for the inspector or the UI
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <param name="imageResolutionType"></param>
+		/// <param name="enumValue"></param>
+		/// <returns></returns>
+		public static T GetEnumAttribute<T>(this ImageResolution.ImageResolutionType imageResolutionType, Enum enumValue) where T : Attribute
+		{
+			return enumValue.GetType().GetMember(enumValue.ToString()).First().GetCustomAttribute<T>() as T;
 		}
 
 	}

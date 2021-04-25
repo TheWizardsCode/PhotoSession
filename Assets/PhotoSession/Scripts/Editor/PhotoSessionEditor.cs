@@ -45,6 +45,7 @@ namespace Rowlan.PhotoSession
         SerializedProperty reusePreviousCameraTransform;
         SerializedProperty disabledComponents;
         SerializedProperty canvas;
+        SerializedProperty imageSettingsText;
 
         SerializedProperty hdrpDepthOfFieldSettings;
         SerializedProperty urpDepthOfFieldSettings;
@@ -75,11 +76,12 @@ namespace Rowlan.PhotoSession
             reusePreviousCameraTransform = FindProperty(x => x.settings.reusePreviousCameraTransform);
             disabledComponents = FindProperty(x => x.settings.disabledComponents);
             canvas = FindProperty(x => x.settings.canvas);
+            imageSettingsText = FindProperty(x => x.settings.imageSettingsText);
 
-			// modules            
+            // modules            
 
-			#region HDRP
-			hdrpDepthOfFieldModuleEditor.OnEnable(editor, editorTarget);
+            #region HDRP
+            hdrpDepthOfFieldModuleEditor.OnEnable(editor, editorTarget);
             hdrpDepthOfFieldSettings = FindProperty(x => x.settings.hdrpDepthOfFieldSettings);
             #endregion HDRP
 
@@ -199,6 +201,7 @@ namespace Rowlan.PhotoSession
                 EditorGUILayout.LabelField("User Interface", GUIStyles.BoxTitleStyle);
 
                 EditorGUILayout.PropertyField(canvas, new GUIContent("Canvas", "An optional canvas with a white stretched image. The alpha value of the image will be used to simulate a flash effect. The canvas can be hidden"));
+                EditorGUILayout.PropertyField(imageSettingsText, new GUIContent("Image Settings Text", "An optional Text object which shows the screenshot image information"));
             }
             GUILayout.EndVertical();
 

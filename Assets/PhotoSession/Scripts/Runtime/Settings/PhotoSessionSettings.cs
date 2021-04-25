@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using static Rowlan.PhotoSession.ImageResolution;
 
 namespace Rowlan.PhotoSession
@@ -82,8 +83,11 @@ namespace Rowlan.PhotoSession
 
         // User Interface
 
-        // An optional canvas with a white stretched image. The alpha value of the image will be used to simulate a flash effect. The canvas can be hidden
+        // Optional canvas with a white stretched image. The alpha value of the image will be used to simulate a flash effect. The canvas can be hidden
         public Canvas canvas = null;
+
+        // Optional text for displaying the image settings
+        public Text imageSettingsText = null;
 
         #region HDRP
 
