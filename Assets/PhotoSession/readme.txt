@@ -1,3 +1,7 @@
+Keyboard Shortcuts
+------------------------------------
+G - Iterate through Composition Guides
+
 Contributors & Additional Credits
 ------------------------------------
 * Yolan

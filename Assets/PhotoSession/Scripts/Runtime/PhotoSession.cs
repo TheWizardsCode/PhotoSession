@@ -83,6 +83,9 @@ namespace Rowlan.PhotoSession
 
             // update image settings display
             UpdateImageSettingsText();
+
+            UpdateCompositionGuideOverlay();
+
         }
 
         private void RegisterModules() {
@@ -303,6 +306,19 @@ namespace Rowlan.PhotoSession
                     #endregion Mouse Movement
                 }
 
+                if( Input.GetKeyDown( KeyCode.G)) {
+
+                    settings.compositionGuideIndex++;
+
+                    if (settings.compositionGuideIndex >= settings.compositionGuideCollection.templates.Count)
+                    {
+                        settings.compositionGuideIndex = 0;
+                    }
+
+                    UpdateCompositionGuideOverlay();
+
+                }
+
                 #region Screenshot
 
                 // left mouse button takes screenshots
@@ -407,6 +423,31 @@ namespace Rowlan.PhotoSession
 
         }
 
+        void UpdateCompositionGuideOverlay()
+        {
+            if (!settings.compositionGuideImage)
+                return;
+
+            if (!settings.compositionGuideCollection)
+                return;
+
+            if (settings.compositionGuideIndex >= settings.compositionGuideCollection.templates.Count) {
+				Debug.LogError(string.Format( "Composition guide index out of range: {0} >= {1}", settings.compositionGuideIndex, settings.compositionGuideCollection.templates));
+                return;
+			}
+
+            if (settings.compositionGuideIndex < 0)
+            {
+				Debug.Log("TODO: disable overlay");
+                return;
+            }
+
+            CompositionGuideTemplate template = settings.compositionGuideCollection.templates[settings.compositionGuideIndex];
+
+            settings.compositionGuideImage.sprite = template.sprite;
+            settings.compositionGuideImage.color = template.color;
+
+        }
         /// <summary>
         /// Container for the transform data of the camera
         /// </summary>

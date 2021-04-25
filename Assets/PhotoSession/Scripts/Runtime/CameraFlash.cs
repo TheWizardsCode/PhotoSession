@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,6 +9,7 @@ namespace Rowlan.PhotoSession
     /// <summary>
     /// Simulate a flash light by having a canvas and an image. The alpha value of the image is being faded over time.
     /// </summary>
+    [Serializable]
     public class CameraFlash
     {
         private float flashDuration = 0.5f;

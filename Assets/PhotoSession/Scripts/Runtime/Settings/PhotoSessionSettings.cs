@@ -89,6 +89,21 @@ namespace Rowlan.PhotoSession
         // Optional text for displaying the image settings
         public Text imageSettingsText = null;
 
+        /// <summary>
+        /// The image which will be used for the composition guide overlay
+        /// </summary>
+        public Image compositionGuideImage = null;
+
+        /// <summary>
+        /// The composition guide which should be used as overlay
+        /// </summary>
+        public CompositionGuideCollection compositionGuideCollection = null;
+
+        /// <summary>
+        /// The current template index in the composition guide collection
+        /// </summary>
+        public int compositionGuideIndex = 0;
+
         #region HDRP
 
         public Hdrp.DepthOfFieldSettings hdrpDepthOfFieldSettings;

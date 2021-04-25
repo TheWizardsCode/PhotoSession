@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
-using UnityEditorInternal;
 using UnityEngine;
 using static Rowlan.PhotoSession.ImageResolution;
 
@@ -50,6 +49,9 @@ namespace Rowlan.PhotoSession
         SerializedProperty disabledComponents;
         SerializedProperty canvas;
         SerializedProperty imageSettingsText;
+        SerializedProperty compositionGuideImage;
+        SerializedProperty compositionGuideCollection;
+        SerializedProperty compositionGuideIndex;
 
         SerializedProperty hdrpDepthOfFieldSettings;
         SerializedProperty urpDepthOfFieldSettings;
@@ -81,6 +83,10 @@ namespace Rowlan.PhotoSession
             disabledComponents = FindProperty(x => x.settings.disabledComponents);
             canvas = FindProperty(x => x.settings.canvas);
             imageSettingsText = FindProperty(x => x.settings.imageSettingsText);
+
+            compositionGuideImage = FindProperty(x => x.settings.compositionGuideImage);
+            compositionGuideCollection = FindProperty(x => x.settings.compositionGuideCollection);
+            compositionGuideIndex = FindProperty(x => x.settings.compositionGuideIndex);
 
             // modules            
 
@@ -211,6 +217,11 @@ namespace Rowlan.PhotoSession
 
                 EditorGUILayout.PropertyField(canvas, new GUIContent("Canvas", "An optional canvas with a white stretched image. The alpha value of the image will be used to simulate a flash effect. The canvas can be hidden"));
                 EditorGUILayout.PropertyField(imageSettingsText, new GUIContent("Image Settings Text", "An optional Text object which shows the screenshot image information"));
+
+                EditorGUILayout.PropertyField(compositionGuideImage, new GUIContent("Composition Guide Image", "The image which will be used for the composition guide overlay"));
+                EditorGUILayout.PropertyField(compositionGuideCollection, new GUIContent("Composition Guide Collection", "A collection of composition guides which can be used as overlay"));
+                EditorGUILayout.PropertyField(compositionGuideIndex, new GUIContent("Composition Guide Index", "The currently used composition guide of the collection"));
+                
             }
             GUILayout.EndVertical();
 
