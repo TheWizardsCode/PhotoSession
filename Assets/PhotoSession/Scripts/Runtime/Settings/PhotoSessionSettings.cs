@@ -86,6 +86,16 @@ namespace Rowlan.PhotoSession
         // Optional canvas with a white stretched image. The alpha value of the image will be used to simulate a flash effect. The canvas can be hidden
         public Canvas canvas = null;
 
+        /// <summary>
+        /// The flash image which is used to simulate a flash when a photo is taken
+        /// </summary>
+        public Image flashImage;
+
+        /// <summary>
+        /// The display of the photo session camera. Contains e. g. focus rectangles and settings text
+        /// </summary>
+        public Image displayImage;
+
         // Optional text for displaying the image settings
         public Text imageSettingsText = null;
 

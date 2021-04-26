@@ -14,22 +14,16 @@ namespace Rowlan.PhotoSession
     {
         private float flashDuration = 0.5f;
 
-        private Canvas canvas = null;
         private Image flashImage = null;
 
         private Coroutine flashCoroutine = null;
 
         public bool IsPlaying { get; set; }
 
-        public CameraFlash( Canvas canvas) {
+        public CameraFlash( Image flashImage) {
 
-            this.canvas = canvas;
+            this.flashImage = flashImage;
 
-            if (canvas)
-            {
-                this.flashImage = canvas.GetComponentInChildren<Image>();
-            }
-            
         }
 
         public void StartCameraFlash( MonoBehaviour monoBehaviour)

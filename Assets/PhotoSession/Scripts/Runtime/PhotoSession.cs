@@ -76,7 +76,7 @@ namespace Rowlan.PhotoSession
 
         void Start()
         {
-            cameraFlash = new CameraFlash(settings.canvas);
+            cameraFlash = new CameraFlash(settings.flashImage);
 
             RegisterModules();
             StartModules();

@@ -48,6 +48,8 @@ namespace Rowlan.PhotoSession
         SerializedProperty reusePreviousCameraTransform;
         SerializedProperty disabledComponents;
         SerializedProperty canvas;
+        SerializedProperty flashImage;
+        SerializedProperty displayImage;
         SerializedProperty imageSettingsText;
         SerializedProperty compositionGuideImage;
         SerializedProperty compositionGuideCollection;
@@ -82,6 +84,8 @@ namespace Rowlan.PhotoSession
             reusePreviousCameraTransform = FindProperty(x => x.settings.reusePreviousCameraTransform);
             disabledComponents = FindProperty(x => x.settings.disabledComponents);
             canvas = FindProperty(x => x.settings.canvas);
+            flashImage = FindProperty(x => x.settings.flashImage);
+            displayImage = FindProperty(x => x.settings.displayImage);
             imageSettingsText = FindProperty(x => x.settings.imageSettingsText);
 
             compositionGuideImage = FindProperty(x => x.settings.compositionGuideImage);
@@ -148,6 +152,20 @@ namespace Rowlan.PhotoSession
             }
             GUILayout.EndVertical();
 
+
+            #region Modules
+
+            GUILayout.BeginVertical("box");
+            {
+                EditorGUILayout.LabelField("Effects", GUIStyles.BoxTitleStyle);
+
+                OnInspectorGUIModules();
+            }
+            GUILayout.EndVertical();
+
+            #endregion Modules
+
+
             GUILayout.BeginVertical("box");
             {
                 EditorGUILayout.LabelField("Input", GUIStyles.BoxTitleStyle);
@@ -192,12 +210,36 @@ namespace Rowlan.PhotoSession
 
             GUILayout.BeginVertical("box");
             {
+                EditorGUILayout.LabelField("User Interface", GUIStyles.BoxTitleStyle);
+
+                EditorGUILayout.PropertyField(canvas, new GUIContent("Canvas", "An optional canvas with a white stretched image. The alpha value of the image will be used to simulate a flash effect. The canvas can be hidden"));
+
+                EditorGUILayout.PropertyField(flashImage, new GUIContent("Flash Image", "The flash image which is used to simulate a flash when a photo is taken"));
+
+                EditorGUILayout.LabelField("Display");
+                EditorGUI.indentLevel++;
+                EditorGUILayout.PropertyField(displayImage, new GUIContent("Image", "The display of the photo session camera. Contains e. g. focus rectangles and settings text"));
+                EditorGUILayout.PropertyField(imageSettingsText, new GUIContent("Image Settings Text", "An optional Text object which shows the screenshot image information"));
+                EditorGUI.indentLevel--;
+
+                EditorGUILayout.LabelField("Composition Guide");
+                EditorGUI.indentLevel++;
+                EditorGUILayout.PropertyField(compositionGuideImage, new GUIContent("Image", "The image which will be used for the composition guide overlay"));
+                EditorGUILayout.PropertyField(compositionGuideCollection, new GUIContent("Collection", "A collection of composition guides which can be used as overlay"));
+                EditorGUILayout.PropertyField(compositionGuideIndex, new GUIContent("Index", "The currently used composition guide of the collection"));
+                EditorGUI.indentLevel--;
+
+            }
+            GUILayout.EndVertical();
+
+            GUILayout.BeginVertical("box");
+            {
                 EditorGUILayout.LabelField("GameObject Modification", GUIStyles.BoxTitleStyle);
 
                 // TODO: find out how to use Unity's internal mechanism for arrays
                 // EditorGUILayout.PropertyField(disabledComponents, new GUIContent("Disabled Components", "Objects(e.g.Scripts) which should be disabled when photo mode is activated"));
 
-                disabledComponentsExpanded = EditorGUILayout.Foldout(disabledComponentsExpanded, new GUIContent( "Disabled Components"), true);
+                disabledComponentsExpanded = EditorGUILayout.Foldout(disabledComponentsExpanded, new GUIContent("Disabled Components"), true);
                 if (disabledComponentsExpanded)
                 {
                     disabledComponents.arraySize = EditorGUILayout.IntField("Size", disabledComponents.arraySize);
@@ -210,32 +252,6 @@ namespace Rowlan.PhotoSession
                 }
             }
             GUILayout.EndVertical();
-
-            GUILayout.BeginVertical("box");
-            {
-                EditorGUILayout.LabelField("User Interface", GUIStyles.BoxTitleStyle);
-
-                EditorGUILayout.PropertyField(canvas, new GUIContent("Canvas", "An optional canvas with a white stretched image. The alpha value of the image will be used to simulate a flash effect. The canvas can be hidden"));
-                EditorGUILayout.PropertyField(imageSettingsText, new GUIContent("Image Settings Text", "An optional Text object which shows the screenshot image information"));
-
-                EditorGUILayout.PropertyField(compositionGuideImage, new GUIContent("Composition Guide Image", "The image which will be used for the composition guide overlay"));
-                EditorGUILayout.PropertyField(compositionGuideCollection, new GUIContent("Composition Guide Collection", "A collection of composition guides which can be used as overlay"));
-                EditorGUILayout.PropertyField(compositionGuideIndex, new GUIContent("Composition Guide Index", "The currently used composition guide of the collection"));
-                
-            }
-            GUILayout.EndVertical();
-
-            #region Modules
-
-            GUILayout.BeginVertical("box");
-            {
-                EditorGUILayout.LabelField("Effects", GUIStyles.BoxTitleStyle);
-
-                OnInspectorGUIModules();
-            }
-            GUILayout.EndVertical();
-
-            #endregion Modules
 
             EditorGUILayout.BeginVertical( "box");
             {
