@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5133240757325394337}
   - component: {fileID: 5133240757325394336}
   m_Layer: 0
-  m_Name: Photo Session 1
+  m_Name: Photo Session
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -257,7 +257,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &5133240758037012616
 RectTransform:
   m_ObjectHideFlags: 0
