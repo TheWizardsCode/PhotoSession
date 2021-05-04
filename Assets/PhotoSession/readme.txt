@@ -12,3 +12,10 @@ Known Issues
   looks like a bug in combination with Camera.Render(), you can briefly see the flicker even when you start play mode.
   cause: Exposure set to Automatic
   workaround: set Exposure to Fixed
+
+Ideas & TODO
+------------------------------------
+* focus:
+	+ multiple focus points, not only center
+	+ focus point via mouse
+	+ lock focus on target
