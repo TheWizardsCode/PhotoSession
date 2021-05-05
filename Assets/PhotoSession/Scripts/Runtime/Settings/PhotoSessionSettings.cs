@@ -27,6 +27,24 @@ namespace Rowlan.PhotoSession
             Mono360
         }
 
+        public enum AutoFocusMode
+        {
+            /// <summary>
+            /// No distance calculation
+            /// </summary>
+            Off,
+
+            /// <summary>
+            /// A single ray in the center of the camera
+            /// </summary>
+            Center,
+
+            /// <summary>
+            /// Multiple rays from the center of the camera
+            /// </summary>
+            Auto_16_9
+		}
+
         // Image
 
         public ImageResolutionType resolution = ImageResolutionType.Game;
@@ -113,6 +131,16 @@ namespace Rowlan.PhotoSession
         /// The current template index in the composition guide collection
         /// </summary>
         public int compositionGuideIndex = 0;
+
+        /// <summary>
+        /// The focus mode to be used e. g. for detecting the distance for the DoF effect
+        /// </summary>
+        public AutoFocusMode autoFocusMode = AutoFocusMode.Center;
+
+        /// <summary>
+        /// The image on which the focus rectangle will be painted
+        /// </summary>
+        public Image autoFocusImage = null;
 
         #region HDRP
 

@@ -319,6 +319,23 @@ namespace Rowlan.PhotoSession
 
                 }
 
+                if (Input.GetKeyDown(KeyCode.H))
+                {
+
+                    // iterate through the AutoFocusMode enum items
+                    settings.autoFocusMode++;
+
+                    int enumSize = System.Enum.GetNames(typeof(AutoFocusMode)).Length;
+                    if ((int)settings.autoFocusMode >= enumSize)
+                    {
+                        settings.autoFocusMode = 0;
+                    }
+
+
+                    UpdateFocusOverlay();
+
+                }
+
                 #region Screenshot
 
                 // left mouse button takes screenshots
@@ -448,6 +465,18 @@ namespace Rowlan.PhotoSession
             settings.compositionGuideImage.color = template.color;
 
         }
+
+        // TODO:
+        // + consider focus modes
+        void UpdateFocusOverlay()
+        {
+            if (!settings.autoFocusImage)
+                return;
+
+            bool active = settings.autoFocusMode != AutoFocusMode.Off;
+            settings.autoFocusImage.gameObject.SetActive(active);
+		}
+
         /// <summary>
         /// Container for the transform data of the camera
         /// </summary>

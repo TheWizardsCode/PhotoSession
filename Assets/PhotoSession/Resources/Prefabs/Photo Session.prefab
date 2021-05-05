@@ -1,5 +1,98 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2251255809676911311
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7102855877805181270}
+  - component: {fileID: 2308075359535199578}
+  - component: {fileID: 9097439815315925736}
+  - component: {fileID: 378171960202495811}
+  m_Layer: 5
+  m_Name: AutoFocus
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &7102855877805181270
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2251255809676911311}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 5710751466826412918}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &2308075359535199578
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2251255809676911311}
+  m_CullTransparentMesh: 1
+--- !u!114 &9097439815315925736
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2251255809676911311}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 2100000, guid: f53ed208a1fe7a04a92eb3a0834c3656, type: 2}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!114 &378171960202495811
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2251255809676911311}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58b8a6244df61f747a8b5bdd6ec38327, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skipBounds: 1
+  focusRaysX: 4
+  focusRaysY: 3
+  maxHitDistance: 3
+  material: {fileID: 2100000, guid: f53ed208a1fe7a04a92eb3a0834c3656, type: 2}
 --- !u!1 &5710751465943137261
 GameObject:
   m_ObjectHideFlags: 0
@@ -333,13 +426,15 @@ MonoBehaviour:
     compositionGuideImage: {fileID: 5710751467348297093}
     compositionGuideCollection: {fileID: 11400000, guid: f41f980f093ad6445b3e1807b49e1994, type: 2}
     compositionGuideIndex: 0
-    legacyDepthOfFieldSettings:
+    autoFocusMode: 1
+    autoFocusImage: {fileID: 9097439815315925736}
+    hdrpDepthOfFieldSettings:
       featureEnabled: 0
       volume: {fileID: 0}
       maxFocusDistance: 10
-      focusDistanceOffset: -1
-      focalLength: 50
-      aperture: 5.6
+      hitDistanceNearFocusEndOffset: -0.5
+      hitDistanceFarFocusStartOffset: 1
+      hitDistanceFarFocusEndOffset: 10
 --- !u!1 &5710751466826412919
 GameObject:
   m_ObjectHideFlags: 0
@@ -370,6 +465,7 @@ RectTransform:
   - {fileID: 5710751466897582921}
   - {fileID: 5710751467348297095}
   - {fileID: 5710751467450264690}
+  - {fileID: 7102855877805181270}
   m_Father: {fileID: 5710751465943137265}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

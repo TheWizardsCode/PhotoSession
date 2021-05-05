@@ -55,6 +55,9 @@ namespace Rowlan.PhotoSession
         SerializedProperty compositionGuideCollection;
         SerializedProperty compositionGuideIndex;
 
+        SerializedProperty autoFocusMode;
+        SerializedProperty autoFocusImage;
+
         SerializedProperty hdrpDepthOfFieldSettings;
         SerializedProperty urpDepthOfFieldSettings;
         SerializedProperty legacyDepthOfFieldSettings;
@@ -91,6 +94,9 @@ namespace Rowlan.PhotoSession
             compositionGuideImage = FindProperty(x => x.settings.compositionGuideImage);
             compositionGuideCollection = FindProperty(x => x.settings.compositionGuideCollection);
             compositionGuideIndex = FindProperty(x => x.settings.compositionGuideIndex);
+
+            autoFocusMode = FindProperty(x => x.settings.autoFocusMode);
+            autoFocusImage = FindProperty(x => x.settings.autoFocusImage);
 
             // modules            
 
@@ -227,6 +233,12 @@ namespace Rowlan.PhotoSession
                 EditorGUILayout.PropertyField(compositionGuideImage, new GUIContent("Image", "The image which will be used for the composition guide overlay"));
                 EditorGUILayout.PropertyField(compositionGuideCollection, new GUIContent("Collection", "A collection of composition guides which can be used as overlay"));
                 EditorGUILayout.PropertyField(compositionGuideIndex, new GUIContent("Index", "The currently used composition guide of the collection"));
+                EditorGUI.indentLevel--;
+
+                EditorGUILayout.LabelField("Auto Focus");
+                EditorGUI.indentLevel++;
+                EditorGUILayout.PropertyField(autoFocusImage, new GUIContent("Image", "The image which will be used for the auto focus overlay"));
+                EditorGUILayout.PropertyField(autoFocusMode, new GUIContent("Mode", "The auto focus mode used among others for the overlay image"));
                 EditorGUI.indentLevel--;
 
             }

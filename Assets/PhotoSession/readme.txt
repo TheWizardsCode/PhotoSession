@@ -1,6 +1,7 @@
 Keyboard Shortcuts
 ------------------------------------
 G - Iterate through Composition Guides
+H - Iterate through the Auto Focus items
 
 Contributors & Additional Credits
 ------------------------------------
@@ -16,6 +17,6 @@ Known Issues
 Ideas & TODO
 ------------------------------------
 * focus:
-	+ multiple focus points, not only center
+	+ implement the number of rays logic
 	+ focus point via mouse
 	+ lock focus on target
