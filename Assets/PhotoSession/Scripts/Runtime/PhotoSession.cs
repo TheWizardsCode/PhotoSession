@@ -323,12 +323,12 @@ namespace Rowlan.PhotoSession
                 {
 
                     // iterate through the AutoFocusMode enum items
-                    settings.autoFocusMode++;
+                    settings.autoFocus.mode++;
 
-                    int enumSize = System.Enum.GetNames(typeof(AutoFocusMode)).Length;
-                    if ((int)settings.autoFocusMode >= enumSize)
+                    int enumSize = System.Enum.GetNames(typeof(AutoFocusSettings.Mode)).Length;
+                    if ((int)settings.autoFocus.mode >= enumSize)
                     {
-                        settings.autoFocusMode = 0;
+                        settings.autoFocus.mode = 0;
                     }
 
 
@@ -470,11 +470,11 @@ namespace Rowlan.PhotoSession
         // + consider focus modes
         void UpdateFocusOverlay()
         {
-            if (!settings.autoFocusImage)
+            if (!settings.autoFocus.image)
                 return;
 
-            bool active = settings.autoFocusMode != AutoFocusMode.Off;
-            settings.autoFocusImage.gameObject.SetActive(active);
+            bool active = settings.autoFocus.mode != AutoFocusSettings.Mode.Off;
+            settings.autoFocus.image.gameObject.SetActive(active);
 		}
 
         /// <summary>

@@ -95,8 +95,8 @@ namespace Rowlan.PhotoSession
             compositionGuideCollection = FindProperty(x => x.settings.compositionGuideCollection);
             compositionGuideIndex = FindProperty(x => x.settings.compositionGuideIndex);
 
-            autoFocusMode = FindProperty(x => x.settings.autoFocusMode);
-            autoFocusImage = FindProperty(x => x.settings.autoFocusImage);
+            autoFocusMode = FindProperty(x => x.settings.autoFocus.mode);
+            autoFocusImage = FindProperty(x => x.settings.autoFocus.image);
 
             // modules            
 

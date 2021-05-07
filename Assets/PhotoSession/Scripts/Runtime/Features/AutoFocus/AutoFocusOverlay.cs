@@ -4,10 +4,16 @@ using UnityEngine;
 
 namespace Rowlan.PhotoSession
 {
-    public class AutoFocus : MonoBehaviour
+    public class AutoFocusOverlay : MonoBehaviour
     {
+        /// <summary>
+        /// The maximum array size of position and distance in the shader
+        /// </summary>
         private readonly int maxArrayLength = 144;
 
+        /// <summary>
+        /// Whether the camera bounds are considered for raycast coordinates or not. Ususally you don't want them since the data there is rather irrelevant.
+        /// </summary>
         public bool skipBounds = true;
 
         // shader has 144 predefined for the array, so max is 16x9=144
@@ -28,7 +34,15 @@ namespace Rowlan.PhotoSession
         /// </summary>
         public Material material;
 
-        List<Vector3> focusScreenPoints = new List<Vector3>();
+        /// <summary>
+        /// Visualize raycast as gizmo
+        /// </summary>
+        public bool debug = false;
+
+        /// <summary>
+        /// The output data which result from the autofocus raycasts and calculations
+        /// </summary>
+        private AutoFocusOutput autoFocusOutput = new AutoFocusOutput();
 
         void Start()
         {
@@ -42,12 +56,12 @@ namespace Rowlan.PhotoSession
 
         void Update()
         {
-            CreateFocusPoints();
+            UpdateOutputData( this.autoFocusOutput);
 
-            int arrayLength = focusScreenPoints.Count;
-            float[] positionX = focusScreenPoints.ConvertAll<float>(x => x.x).ToArray();
-            float[] positionY = focusScreenPoints.ConvertAll<float>(x => x.y).ToArray();
-            float[] distance = focusScreenPoints.ConvertAll<float>(x => x.z).ToArray();
+            int arrayLength = this.autoFocusOutput.screenPoints.Count;
+            float[] positionX = this.autoFocusOutput.screenPoints.ConvertAll<float>(x => x.x).ToArray();
+            float[] positionY = this.autoFocusOutput.screenPoints.ConvertAll<float>(x => x.y).ToArray();
+            float[] distance = this.autoFocusOutput.screenPoints.ConvertAll<float>(x => x.z).ToArray();
 
             material.SetInt("_ArrayLength", arrayLength);
             material.SetFloatArray("_PositionX", positionX);
@@ -57,9 +71,13 @@ namespace Rowlan.PhotoSession
 
         }
 
-        void CreateFocusPoints()
+        /// <summary>
+        /// Calculate the screen and focus points, distance, etc
+        /// </summary>
+        /// <param name="data"></param>
+        void UpdateOutputData(AutoFocusOutput data)
         {
-            focusScreenPoints.Clear();
+            data.Reset();
 
             int xRays = focusRaysX;
             int yRays = focusRaysY;
@@ -96,7 +114,10 @@ namespace Rowlan.PhotoSession
                     Vector3 screenPoint = new Vector3(x, y, 0);
                     Ray ray = Camera.main.ScreenPointToRay(screenPoint);
 
-                    Debug.DrawRay(ray.origin, ray.direction * 50, UnityEngine.Color.yellow);
+                    if( debug)
+                    {
+                        Debug.DrawRay(ray.origin, ray.direction * 50, UnityEngine.Color.yellow);
+                    }
 
                     Vector3 focusScreenPoint = new Vector3(x, y, -1);
 
@@ -108,11 +129,15 @@ namespace Rowlan.PhotoSession
                         Vector3 focusHitPoint = new Vector3(vpp.x, vpp.y, distance);
                         */
                         focusScreenPoint.z = distance;
+
+                        data.hasTarget = true;
                     }
 
-                    focusScreenPoints.Add(focusScreenPoint);
+                    data.screenPoints.Add(focusScreenPoint);
                 }
             }
+            
+            data.Calculate();
         }
     }
 }
