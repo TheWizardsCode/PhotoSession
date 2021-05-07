@@ -25,6 +25,7 @@ namespace Rowlan.PhotoSession.Hdrp
 
         private Ray ray;
         private RaycastHit hit;
+        private bool hasTarget;
         private float hitDistance;
 #endif
 
@@ -93,7 +94,7 @@ namespace Rowlan.PhotoSession.Hdrp
             Hdrp.DepthOfFieldSettings dofSettings = photoSession.settings.hdrpDepthOfFieldSettings;
 
             ray = new Ray(photoSession.settings.photoCamera.transform.position, photoSession.settings.photoCamera.transform.forward * dofSettings.maxFocusDistance);
-            bool hasTarget = Physics.Raycast(ray, out hit, dofSettings.maxFocusDistance);
+            hasTarget = Physics.Raycast(ray, out hit, dofSettings.maxFocusDistance);
             if (hasTarget)
             {
                 hitDistance = Vector3.Distance(photoSession.settings.photoCamera.transform.position, hit.point);

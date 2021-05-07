@@ -8,7 +8,7 @@ namespace Rowlan.PhotoSession
     /// <summary>
     /// The output data which result from the autofocus raycasts and calculations
     /// </summary>
-    public class AutoFocusOutput
+    public class AutoFocusData
     {
         /// <summary>
         /// Whether a hit target was found or not
@@ -30,6 +30,11 @@ namespace Rowlan.PhotoSession
         /// The maximum focus distance if <see cref="hasTarget"/> is true, -1 otherwise
         /// </summary>
         public float maxDistance = -1;
+
+        /// <summary>
+        /// The maximum ray length is used to calculate the opacity of the focus hit rectangles.
+        /// </summary>
+        public float maxRayLength = 3;
 
         /// <summary>
         /// Reset the data to their default values
