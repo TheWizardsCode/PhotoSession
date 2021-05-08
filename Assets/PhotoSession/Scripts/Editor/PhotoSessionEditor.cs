@@ -41,6 +41,7 @@ namespace Rowlan.PhotoSession
         SerializedProperty flashImage;
         SerializedProperty displayImage;
         SerializedProperty imageSettingsText;
+        SerializedProperty autoFocusText;
         SerializedProperty compositionGuideImage;
         SerializedProperty compositionGuideCollection;
         SerializedProperty compositionGuideIndex;
@@ -82,6 +83,7 @@ namespace Rowlan.PhotoSession
             flashImage = FindProperty(x => x.settings.flashImage);
             displayImage = FindProperty(x => x.settings.displayImage);
             imageSettingsText = FindProperty(x => x.settings.imageSettingsText);
+            autoFocusText = FindProperty(x => x.settings.autoFocusText);
 
             compositionGuideImage = FindProperty(x => x.settings.compositionGuideImage);
             compositionGuideCollection = FindProperty(x => x.settings.compositionGuideCollection);
@@ -227,6 +229,7 @@ namespace Rowlan.PhotoSession
                 EditorGUI.indentLevel++;
                 EditorGUILayout.PropertyField(displayImage, new GUIContent("Image", "The display of the photo session camera. Contains e. g. focus rectangles and settings text"));
                 EditorGUILayout.PropertyField(imageSettingsText, new GUIContent("Image Settings Text", "An optional Text object which shows the screenshot image information"));
+                EditorGUILayout.PropertyField(autoFocusText, new GUIContent("Auto Focus Text", "An optional Text object which shows auto focus information"));
                 EditorGUI.indentLevel--;
 
                 EditorGUILayout.LabelField("Composition Guide");

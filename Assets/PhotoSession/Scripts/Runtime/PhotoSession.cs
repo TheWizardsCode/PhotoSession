@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using UnityEngine;
 using static Rowlan.PhotoSession.PhotoSessionSettings;
 
@@ -72,6 +73,8 @@ namespace Rowlan.PhotoSession
         public AutoFocusInput autoFocusInput = new AutoFocusInput();
         public AutoFocusData autoFocusData = new AutoFocusData();
 
+        private NumberFormatInfo numberFormatInfo = new CultureInfo("en-US", false).NumberFormat;
+
         void Awake()
         {
             screenshot.SetupPath();
@@ -85,10 +88,7 @@ namespace Rowlan.PhotoSession
             StartModules();
 
             UpdateAutoFocusSetup();
-
-            // update image settings display
-            UpdateImageSettingsText();
-
+            UpdateTextComponents();
             UpdateCompositionGuideOverlay();
 
         }
@@ -364,8 +364,7 @@ namespace Rowlan.PhotoSession
 
             UpdateModules();
 
-            // TODO: needs only be done on change
-            UpdateImageSettingsText();
+            UpdateTextComponents();
         }
 
         /// <summary>
@@ -442,7 +441,13 @@ namespace Rowlan.PhotoSession
             modules.ForEach(x => x.OnDisable());
         }
 
-        void UpdateImageSettingsText() {
+        private void UpdateTextComponents()
+        {
+            UpdateImageSettingsText();
+            UpdateAutoFocusText();
+        }
+
+        private void UpdateImageSettingsText() {
 
             if (!settings.imageSettingsText)
                 return;
@@ -451,6 +456,22 @@ namespace Rowlan.PhotoSession
             string textString = string.Format("Type: {0}\nFormat: {1}\nResolution: {2}", settings.photoType, settings.outputFormat, resolutionText);
 
             settings.imageSettingsText.text = textString;
+
+        }
+
+        private void UpdateAutoFocusText()
+        {
+
+            if (!settings.autoFocusText)
+                return;
+
+            string modeText = settings.resolution.GetEnumAttribute<InspectorNameAttribute>(settings.autoFocus.mode).displayName;
+            string maxRayLengthText = autoFocusData.maxRayLength.ToString( "F2", numberFormatInfo);
+            string minDistanceText = autoFocusData.IsTargetInRange() ? autoFocusData.minDistance.ToString("F2", numberFormatInfo) : "-";
+
+            string textString = string.Format("Auto Focus: {0}\nMax Ray Length: {1}\nMin Distance: {2}", modeText, maxRayLengthText, minDistanceText);
+
+            settings.autoFocusText.text = textString;
 
         }
 

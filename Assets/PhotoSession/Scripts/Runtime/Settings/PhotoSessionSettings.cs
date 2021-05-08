@@ -101,6 +101,9 @@ namespace Rowlan.PhotoSession
         // Optional text for displaying the image settings
         public Text imageSettingsText = null;
 
+        // Optional text for displaying auto focus data
+        public Text autoFocusText = null;
+
         /// <summary>
         /// The image which will be used for the composition guide overlay
         /// </summary>

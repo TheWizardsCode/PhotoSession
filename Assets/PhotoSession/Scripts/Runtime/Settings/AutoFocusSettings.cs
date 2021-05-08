@@ -2,7 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
+using System.Reflection;
+using System.Linq;
 
 namespace Rowlan.PhotoSession
 {
@@ -74,6 +75,18 @@ namespace Rowlan.PhotoSession
                 case AutoFocusSettings.Mode.Auto_16_9: return AutoFocusSettings.PresetModeAuto_16_9;
                 default: throw new ArgumentException("Autofocus mode not defined: " + mode);
             }
+        }
+
+        /// <summary>
+        /// Get an enum's attribute, e. g. <code>InspectorName</code> in order to get the text for the inspector or the UI
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="mode"></param>
+        /// <param name="enumValue"></param>
+        /// <returns></returns>
+        public static T GetEnumAttribute<T>(this AutoFocusSettings.Mode mode, Enum enumValue) where T : Attribute
+        {
+            return enumValue.GetType().GetMember(enumValue.ToString()).First().GetCustomAttribute<T>() as T;
         }
     }
 }
