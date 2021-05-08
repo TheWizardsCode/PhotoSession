@@ -65,13 +65,17 @@ namespace Rowlan.PhotoSession
             float dx = w / xRays;
             float dy = h / yRays;
 
-            for (float x = 0; x <= w; x += dx)
+            for (int xr = 0; xr <= xRays; xr++)
             {
+                float x = xr * dx;
+
                 if (input.skipBounds && (x <= 0 || x >= w))
                     continue;
 
-                for (float y = 0; y <= h; y += dy)
+                for (int yr = 0; yr <= yRays; yr++)
                 {
+                    float y = yr * dy;
+
                     if (input.skipBounds && (y <= 0 || y >= h))
                         continue;
 
