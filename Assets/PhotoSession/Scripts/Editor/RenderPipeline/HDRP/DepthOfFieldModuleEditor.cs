@@ -12,7 +12,6 @@ namespace Rowlan.PhotoSession.Hdrp
 
         private SerializedProperty featureEnabled;
         private SerializedProperty volume;
-        private SerializedProperty maxFocusDistance;
         private SerializedProperty hitDistanceNearFocusEndOffset;
         private SerializedProperty hitDistanceFarFocusStartOffset;
         private SerializedProperty hitDistanceFarFocusEndOffset;
@@ -24,7 +23,6 @@ namespace Rowlan.PhotoSession.Hdrp
 
             featureEnabled = editor.FindProperty(x => x.settings.hdrpDepthOfFieldSettings.featureEnabled);
             volume = editor.FindProperty(x => x.settings.hdrpDepthOfFieldSettings.volume);
-            maxFocusDistance = editor.FindProperty(x => x.settings.hdrpDepthOfFieldSettings.maxFocusDistance);
             hitDistanceNearFocusEndOffset = editor.FindProperty(x => x.settings.hdrpDepthOfFieldSettings.hitDistanceNearFocusEndOffset);
             hitDistanceFarFocusStartOffset = editor.FindProperty(x => x.settings.hdrpDepthOfFieldSettings.hitDistanceFarFocusStartOffset);
             hitDistanceFarFocusEndOffset = editor.FindProperty(x => x.settings.hdrpDepthOfFieldSettings.hitDistanceFarFocusEndOffset);
@@ -51,7 +49,6 @@ namespace Rowlan.PhotoSession.Hdrp
                     EditorGUILayout.LabelField("Hit Target");
                     EditorGUI.indentLevel++;
                     {
-                        EditorGUILayout.PropertyField(maxFocusDistance, new GUIContent("Max Focus Distance", ""));
                         EditorGUILayout.PropertyField(hitDistanceNearFocusEndOffset, new GUIContent("Near Focus End Offset", ""));
                         EditorGUILayout.PropertyField(hitDistanceFarFocusStartOffset, new GUIContent("Far Focus Start Offset", ""));
                         EditorGUILayout.PropertyField(hitDistanceFarFocusEndOffset, new GUIContent("Far Focus End Offset", ""));

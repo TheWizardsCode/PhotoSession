@@ -56,6 +56,7 @@ namespace Rowlan.PhotoSession
         SerializedProperty compositionGuideIndex;
 
         SerializedProperty autoFocusMode;
+        SerializedProperty autoFocusMaxRayLength;
         SerializedProperty autoFocusOverlayVisible;
         SerializedProperty autoFocusOverlay;
 
@@ -97,6 +98,7 @@ namespace Rowlan.PhotoSession
             compositionGuideIndex = FindProperty(x => x.settings.compositionGuideIndex);
 
             autoFocusMode = FindProperty(x => x.settings.autoFocus.mode);
+            autoFocusMaxRayLength = FindProperty(x => x.settings.autoFocus.maxRayLength);
             autoFocusOverlayVisible = FindProperty(x => x.settings.autoFocus.overlayVisible);
             autoFocusOverlay = FindProperty(x => x.settings.autoFocus.overlay);
 
@@ -158,7 +160,12 @@ namespace Rowlan.PhotoSession
                 }
                 GUILayout.EndHorizontal();
 
-                EditorGUILayout.PropertyField(autoFocusMode, new GUIContent("Auto Focus Mode", "The auto focus mode used e. g. for the Depth of Field effect"));
+                EditorGUILayout.LabelField("Auto Focus");
+                EditorGUI.indentLevel++;
+                EditorGUILayout.PropertyField(autoFocusMode, new GUIContent("Mode", "The auto focus mode used e. g. for the Depth of Field effect"));
+                EditorGUILayout.PropertyField(autoFocusMaxRayLength, new GUIContent("Max Ray Length", "The maximum raycast length for focus calculation"));
+                EditorGUI.indentLevel--;
+
             }
             GUILayout.EndVertical();
 

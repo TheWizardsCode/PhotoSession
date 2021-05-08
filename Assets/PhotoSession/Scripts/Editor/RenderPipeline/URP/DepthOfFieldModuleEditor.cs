@@ -12,7 +12,6 @@ namespace Rowlan.PhotoSession.Urp
 
         private SerializedProperty featureEnabled;
         private SerializedProperty volume;
-        private SerializedProperty maxFocusDistance;
         private SerializedProperty focusDistanceOffset;
         private SerializedProperty focalLength;
         private SerializedProperty aperture;
@@ -24,7 +23,6 @@ namespace Rowlan.PhotoSession.Urp
 
             featureEnabled = editor.FindProperty(x => x.settings.urpDepthOfFieldSettings.featureEnabled);
             volume = editor.FindProperty(x => x.settings.urpDepthOfFieldSettings.volume);
-            maxFocusDistance = editor.FindProperty(x => x.settings.urpDepthOfFieldSettings.maxFocusDistance);
             focusDistanceOffset = editor.FindProperty(x => x.settings.urpDepthOfFieldSettings.focusDistanceOffset);
             focalLength = editor.FindProperty(x => x.settings.urpDepthOfFieldSettings.focalLength);
             aperture = editor.FindProperty(x => x.settings.urpDepthOfFieldSettings.aperture);
@@ -51,7 +49,6 @@ namespace Rowlan.PhotoSession.Urp
                     EditorGUILayout.LabelField("Hit Target");
                     EditorGUI.indentLevel++;
                     {
-                        EditorGUILayout.PropertyField(maxFocusDistance, new GUIContent("Max Focus Distance", ""));
                         EditorGUILayout.PropertyField(focusDistanceOffset, new GUIContent("Focus Distance Offset", ""));
                         EditorGUILayout.PropertyField(focalLength, new GUIContent("Focal Length", "The focal length override"));
                         EditorGUILayout.PropertyField(aperture, new GUIContent("Aperture", "The aperture override"));

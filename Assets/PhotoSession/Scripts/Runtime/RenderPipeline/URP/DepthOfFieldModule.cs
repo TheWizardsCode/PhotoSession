@@ -87,18 +87,6 @@ namespace Rowlan.PhotoSession.Urp
             if (!featureActive)
                 return;
 
-            /*
-            Urp.DepthOfFieldSettings dofSettings = photoSession.settings.urpDepthOfFieldSettings;
-
-            Ray ray = new Ray(photoSession.settings.photoCamera.transform.position, photoSession.settings.photoCamera.transform.forward * dofSettings.maxFocusDistance);
-            RaycastHit hit;
-            hasTarget = Physics.Raycast(ray, out hit, dofSettings.maxFocusDistance);
-            if (hasTarget)
-            {
-                hitDistance = Vector3.Distance(photoSession.settings.photoCamera.transform.position, hit.point);
-            }
-            */
-
             hasTarget = photoSession.autoFocusData.hasTarget;
             hitDistance = photoSession.autoFocusData.minDistance;
 
