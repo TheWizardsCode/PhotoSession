@@ -150,6 +150,11 @@ namespace Rowlan.PhotoSession
                 // reuse previous camera transform
                 previousPhotoCameraState.Restore(settings.photoCamera.transform);
             }
+
+            // cursor handling: save initial state and unlock photo session cursor mode
+            cursorState.Save();
+            cursorState.Unlock();
+
         }
 
         /// <summary>
@@ -193,6 +198,10 @@ namespace Rowlan.PhotoSession
                     go.SetActive(true);
                 }
             }
+
+            // cursor handling
+            cursorState.Restore();
+
         }
 
         void Update()
@@ -236,15 +245,12 @@ namespace Rowlan.PhotoSession
             {
                 if (Input.GetMouseButtonDown(1))
                 {
-                    // save the cursor's state, hide and lock it
-                    cursorState.Save();
                     cursorState.Lock();
                 }
 
                 if (Input.GetMouseButtonUp(1))
                 {
-                    /// restore the previous cursor state
-                    cursorState.Restore();
+                    cursorState.Unlock();
                 }
 
                 if (Input.GetMouseButton(1))
@@ -523,24 +529,42 @@ namespace Rowlan.PhotoSession
             private bool visible;
             private CursorLockMode lockMode;
 
+            /// <summary>
+            /// Save initial state, i. e. before photo session gets enabled
+            /// </summary>
             public void Save()
             {
                 visible = Cursor.visible;
                 lockMode = Cursor.lockState;
             }
 
+            /// <summary>
+            /// Restore initial state, i. e. after photo session gets disabled
+            /// </summary>
             public void Restore()
             {
                 Cursor.visible = visible;
                 Cursor.lockState = lockMode;
             }
 
+            /// <summary>
+            /// Lock cursor mode eg for camera movement
+            /// </summary>
             public void Lock()
             {
                 Cursor.visible = false;
                 Cursor.lockState = CursorLockMode.Locked;
             }
 
+            /// <summary>
+            /// Unlock cursor mode for menu usage
+            /// </summary>
+            public void Unlock()
+            {
+                Cursor.visible = true;
+                Cursor.lockState = CursorLockMode.None;
+            }
+
         }
-	}
+    }
 }
