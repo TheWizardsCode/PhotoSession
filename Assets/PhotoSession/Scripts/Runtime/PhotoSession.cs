@@ -95,6 +95,8 @@ namespace Rowlan.PhotoSession
 
         private void RegisterModules() {
 
+            modules.Add(new AutoFocusOverlayModule());
+
 #if USING_HDRP                
             modules.Add(new Hdrp.DepthOfFieldModule());
 #endif
@@ -479,25 +481,12 @@ namespace Rowlan.PhotoSession
             autoFocusInput.focusRaysY = settings.autoFocus.mode.GetRays().y;
             autoFocusInput.maxRayLength = settings.autoFocus.maxRayLength;
 
-            if (settings.autoFocus.overlay)
-            {
-                settings.autoFocus.overlay.visible = settings.autoFocus.overlayVisible;
-                settings.autoFocus.overlay.autoFocusInput = autoFocusInput;
-            }
-
         }
 
         void UpdateAutoFocusData() 
         {
             // recalculate auto focus data. the data are used eg in the AF overlay and the DoF effect
             AutoFocusCalculation.UpdateOutputData( this.autoFocusInput, ref this.autoFocusData);
-
-            // update the auto focus overlay
-            if (settings.autoFocus.overlay) 
-            {
-                settings.autoFocus.overlay.autoFocusData = autoFocusData;
-            }
-            
         }
 
         /// <summary>

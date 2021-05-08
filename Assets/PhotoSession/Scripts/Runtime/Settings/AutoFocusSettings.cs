@@ -52,9 +52,9 @@ namespace Rowlan.PhotoSession
         public bool overlayVisible = true;
 
         /// <summary>
-        /// The autofocus overlay for visualizing and setting the focus point array
+        /// The autofocus overlay material for visualizing and setting the focus point array
         /// </summary>
-        public AutoFocusOverlay overlay = null;
+        public Material overlayMaterial = null;
 
         /// <summary>
         /// Maximum raycast length for the distance calculation

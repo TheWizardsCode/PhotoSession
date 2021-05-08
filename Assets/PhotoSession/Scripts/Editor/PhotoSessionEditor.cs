@@ -48,7 +48,7 @@ namespace Rowlan.PhotoSession
         SerializedProperty autoFocusMode;
         SerializedProperty autoFocusMaxRayLength;
         SerializedProperty autoFocusOverlayVisible;
-        SerializedProperty autoFocusOverlay;
+        SerializedProperty autoFocusOverlayMaterial;
 
         SerializedProperty hdrpDepthOfFieldSettings;
         SerializedProperty urpDepthOfFieldSettings;
@@ -90,7 +90,7 @@ namespace Rowlan.PhotoSession
             autoFocusMode = FindProperty(x => x.settings.autoFocus.mode);
             autoFocusMaxRayLength = FindProperty(x => x.settings.autoFocus.maxRayLength);
             autoFocusOverlayVisible = FindProperty(x => x.settings.autoFocus.overlayVisible);
-            autoFocusOverlay = FindProperty(x => x.settings.autoFocus.overlay);
+            autoFocusOverlayMaterial = FindProperty(x => x.settings.autoFocus.overlayMaterial);
 
             // modules            
 
@@ -241,7 +241,7 @@ namespace Rowlan.PhotoSession
                 // the mode itself is part of the user interaction, not the setup
                 // EditorGUILayout.PropertyField(autoFocusMode, new GUIContent("Mode", "The auto focus mode used among others for the overlay image"));
                 EditorGUILayout.PropertyField(autoFocusOverlayVisible, new GUIContent("Overlay Visible", "Whether the auto focus overlay is visible or not"));
-                EditorGUILayout.PropertyField(autoFocusOverlay, new GUIContent("Overlay", "The component which will be used for the auto focus overlay"));
+                EditorGUILayout.PropertyField(autoFocusOverlayMaterial, new GUIContent("Overlay Material", "The material which will be used for the auto focus overlay display"));
                 EditorGUI.indentLevel--;
 
             }

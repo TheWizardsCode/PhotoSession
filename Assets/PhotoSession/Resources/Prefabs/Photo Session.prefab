@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 7102855877805181270}
   - component: {fileID: 2308075359535199578}
   - component: {fileID: 9097439815315925736}
-  - component: {fileID: 378171960202495811}
   m_Layer: 5
   m_Name: AutoFocus
   m_TagString: Untagged
@@ -76,21 +75,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &378171960202495811
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2251255809676911311}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 58b8a6244df61f747a8b5bdd6ec38327, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  material: {fileID: 2100000, guid: f53ed208a1fe7a04a92eb3a0834c3656, type: 2}
-  debug: 0
-  visible: 1
 --- !u!1 &5710751465943137261
 GameObject:
   m_ObjectHideFlags: 0
@@ -427,7 +411,7 @@ MonoBehaviour:
     autoFocus:
       mode: 1
       overlayVisible: 1
-      overlay: {fileID: 378171960202495811}
+      overlayMaterial: {fileID: 2100000, guid: f53ed208a1fe7a04a92eb3a0834c3656, type: 2}
       maxRayLength: 6
     hdrpDepthOfFieldSettings:
       featureEnabled: 0
