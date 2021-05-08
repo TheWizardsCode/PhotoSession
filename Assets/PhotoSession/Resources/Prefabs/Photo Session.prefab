@@ -90,6 +90,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   material: {fileID: 2100000, guid: f53ed208a1fe7a04a92eb3a0834c3656, type: 2}
   debug: 0
+  visible: 1
 --- !u!1 &5710751465943137261
 GameObject:
   m_ObjectHideFlags: 0
@@ -427,11 +428,10 @@ MonoBehaviour:
       mode: 1
       overlayVisible: 1
       overlay: {fileID: 378171960202495811}
-      maxRayLength: 3
+      maxRayLength: 6
     hdrpDepthOfFieldSettings:
       featureEnabled: 0
       volume: {fileID: 0}
-      maxFocusDistance: 10
       hitDistanceNearFocusEndOffset: -0.5
       hitDistanceFarFocusStartOffset: 1
       hitDistanceFarFocusEndOffset: 10

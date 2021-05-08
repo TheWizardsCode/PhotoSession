@@ -33,8 +33,9 @@ namespace Rowlan.PhotoSession
 
         /// <summary>
         /// The maximum ray length is used to calculate the opacity of the focus hit rectangles.
+        /// This is driven externally.
         /// </summary>
-        public float maxRayLength = 3;
+        public float maxRayLength = -1;
 
         /// <summary>
         /// Reset the data to their default values
@@ -55,5 +56,10 @@ namespace Rowlan.PhotoSession
             minDistance = hasTarget ? screenPoints.Min(v => v.z) : -1;
             maxDistance = hasTarget ? screenPoints.Max(v => v.z) : -1;
         }
+
+        public bool IsTargetInRange()
+        {
+            return hasTarget && minDistance != -1 && minDistance < maxRayLength;
+		}
     }
 }

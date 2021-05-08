@@ -85,8 +85,10 @@ namespace Rowlan.PhotoSession.Legacy
             if (!featureActive)
                 return;
 
-            hasTarget = photoSession.autoFocusData.hasTarget;
+            hasTarget = photoSession.autoFocusData.IsTargetInRange();
             hitDistance = photoSession.autoFocusData.minDistance;
+
+            // Debug.Log(string.Format("target in range: {0}, hit distance: {1}, max ray length: {2}", hasTarget, hitDistance, photoSession.autoFocusData.maxRayLength));
 
             UpdateFocus(hasTarget, hitDistance);
 #endif

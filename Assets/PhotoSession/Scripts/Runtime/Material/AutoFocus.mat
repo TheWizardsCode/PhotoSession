@@ -57,7 +57,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _ArrayLength: 12
+    - _ArrayLength: 1
     - _Border: 0.005
     - _BumpScale: 1
     - _ColorMask: 15
@@ -67,7 +67,7 @@ Material:
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
-    - _MaxHitDistance: 3
+    - _MaxHitDistance: 6
     - _Metallic: 0
     - _Mode: 3
     - _OcclusionStrength: 1

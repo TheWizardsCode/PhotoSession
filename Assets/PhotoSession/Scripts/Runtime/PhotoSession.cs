@@ -352,7 +352,7 @@ namespace Rowlan.PhotoSession
                 
             }
 
-            UpdateAutoFocus();
+            UpdateAutoFocusData();
 
             UpdateModules();
 
@@ -487,7 +487,7 @@ namespace Rowlan.PhotoSession
 
         }
 
-        void UpdateAutoFocus() 
+        void UpdateAutoFocusData() 
         {
             // recalculate auto focus data. the data are used eg in the AF overlay and the DoF effect
             AutoFocusCalculation.UpdateOutputData( this.autoFocusInput, ref this.autoFocusData);
