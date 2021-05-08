@@ -14,6 +14,7 @@ namespace Rowlan.PhotoSession
         public static Vector2Int PresetModeCenter = new Vector2Int(1, 1);
         public static Vector2Int PresetModeAuto_4_3 = new Vector2Int(4, 3);
         public static Vector2Int PresetModeAuto_16_9 = new Vector2Int(16, 9);
+        public static Vector2Int PresetModeManualPosition = new Vector2Int(1, 1); // single point, but manually placed position
 
         public enum Mode
         {
@@ -39,7 +40,14 @@ namespace Rowlan.PhotoSession
             /// Multiple rays from the center of the camera
             /// </summary>
             [InspectorName("Multiple 16 x 9")]
-            Auto_16_9
+            Auto_16_9,
+
+            /// <summary>
+            /// Manual setting of the target position, not necessarily in the center
+            /// </summary>
+            [InspectorName("Manual Position")]
+            ManualPosition,
+
         }
 
         /// <summary>
@@ -73,6 +81,7 @@ namespace Rowlan.PhotoSession
                 case AutoFocusSettings.Mode.Center: return AutoFocusSettings.PresetModeCenter;
                 case AutoFocusSettings.Mode.Auto_4_3: return AutoFocusSettings.PresetModeAuto_4_3;
                 case AutoFocusSettings.Mode.Auto_16_9: return AutoFocusSettings.PresetModeAuto_16_9;
+                case AutoFocusSettings.Mode.ManualPosition: return AutoFocusSettings.PresetModeManualPosition;
                 default: throw new ArgumentException("Autofocus mode not defined: " + mode);
             }
         }

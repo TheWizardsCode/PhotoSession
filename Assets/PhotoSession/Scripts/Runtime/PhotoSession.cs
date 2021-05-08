@@ -72,7 +72,11 @@ namespace Rowlan.PhotoSession
 
         public AutoFocusInput autoFocusInput = new AutoFocusInput();
         public AutoFocusData autoFocusData = new AutoFocusData();
+        private Vector3 manualFocusPosition = Vector3.zero;
 
+        /// <summary>
+        /// Formatter for the numeric display data
+        /// </summary>
         private NumberFormatInfo numberFormatInfo = new CultureInfo("en-US", false).NumberFormat;
 
         void Awake()
@@ -348,6 +352,19 @@ namespace Rowlan.PhotoSession
 
                 }
 
+                // manual key: first key press => switch to manual mode
+                if (Input.GetKey(KeyCode.M)) 
+                {
+                    settings.autoFocus.mode = AutoFocusSettings.Mode.ManualPosition;
+                    UpdateAutoFocusSetup();
+                }
+
+                // manual key: update focus position while the user presses the key
+                if (Input.GetKey(KeyCode.M))
+                {
+                    manualFocusPosition = Input.mousePosition;
+                }
+
                 #region Screenshot
 
                 // left mouse button takes screenshots
@@ -511,8 +528,16 @@ namespace Rowlan.PhotoSession
 
         void UpdateAutoFocusData() 
         {
-            // recalculate auto focus data. the data are used eg in the AF overlay and the DoF effect
-            AutoFocusCalculation.UpdateOutputData( this.autoFocusInput, ref this.autoFocusData);
+            if(settings.autoFocus.mode == AutoFocusSettings.Mode.ManualPosition)
+            {
+                // use screen position of mouse
+                AutoFocusCalculation.UpdateOutputData(this.autoFocusInput, manualFocusPosition, ref this.autoFocusData);
+            }
+            else
+            {
+                // recalculate auto focus data. the data are used eg in the AF overlay and the DoF effect
+                AutoFocusCalculation.UpdateOutputData(this.autoFocusInput, ref this.autoFocusData);
+            }
         }
 
         /// <summary>

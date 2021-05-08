@@ -10,11 +10,39 @@ namespace Rowlan.PhotoSession
         /// Calculate the screen and focus points, distance, etc
         /// </summary>
         /// <param name="data"></param>
+        public static void UpdateOutputData(AutoFocusInput input, Vector2 point, ref AutoFocusData data)
+        {
+            data.Reset();
+            data.maxRayLength = input.maxRayLength;
+
+            Vector3 screenPoint = new Vector3(point.x, point.y, 0);
+            Ray ray = Camera.main.ScreenPointToRay(screenPoint);
+
+            Vector3 focusScreenPoint = new Vector3(screenPoint.x, screenPoint.y, -1);
+
+            if (Physics.Raycast(ray.origin, ray.direction, out RaycastHit hit, Mathf.Infinity))
+            {
+                float distance = (hit.point - ray.origin).magnitude;
+                focusScreenPoint.z = distance;
+
+                data.hasTarget = true;
+            }
+
+            data.screenPoints.Add(focusScreenPoint);
+
+            data.Calculate();
+        }
+
+        /// <summary>
+        /// Calculate the screen and focus points, distance, etc
+        /// </summary>
+        /// <param name="data"></param>
         public static void UpdateOutputData(AutoFocusInput input, ref AutoFocusData data)
         {
             data.Reset();
             data.maxRayLength = input.maxRayLength;
 
+            // set number of rays for x and y coordinates
             int xRays = input.focusRays.x;
             int yRays = input.focusRays.y;
 
