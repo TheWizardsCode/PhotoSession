@@ -13,13 +13,10 @@ namespace Rowlan.PhotoSession
         /// </summary>
         public bool skipBounds = true;
 
-        // shader has 144 predefined for the array, so max is 16x9=144
-        [Range(1, 16)]
-        public int focusRaysX = 4;
-
-        // shader has 144 predefined for the array, so max is 16x9=144
-        [Range(1, 9)]
-        public int focusRaysY = 3;
+        /// <summary>
+        /// The number of focus rays in x and y dimension
+        /// </summary>
+        public Vector2Int focusRays = AutoFocusSettings.PresetModeCenter;
 
         /// <summary>
         /// The maximum ray length is used to calculate the opacity of the focus hit rectangles.

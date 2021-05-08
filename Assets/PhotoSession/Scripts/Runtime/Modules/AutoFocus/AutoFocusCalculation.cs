@@ -15,8 +15,8 @@ namespace Rowlan.PhotoSession
             data.Reset();
             data.maxRayLength = input.maxRayLength;
 
-            int xRays = input.focusRaysX;
-            int yRays = input.focusRaysY;
+            int xRays = input.focusRays.x;
+            int yRays = input.focusRays.y;
 
             if (input.skipBounds)
             {
