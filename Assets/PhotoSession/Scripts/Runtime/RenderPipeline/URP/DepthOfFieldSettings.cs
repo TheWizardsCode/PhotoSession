@@ -28,11 +28,6 @@ namespace Rowlan.PhotoSession.Legacy
         public PostProcessVolume volume;
 
         /// <summary>
-        /// The maximum focus distance for the raycast upon which we determine whether to activate the DoF mode or not
-        /// </summary>
-        public float maxFocusDistance = 10f;
-
-        /// <summary>
         /// When we hit a target, then the focus distance is set to the distance between camera and target.
         /// This value is added to the distance. So if you want to move the focus distance in front of the target, you need to specify a negative offset.
         /// </summary>
