@@ -19,8 +19,6 @@ namespace Rowlan.PhotoSession.Legacy
 
         private bool featureActive = false;
 
-        private Ray ray;
-        private RaycastHit hit;
         private bool hasTarget;
         private float hitDistance;
 #endif
@@ -87,14 +85,20 @@ namespace Rowlan.PhotoSession.Legacy
             if (!featureActive)
                 return;
 
+            /*
             Legacy.DepthOfFieldSettings dofSettings = photoSession.settings.legacyDepthOfFieldSettings;
 
-            ray = new Ray(photoSession.settings.photoCamera.transform.position, photoSession.settings.photoCamera.transform.forward * dofSettings.maxFocusDistance);
+            Ray ray = new Ray(photoSession.settings.photoCamera.transform.position, photoSession.settings.photoCamera.transform.forward * dofSettings.maxFocusDistance);
+            RaycastHit hit;
             hasTarget = Physics.Raycast(ray, out hit, dofSettings.maxFocusDistance);
             if (hasTarget)
             {
                 hitDistance = Vector3.Distance(photoSession.settings.photoCamera.transform.position, hit.point);
             }
+            */
+
+            hasTarget = photoSession.autoFocusData.hasTarget;
+            hitDistance = photoSession.autoFocusData.minDistance;
 
             UpdateFocus(hasTarget, hitDistance);
 #endif
