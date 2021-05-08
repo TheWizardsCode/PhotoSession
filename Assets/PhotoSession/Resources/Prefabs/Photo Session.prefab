@@ -88,11 +88,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58b8a6244df61f747a8b5bdd6ec38327, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skipBounds: 1
-  focusRaysX: 4
-  focusRaysY: 3
-  maxHitDistance: 3
   material: {fileID: 2100000, guid: f53ed208a1fe7a04a92eb3a0834c3656, type: 2}
+  debug: 0
 --- !u!1 &5710751465943137261
 GameObject:
   m_ObjectHideFlags: 0
@@ -426,8 +423,11 @@ MonoBehaviour:
     compositionGuideImage: {fileID: 5710751467348297093}
     compositionGuideCollection: {fileID: 11400000, guid: f41f980f093ad6445b3e1807b49e1994, type: 2}
     compositionGuideIndex: 0
-    autoFocusMode: 1
-    autoFocusImage: {fileID: 9097439815315925736}
+    autoFocus:
+      mode: 1
+      overlayVisible: 1
+      overlay: {fileID: 378171960202495811}
+      maxRayLength: 3
     hdrpDepthOfFieldSettings:
       featureEnabled: 0
       volume: {fileID: 0}
@@ -435,6 +435,11 @@ MonoBehaviour:
       hitDistanceNearFocusEndOffset: -0.5
       hitDistanceFarFocusStartOffset: 1
       hitDistanceFarFocusEndOffset: 10
+  autoFocusInput:
+    skipBounds: 1
+    focusRaysX: 4
+    focusRaysY: 3
+    maxRayLength: 3
 --- !u!1 &5710751466826412919
 GameObject:
   m_ObjectHideFlags: 0

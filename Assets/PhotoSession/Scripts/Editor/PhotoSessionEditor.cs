@@ -56,7 +56,8 @@ namespace Rowlan.PhotoSession
         SerializedProperty compositionGuideIndex;
 
         SerializedProperty autoFocusMode;
-        SerializedProperty autoFocusImage;
+        SerializedProperty autoFocusOverlayVisible;
+        SerializedProperty autoFocusOverlay;
 
         SerializedProperty hdrpDepthOfFieldSettings;
         SerializedProperty urpDepthOfFieldSettings;
@@ -96,7 +97,8 @@ namespace Rowlan.PhotoSession
             compositionGuideIndex = FindProperty(x => x.settings.compositionGuideIndex);
 
             autoFocusMode = FindProperty(x => x.settings.autoFocus.mode);
-            autoFocusImage = FindProperty(x => x.settings.autoFocus.image);
+            autoFocusOverlayVisible = FindProperty(x => x.settings.autoFocus.overlayVisible);
+            autoFocusOverlay = FindProperty(x => x.settings.autoFocus.overlay);
 
             // modules            
 
@@ -155,6 +157,8 @@ namespace Rowlan.PhotoSession
                     }
                 }
                 GUILayout.EndHorizontal();
+
+                EditorGUILayout.PropertyField(autoFocusMode, new GUIContent("Auto Focus Mode", "The auto focus mode used e. g. for the Depth of Field effect"));
             }
             GUILayout.EndVertical();
 
@@ -237,8 +241,10 @@ namespace Rowlan.PhotoSession
 
                 EditorGUILayout.LabelField("Auto Focus");
                 EditorGUI.indentLevel++;
-                EditorGUILayout.PropertyField(autoFocusImage, new GUIContent("Image", "The image which will be used for the auto focus overlay"));
-                EditorGUILayout.PropertyField(autoFocusMode, new GUIContent("Mode", "The auto focus mode used among others for the overlay image"));
+                // the mode itself is part of the user interaction, not the setup
+                // EditorGUILayout.PropertyField(autoFocusMode, new GUIContent("Mode", "The auto focus mode used among others for the overlay image"));
+                EditorGUILayout.PropertyField(autoFocusOverlayVisible, new GUIContent("Overlay Visible", "Whether the auto focus overlay is visible or not"));
+                EditorGUILayout.PropertyField(autoFocusOverlay, new GUIContent("Overlay", "The component which will be used for the auto focus overlay"));
                 EditorGUI.indentLevel--;
 
             }

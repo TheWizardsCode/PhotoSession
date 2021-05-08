@@ -1,7 +1,7 @@
 Keyboard Shortcuts
 ------------------------------------
 G - Iterate through Composition Guides
-H - Iterate through the Auto Focus items
+F - Iterate through the Auto Focus items
 
 Contributors & Additional Credits
 ------------------------------------

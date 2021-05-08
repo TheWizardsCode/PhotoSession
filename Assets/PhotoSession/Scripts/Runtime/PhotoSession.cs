@@ -69,6 +69,9 @@ namespace Rowlan.PhotoSession
 
         private List<IPhotoSessionModule> modules = new List<IPhotoSessionModule>();
 
+        public AutoFocusInput autoFocusInput = new AutoFocusInput();
+        public AutoFocusData autoFocusData = new AutoFocusData();
+
         void Awake()
         {
             screenshot.SetupPath();
@@ -80,6 +83,8 @@ namespace Rowlan.PhotoSession
 
             RegisterModules();
             StartModules();
+
+            UpdateAutoFocusSetup();
 
             // update image settings display
             UpdateImageSettingsText();
@@ -319,7 +324,7 @@ namespace Rowlan.PhotoSession
 
                 }
 
-                if (Input.GetKeyDown(KeyCode.H))
+                if (Input.GetKeyDown(KeyCode.F))
                 {
 
                     // iterate through the AutoFocusMode enum items
@@ -331,8 +336,7 @@ namespace Rowlan.PhotoSession
                         settings.autoFocus.mode = 0;
                     }
 
-
-                    UpdateFocusOverlay();
+                    UpdateAutoFocusSetup();
 
                 }
 
@@ -347,6 +351,8 @@ namespace Rowlan.PhotoSession
                 #endregion Screenshot
                 
             }
+
+            UpdateAutoFocus();
 
             UpdateModules();
 
@@ -466,16 +472,32 @@ namespace Rowlan.PhotoSession
 
         }
 
-        // TODO:
-        // + consider focus modes
-        void UpdateFocusOverlay()
+        void UpdateAutoFocusSetup()
         {
-            if (!settings.autoFocus.image)
-                return;
+            // update internal data structure; used for overlay and autofocus calculation (even without overlay)
+            autoFocusInput.focusRaysX = settings.autoFocus.mode.GetRays().x;
+            autoFocusInput.focusRaysY = settings.autoFocus.mode.GetRays().y;
+            autoFocusInput.maxRayLength = settings.autoFocus.maxRayLength;
 
-            bool active = settings.autoFocus.mode != AutoFocusSettings.Mode.Off;
-            settings.autoFocus.image.gameObject.SetActive(active);
-		}
+            if (settings.autoFocus.overlay)
+            {
+                settings.autoFocus.overlay.visible = settings.autoFocus.overlayVisible;
+                settings.autoFocus.overlay.autoFocusInput = autoFocusInput;
+            }
+
+        }
+
+        void UpdateAutoFocus() 
+        {
+            AutoFocusCalculation.UpdateOutputData( this.autoFocusInput, ref this.autoFocusData);
+
+            // update the auto focus overlay
+            if (settings.autoFocus.overlay) 
+            {
+                settings.autoFocus.overlay.autoFocusData = autoFocusData;
+            }
+            
+        }
 
         /// <summary>
         /// Container for the transform data of the camera

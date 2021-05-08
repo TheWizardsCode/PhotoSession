@@ -10,7 +10,7 @@ namespace Rowlan.PhotoSession
         /// Calculate the screen and focus points, distance, etc
         /// </summary>
         /// <param name="data"></param>
-        public static void UpdateOutputData(AutoFocusInput input, AutoFocusData data)
+        public static void UpdateOutputData(AutoFocusInput input, ref AutoFocusData data)
         {
             data.Reset();
             data.maxRayLength = input.maxRayLength;
