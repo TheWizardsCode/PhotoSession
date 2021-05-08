@@ -24,6 +24,11 @@ namespace Rowlan.PhotoSession
 
             Selection.activeObject = go;
 
+            // auto setup
+
+            Debug.Log("Photo Session Auto Setup");
+
+            AutoSetup.Execute(go.GetComponent<PhotoSession>());
         }
     }
 }

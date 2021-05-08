@@ -9,16 +9,6 @@ namespace Rowlan.PhotoSession
     [CustomEditor(typeof(PhotoSession))]
     public class PhotoSessionEditor : BaseEditor<PhotoSession>
     {
-        private static readonly string tag_MainCamera = "MainCamera";
-
-        private static readonly string[] script_Blacklist = {
-            "SimpleCameraController", // Unity HDRP Demo
-            "LookWithMouse", // Unity HDRP Demo
-            "CharacterController", // Unity HDRP Demo
-            "PlayerMovement", // Unity HDRP Demo
-            "MFreeLookCamera", // Malbers FreeLookCameraRig
-            "CameraWallStop", // Malbers FreeLookCameraRig
-            };
 
         Hdrp.DepthOfFieldModuleEditor hdrpDepthOfFieldModuleEditor = new Hdrp.DepthOfFieldModuleEditor();
         Urp.DepthOfFieldModuleEditor urpDepthOfFieldModuleEditor = new Urp.DepthOfFieldModuleEditor();
@@ -286,7 +276,7 @@ namespace Rowlan.PhotoSession
                 {
                     if (GUILayout.Button("Auto Setup"))
                     {
-                        PerformAutoSetup();
+                        AutoSetup.Execute( this.editorTarget);
                     }
                 }
                 EditorGUILayout.EndHorizontal();
@@ -318,74 +308,5 @@ namespace Rowlan.PhotoSession
 
         }
 
-        private void PerformAutoSetup()
-        {
-            AssignMainCamera();
-
-            AssignScriptBlacklist();
-        }
-
-        private void AssignMainCamera() {
-
-            // find all cameras
-            Camera[] cameras = Object.FindObjectsOfType<Camera>();
-
-            Camera mainCamera = null;
-            foreach (Camera camera in cameras)
-            {
-
-                // skip all inaktive
-                if (!camera.isActiveAndEnabled)
-                    continue;
-
-                // last one wins unless it's tagged as maincamera, then that one wins
-                if (!mainCamera || camera.CompareTag(tag_MainCamera))
-                {
-                    mainCamera = camera;
-                }
-                
-            }
-            
-            if (mainCamera)
-            {
-                this.photoCamera.objectReferenceValue = mainCamera;
-            }
-        }
-
-        private void AssignScriptBlacklist() {
-
-            Camera photoCamera = this.photoCamera.objectReferenceValue as Camera;
-
-            if (!photoCamera)
-                return;
-
-            List<Component> components = new List<Component>();
-
-            foreach (string scriptName in script_Blacklist) {
-
-                // recursively search the blacklisted objects from the photo camera gameobject up to the root
-                Transform transform = photoCamera.transform;
-                while(transform) {
-
-                    Component component = transform.gameObject.GetComponent(scriptName);
-
-                    if( component)
-                        components.Add(component);
-
-                    transform = transform.parent;
-                }
-            }
-
-            // set the disabled components in the serializedObject
-            this.disabledComponents.ClearArray();
-
-            for ( int i=0; i < components.Count; i++) {
-
-                this.disabledComponents.InsertArrayElementAtIndex(i);
-                this.disabledComponents.GetArrayElementAtIndex(i).objectReferenceValue = components[i];
-
-            }
-
-        }
     }
 }
