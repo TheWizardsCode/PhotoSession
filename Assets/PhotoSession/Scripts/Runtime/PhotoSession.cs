@@ -569,6 +569,12 @@ namespace Rowlan.PhotoSession
                     if( collider.enabled)
                     {
                         enabledColliders.Add(collider);
+
+                        if( !collider.isTrigger)
+                        {
+                            Debug.LogWarning("Collider on camera isn't trigger. This may lead to unexpected camera movement after photo session exits");
+                        }
+
                     }
                 }
 
