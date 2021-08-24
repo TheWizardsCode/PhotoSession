@@ -211,7 +211,7 @@ namespace Rowlan.PhotoSession
         void Update()
         {
             // check input key and toggle game <> photo mode
-            if (Input.GetKeyDown(settings.toggleKey))
+            if (Input.GetKeyDown(settings.shortcuts.toggleKeyCode))
             {
                 // toggle mode
                 photoMode = photoMode == PhotoMode.Game ? PhotoMode.Photo : PhotoMode.Game;

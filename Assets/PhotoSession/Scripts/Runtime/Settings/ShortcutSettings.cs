@@ -9,6 +9,11 @@ namespace Rowlan.PhotoSession
     public class ShortcutSettings
     {
         /// <summary>
+        /// Input key which toggles the photo mode
+        /// </summary>
+        public KeyCode toggleKeyCode = KeyCode.F12;
+
+        /// <summary>
         /// Show Guides
         /// </summary>
         public KeyCode guideKeyCode = KeyCode.G;

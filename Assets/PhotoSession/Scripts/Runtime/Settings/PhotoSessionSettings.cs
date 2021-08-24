@@ -42,11 +42,6 @@ namespace Rowlan.PhotoSession
         [Range(0.1f, 180f)]
         public float fieldOfView = 60f;
 
-        // Input
-
-        // Input key which toggles the photo mode
-        public KeyCode toggleKey = KeyCode.F12;
-
         // Camera Settings
 
         // The camera that will be used for the photo session. Usually the main camera

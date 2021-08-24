@@ -26,8 +26,6 @@ namespace Rowlan.PhotoSession
         SerializedProperty fieldOfViewOverride;
         SerializedProperty fieldOfView;
 
-        SerializedProperty toggleKey;
-
         SerializedProperty movementSpeed;
         SerializedProperty movementSpeedFast;
         SerializedProperty freeLookSensitivity;
@@ -52,6 +50,7 @@ namespace Rowlan.PhotoSession
         SerializedProperty autoFocusOverlayMaterial;
         SerializedProperty autoFocusLayerMask;
 
+        SerializedProperty toggleKeyCode;
         SerializedProperty guideKeyCode;
         SerializedProperty autoFocusKeyCode;
         SerializedProperty manualFocusKeyCode;
@@ -74,7 +73,6 @@ namespace Rowlan.PhotoSession
             outputFormat = FindProperty(x => x.settings.outputFormat);
             fieldOfViewOverride = FindProperty(x => x.settings.fieldOfViewOverride);
             fieldOfView = FindProperty(x => x.settings.fieldOfView);
-            toggleKey = FindProperty(x => x.settings.toggleKey);
             photoCamera = FindProperty(x => x.settings.photoCamera);
             movementSpeed = FindProperty(x => x.settings.movementSpeed);
             movementSpeedFast = FindProperty(x => x.settings.movementSpeedFast);
@@ -100,6 +98,7 @@ namespace Rowlan.PhotoSession
             autoFocusOverlayMaterial = FindProperty(x => x.settings.autoFocus.overlayMaterial);
             autoFocusLayerMask = FindProperty(x => x.settings.autoFocus.layerMask);
 
+            toggleKeyCode = FindProperty(x => x.settings.shortcuts.toggleKeyCode);
             guideKeyCode = FindProperty(x => x.settings.shortcuts.guideKeyCode);
             autoFocusKeyCode = FindProperty(x => x.settings.shortcuts.autoFocusKeyCode);
             manualFocusKeyCode = FindProperty(x => x.settings.shortcuts.manualFocusKeyCode);
@@ -192,11 +191,17 @@ namespace Rowlan.PhotoSession
 
             GUILayout.BeginVertical("box");
             {
-                EditorGUILayout.LabelField("Input", GUIStyles.BoxTitleStyle);
+                EditorGUILayout.LabelField("Shortcuts", GUIStyles.BoxTitleStyle);
 
-                EditorGUILayout.PropertyField(toggleKey, new GUIContent("Toggle Key", "Input key which toggles the photo mode"));
+                EditorGUILayout.PropertyField(toggleKeyCode, new GUIContent("Toggle Key", "Input key which toggles the photo mode"));
+
+                EditorGUILayout.PropertyField(guideKeyCode, new GUIContent("Guide", "Toggle through available guides"));
+                EditorGUILayout.PropertyField(autoFocusKeyCode, new GUIContent("Auto Focus", "Toggle through auto focus grid options"));
+                EditorGUILayout.PropertyField(manualFocusKeyCode, new GUIContent("Manual Focus", "Keep key pressed and move mouse to set focus manually"));
+
             }
             GUILayout.EndVertical();
+
 
             GUILayout.BeginVertical("box");
             {
@@ -283,17 +288,6 @@ namespace Rowlan.PhotoSession
                     }
                     EditorGUI.indentLevel--;
                 }
-            }
-            GUILayout.EndVertical();
-
-            GUILayout.BeginVertical("box");
-            {
-                EditorGUILayout.LabelField("Shortcuts", GUIStyles.BoxTitleStyle);
-
-                EditorGUILayout.PropertyField(guideKeyCode, new GUIContent("Guide", "Toggle through available guides"));
-                EditorGUILayout.PropertyField(autoFocusKeyCode, new GUIContent("Auto Focus", "Toggle through auto focus grid options"));
-                EditorGUILayout.PropertyField(manualFocusKeyCode, new GUIContent("Manual Focus", "Keep key pressed and move mouse to set focus manually"));
-
             }
             GUILayout.EndVertical();
 
