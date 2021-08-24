@@ -79,6 +79,12 @@ namespace Rowlan.PhotoSession
         /// </summary>
         private NumberFormatInfo numberFormatInfo = new CultureInfo("en-US", false).NumberFormat;
 
+        /// <summary>
+        /// Original state of blacklisted gameobjects.
+        /// Only because it's blacklisted doesn't mean it was active.
+        /// </summary>
+        private Dictionary<Object, bool> blacklistActiveState = new Dictionary<Object, bool>();
+
         void Awake()
         {
             screenshot.SetupPath();
@@ -131,18 +137,27 @@ namespace Rowlan.PhotoSession
             // player photo camera state so that it can be restored after we leave the session
             playerCameraState.Save(settings.photoCamera.transform);
 
+            // clear original state registry
+            blacklistActiveState.Clear();
+
             // disable components (eg scripts)
             foreach (Object script in settings.disabledComponents)
             {
 
+                bool wasActive = false;
+
                 if (script is Behaviour behaviour)
                 {
+                    wasActive = behaviour.enabled;
                     behaviour.enabled = false;
                 }
                 else if (script is GameObject go)
                 {
+                    wasActive = go.activeInHierarchy;
                     go.SetActive( false);
                 }
+
+                blacklistActiveState.Add(script, wasActive);
             }
 
             // detach from parent
@@ -193,13 +208,16 @@ namespace Rowlan.PhotoSession
             // re-enable components
             foreach (Object script in settings.disabledComponents)
             {
+                bool wasActive;
+                blacklistActiveState.TryGetValue(script, out wasActive);
+
                 if (script is Behaviour behaviour)
                 {
-                    behaviour.enabled = true;
+                    behaviour.enabled = wasActive;
                 }
                 else if (script is GameObject go)
                 {
-                    go.SetActive(true);
+                    go.SetActive(wasActive);
                 }
             }
 
