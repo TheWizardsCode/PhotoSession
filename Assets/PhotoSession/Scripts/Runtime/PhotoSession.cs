@@ -25,7 +25,7 @@ namespace Rowlan.PhotoSession
         /// <summary>
         /// Used for storing the player's camera which got hijacked for the photo session
         /// </summary>
-        private TransformState playerCameraState = new TransformState();
+        private CameraState playerCameraState = new CameraState();
 
         /// <summary>
         /// Save and restore the cursor visibility and lock mode
@@ -40,7 +40,7 @@ namespace Rowlan.PhotoSession
         /// <summary>
         /// Used for saving and restoring the previous photo camera transform
         /// </summary>
-        private TransformState previousPhotoCameraState = new TransformState();
+        private CameraState previousPhotoCameraState = new CameraState();
 
         /// <summary>
         /// Utility for capturing screenshots
@@ -541,20 +541,38 @@ namespace Rowlan.PhotoSession
         }
 
         /// <summary>
-        /// Container for the transform data of the camera
+        /// Container for the transform data of the player and the photo camera.
+        /// States are saved and restored back and forth when the photo session functionality gets toggled on and off
+        /// 
+        /// The colliders on the camera will be disabled. Otherwise when we exit photo session mode the camera keeps on moving forward when a collider is active.
         /// </summary>
-        private class TransformState
+        private class CameraState
         {
 
             private Transform parent = null;
             private Vector3 position;
             private Quaternion rotation;
+            private List<Collider> enabledColliders = new List<Collider>();
 
             public void Save(Transform transform)
             {
                 parent = transform.parent;
                 position = transform.position;
                 rotation = transform.rotation;
+
+                // register & disable all enabled colliders
+                enabledColliders.Clear();
+
+                Collider[] colliders = transform.gameObject.GetComponents<Collider>();
+                foreach ( Collider collider in colliders)
+                {
+                    if( collider.enabled)
+                    {
+                        enabledColliders.Add(collider);
+                    }
+                }
+
+                enabledColliders.ForEach(x => x.enabled = false);
             }
 
             public void Restore(Transform transform)
@@ -562,6 +580,10 @@ namespace Rowlan.PhotoSession
                 transform.parent = parent;
                 transform.position = position;
                 transform.rotation = rotation;
+
+                // disable and unregister all registered colliders
+                enabledColliders.ForEach(x => x.enabled = true);
+                enabledColliders.Clear();
             }
 
         }
