@@ -50,6 +50,7 @@ namespace Rowlan.PhotoSession
         SerializedProperty autoFocusMaxRayLength;
         SerializedProperty autoFocusOverlayVisible;
         SerializedProperty autoFocusOverlayMaterial;
+        SerializedProperty autoFocusLayerMask;
 
         SerializedProperty guideKeyCode;
         SerializedProperty autoFocusKeyCode;
@@ -97,6 +98,7 @@ namespace Rowlan.PhotoSession
             autoFocusMaxRayLength = FindProperty(x => x.settings.autoFocus.maxRayLength);
             autoFocusOverlayVisible = FindProperty(x => x.settings.autoFocus.overlayVisible);
             autoFocusOverlayMaterial = FindProperty(x => x.settings.autoFocus.overlayMaterial);
+            autoFocusLayerMask = FindProperty(x => x.settings.autoFocus.layerMask);
 
             guideKeyCode = FindProperty(x => x.settings.shortcuts.guideKeyCode);
             autoFocusKeyCode = FindProperty(x => x.settings.shortcuts.autoFocusKeyCode);
@@ -165,7 +167,8 @@ namespace Rowlan.PhotoSession
                 EditorGUI.indentLevel++;
                 EditorGUILayout.PropertyField(autoFocusMode, new GUIContent("Mode", "The auto focus mode used e. g. for the Depth of Field effect"));
                 EditorGUILayout.PropertyField(autoFocusMaxRayLength, new GUIContent("Max Ray Length", "The maximum raycast length for focus calculation"));
-
+                EditorGUILayout.PropertyField(autoFocusLayerMask, new GUIContent("Layer Mask", "The layer mask for the raycast"));
+                
                 EditorGUILayout.HelpBox("Note: Auto Focus requires Depth of Field Effect", MessageType.None);
 
                 EditorGUI.indentLevel--;

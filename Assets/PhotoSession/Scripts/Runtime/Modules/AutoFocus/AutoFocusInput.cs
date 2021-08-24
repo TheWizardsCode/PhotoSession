@@ -22,5 +22,10 @@ namespace Rowlan.PhotoSession
         /// The maximum ray length is used to calculate the opacity of the focus hit rectangles.
         /// </summary>
         public float maxRayLength = 3;
+
+        /// <summary>
+        /// The layer mask to be used for the raycast
+        /// </summary>
+        public LayerMask layerMask = (int) LayerUtils.LayerIndex.Everything;
     }
 }

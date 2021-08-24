@@ -523,7 +523,7 @@ namespace Rowlan.PhotoSession
             // update internal data structure; used for overlay and autofocus calculation (even without overlay)
             autoFocusInput.focusRays = settings.autoFocus.mode.GetRays();
             autoFocusInput.maxRayLength = settings.autoFocus.maxRayLength;
-
+            autoFocusInput.layerMask = settings.autoFocus.layerMask;
         }
 
         void UpdateAutoFocusData() 

@@ -69,6 +69,11 @@ namespace Rowlan.PhotoSession
         /// Maximum raycast length for the distance calculation
         /// </summary>
         public float maxRayLength = 3f;
+
+        /// <summary>
+        /// The layer mask to be used for the raycast
+        /// </summary>
+        public LayerMask layerMask = (int)LayerUtils.LayerIndex.Everything;
     }
 
     public static class AutoFocusModeExtension

@@ -20,7 +20,7 @@ namespace Rowlan.PhotoSession
 
             Vector3 focusScreenPoint = new Vector3(screenPoint.x, screenPoint.y, -1);
 
-            if (Physics.Raycast(ray.origin, ray.direction, out RaycastHit hit, Mathf.Infinity))
+            if (Physics.Raycast(ray.origin, ray.direction, out RaycastHit hit, Mathf.Infinity, input.layerMask))
             {
                 float distance = (hit.point - ray.origin).magnitude;
                 focusScreenPoint.z = distance;
