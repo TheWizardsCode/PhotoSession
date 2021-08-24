@@ -191,7 +191,7 @@ namespace Rowlan.PhotoSession
 
             GUILayout.BeginVertical("box");
             {
-                EditorGUILayout.LabelField("Shortcuts", GUIStyles.BoxTitleStyle);
+                EditorGUILayout.LabelField("Input", GUIStyles.BoxTitleStyle);
 
                 EditorGUILayout.PropertyField(toggleKeyCode, new GUIContent("Toggle Key", "Input key which toggles the photo mode"));
 
