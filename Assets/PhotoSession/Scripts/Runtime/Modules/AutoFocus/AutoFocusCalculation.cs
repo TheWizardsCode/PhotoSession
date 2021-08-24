@@ -10,13 +10,13 @@ namespace Rowlan.PhotoSession
         /// Calculate the screen and focus points, distance, etc
         /// </summary>
         /// <param name="data"></param>
-        public static void UpdateOutputData(AutoFocusInput input, Vector2 point, ref AutoFocusData data)
+        public static void UpdateOutputData(Camera camera, AutoFocusInput input, Vector2 point, ref AutoFocusData data)
         {
             data.Reset();
             data.maxRayLength = input.maxRayLength;
 
             Vector3 screenPoint = new Vector3(point.x, point.y, 0);
-            Ray ray = Camera.main.ScreenPointToRay(screenPoint);
+            Ray ray = camera.ScreenPointToRay(screenPoint);
 
             Vector3 focusScreenPoint = new Vector3(screenPoint.x, screenPoint.y, -1);
 
@@ -37,7 +37,7 @@ namespace Rowlan.PhotoSession
         /// Calculate the screen and focus points, distance, etc
         /// </summary>
         /// <param name="data"></param>
-        public static void UpdateOutputData(AutoFocusInput input, ref AutoFocusData data)
+        public static void UpdateOutputData(Camera camera, AutoFocusInput input, ref AutoFocusData data)
         {
             data.Reset();
             data.maxRayLength = input.maxRayLength;
@@ -80,7 +80,7 @@ namespace Rowlan.PhotoSession
                         continue;
 
                     Vector3 screenPoint = new Vector3(x, y, 0);
-                    Ray ray = Camera.main.ScreenPointToRay(screenPoint);
+                    Ray ray = camera.ScreenPointToRay(screenPoint);
 
                     //if (debug)
                     //{
@@ -93,7 +93,7 @@ namespace Rowlan.PhotoSession
                     {
                         float distance = (hit.point - ray.origin).magnitude;
                         /*
-                        Vector3 vpp = Camera.main.WorldToScreenPoint(hit.point);
+                        Vector3 vpp = camera.WorldToScreenPoint(hit.point);
                         Vector3 focusHitPoint = new Vector3(vpp.x, vpp.y, distance);
                         */
                         focusScreenPoint.z = distance;

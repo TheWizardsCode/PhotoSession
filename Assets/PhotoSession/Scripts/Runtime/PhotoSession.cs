@@ -531,12 +531,12 @@ namespace Rowlan.PhotoSession
             if(settings.autoFocus.mode == AutoFocusSettings.Mode.ManualPosition)
             {
                 // use screen position of mouse
-                AutoFocusCalculation.UpdateOutputData(this.autoFocusInput, manualFocusPosition, ref this.autoFocusData);
+                AutoFocusCalculation.UpdateOutputData(settings.photoCamera, this.autoFocusInput, manualFocusPosition, ref this.autoFocusData);
             }
             else
             {
                 // recalculate auto focus data. the data are used eg in the AF overlay and the DoF effect
-                AutoFocusCalculation.UpdateOutputData(this.autoFocusInput, ref this.autoFocusData);
+                AutoFocusCalculation.UpdateOutputData(settings.photoCamera, this.autoFocusInput, ref this.autoFocusData);
             }
         }
 
