@@ -161,9 +161,13 @@ namespace Rowlan.PhotoSession
                 GUILayout.EndHorizontal();
 
                 EditorGUILayout.LabelField("Auto Focus");
+
                 EditorGUI.indentLevel++;
                 EditorGUILayout.PropertyField(autoFocusMode, new GUIContent("Mode", "The auto focus mode used e. g. for the Depth of Field effect"));
                 EditorGUILayout.PropertyField(autoFocusMaxRayLength, new GUIContent("Max Ray Length", "The maximum raycast length for focus calculation"));
+
+                EditorGUILayout.HelpBox("Note: Auto Focus requires Depth of Field Effect", MessageType.None);
+
                 EditorGUI.indentLevel--;
 
             }
