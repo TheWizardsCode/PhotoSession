@@ -51,6 +51,10 @@ namespace Rowlan.PhotoSession
         SerializedProperty autoFocusOverlayVisible;
         SerializedProperty autoFocusOverlayMaterial;
 
+        SerializedProperty guideKeyCode;
+        SerializedProperty autoFocusKeyCode;
+        SerializedProperty manualFocusKeyCode;
+
         SerializedProperty hdrpDepthOfFieldSettings;
         SerializedProperty urpDepthOfFieldSettings;
         SerializedProperty legacyDepthOfFieldSettings;
@@ -93,6 +97,10 @@ namespace Rowlan.PhotoSession
             autoFocusMaxRayLength = FindProperty(x => x.settings.autoFocus.maxRayLength);
             autoFocusOverlayVisible = FindProperty(x => x.settings.autoFocus.overlayVisible);
             autoFocusOverlayMaterial = FindProperty(x => x.settings.autoFocus.overlayMaterial);
+
+            guideKeyCode = FindProperty(x => x.settings.shortcuts.guideKeyCode);
+            autoFocusKeyCode = FindProperty(x => x.settings.shortcuts.autoFocusKeyCode);
+            manualFocusKeyCode = FindProperty(x => x.settings.shortcuts.manualFocusKeyCode);
 
             // modules            
 
@@ -268,6 +276,17 @@ namespace Rowlan.PhotoSession
                     }
                     EditorGUI.indentLevel--;
                 }
+            }
+            GUILayout.EndVertical();
+
+            GUILayout.BeginVertical("box");
+            {
+                EditorGUILayout.LabelField("Shortcuts", GUIStyles.BoxTitleStyle);
+
+                EditorGUILayout.PropertyField(guideKeyCode, new GUIContent("Guide", "Toggle through available guides"));
+                EditorGUILayout.PropertyField(autoFocusKeyCode, new GUIContent("Auto Focus", "Toggle through auto focus grid options"));
+                EditorGUILayout.PropertyField(manualFocusKeyCode, new GUIContent("Manual Focus", "Keep key pressed and move mouse to set focus manually"));
+
             }
             GUILayout.EndVertical();
 

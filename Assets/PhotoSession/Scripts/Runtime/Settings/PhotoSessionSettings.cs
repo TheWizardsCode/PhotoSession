@@ -27,8 +27,6 @@ namespace Rowlan.PhotoSession
             Mono360
         }
 
-
-
         // Image
 
         public ImageResolutionType resolution = ImageResolutionType.Game;
@@ -123,6 +121,12 @@ namespace Rowlan.PhotoSession
         /// Settings for autofocus calculation and visualization
         /// </summary>
         public AutoFocusSettings autoFocus = new AutoFocusSettings();
+
+        /// <summary>
+        /// Adjustable keyboard shortcuts
+        /// </summary>
+        public ShortcutSettings shortcuts = new ShortcutSettings();
+
 
         #region HDRP
 

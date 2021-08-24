@@ -323,7 +323,7 @@ namespace Rowlan.PhotoSession
                     #endregion Mouse Movement
                 }
 
-                if( Input.GetKeyDown( KeyCode.G)) {
+                if( Input.GetKeyDown( settings.shortcuts.guideKeyCode)) {
 
                     settings.compositionGuideIndex++;
 
@@ -336,7 +336,7 @@ namespace Rowlan.PhotoSession
 
                 }
 
-                if (Input.GetKeyDown(KeyCode.F))
+                if (Input.GetKeyDown(settings.shortcuts.autoFocusKeyCode))
                 {
 
                     // iterate through the AutoFocusMode enum items
@@ -353,14 +353,14 @@ namespace Rowlan.PhotoSession
                 }
 
                 // manual key: first key press => switch to manual mode
-                if (Input.GetKey(KeyCode.M)) 
+                if (Input.GetKey(settings.shortcuts.manualFocusKeyCode)) 
                 {
                     settings.autoFocus.mode = AutoFocusSettings.Mode.ManualPosition;
                     UpdateAutoFocusSetup();
                 }
 
                 // manual key: update focus position while the user presses the key
-                if (Input.GetKey(KeyCode.M))
+                if (Input.GetKey(settings.shortcuts.manualFocusKeyCode))
                 {
                     manualFocusPosition = Input.mousePosition;
                 }
