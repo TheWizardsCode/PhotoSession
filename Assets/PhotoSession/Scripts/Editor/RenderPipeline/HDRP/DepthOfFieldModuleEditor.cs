@@ -2,6 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+#if USING_HDRP  
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.HighDefinition;
+using UnityEditor.Rendering;
+#endif
 
 namespace Rowlan.PhotoSession.Hdrp
 {
@@ -44,7 +49,16 @@ namespace Rowlan.PhotoSession.Hdrp
                 { 
                     EditorGUILayout.HelpBox("The DoF effect is experimental and highly depends on your settings.", MessageType.Warning);
 
-                    EditorGUILayout.PropertyField(volume, new GUIContent("Volume", "The volume with the Depth of Field settings"));
+                    EditorGUILayout.BeginHorizontal();
+                    {
+                        EditorGUILayout.PropertyField(volume, new GUIContent("Volume", "The volume with the Depth of Field settings"));
+
+                        if (GUILayout.Button("Create", EditorStyles.miniButton, GUILayout.Width(50)))
+                        {
+                            CreateDofVolume();
+                        }
+                    }
+                    EditorGUILayout.EndHorizontal();
 
                     EditorGUILayout.LabelField("Hit Target");
                     EditorGUI.indentLevel++;
@@ -59,5 +73,38 @@ namespace Rowlan.PhotoSession.Hdrp
             GUILayout.EndVertical();
 #endif
         }
+
+#if USING_HDRP
+        private void CreateDofVolume()
+        {
+            // create the gameobject
+            GameObject volumeGo = new GameObject("Photo Session Volume");
+
+            // parent the gameobject to the photo session gameobject
+            volumeGo.transform.parent = editorTarget.transform;
+
+            // create a new Volume
+            Volume effectVolume = volumeGo.AddComponent<Volume>();
+            effectVolume.isGlobal = true;
+
+            // create the volume profile
+            effectVolume.profile = VolumeProfileFactory.CreateVolumeProfile(effectVolume.gameObject.scene, effectVolume.name);
+
+            // create the DoF effect using pattern of the volume framework
+            // https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@10.0/manual/Volumes-API.html
+            if (!effectVolume.profile.TryGet<DepthOfField>(out var effect))
+            {
+                effect = effectVolume.profile.Add<DepthOfField>(false);
+            }
+
+            effect.active = true;
+
+            // set the volume in the inspector
+            volume.objectReferenceValue = effectVolume;
+
+            Debug.Log("Volume profile created: " + AssetDatabase.GetAssetPath(effectVolume.profile));
+
+        }
+#endif
     }
 }
