@@ -85,22 +85,27 @@ namespace Rowlan.PhotoSession.Hdrp
 
             // create a new Volume
             Volume effectVolume = volumeGo.AddComponent<Volume>();
+
+            // global profile
             effectVolume.isGlobal = true;
 
             // create the volume profile
             effectVolume.profile = VolumeProfileFactory.CreateVolumeProfile(effectVolume.gameObject.scene, effectVolume.name);
 
-            // create the DoF effect using pattern of the volume framework
-            // https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@10.0/manual/Volumes-API.html
-            if (!effectVolume.profile.TryGet<DepthOfField>(out var effect))
-            {
-                effect = effectVolume.profile.Add<DepthOfField>(false);
-            }
+            // create the effects
+            DepthOfField effect = VolumeProfileFactory.CreateVolumeComponent<DepthOfField>(effectVolume.profile, true, false);
 
-            effect.active = true;
+            // by default the effect is disabled, we don't want to modify the current game
+            effect.active = false;
 
             // set the volume in the inspector
             volume.objectReferenceValue = effectVolume;
+
+            // persist settings
+            volume.serializedObject.ApplyModifiedProperties();
+
+            // sharedprofile needs to be set, otherwise the profile would be lost in the created volume after we click play
+            effectVolume.sharedProfile = effectVolume.profile;
 
             Debug.Log("Volume profile created: " + AssetDatabase.GetAssetPath(effectVolume.profile));
 
