@@ -229,7 +229,7 @@ namespace Rowlan.PhotoSession
         void Update()
         {
             // check input key and toggle game <> photo mode
-            if (Input.GetKeyDown(settings.shortcuts.toggleKeyCode))
+            if (settings.shortcuts.IsTogglePhotoSession())
             {
                 // toggle mode
                 photoMode = photoMode == PhotoMode.Game ? PhotoMode.Photo : PhotoMode.Game;
@@ -265,17 +265,17 @@ namespace Rowlan.PhotoSession
             // apply photo mode logic
             if (photoMode == PhotoMode.Photo)
             {
-                if (Input.GetMouseButtonDown(1))
+                if (settings.shortcuts.IsMouseRightDown())
                 {
                     cursorState.Lock();
                 }
 
-                if (Input.GetMouseButtonUp(1))
+                if (settings.shortcuts.IsMouseRightUp())
                 {
                     cursorState.Unlock();
                 }
 
-                if (Input.GetMouseButton(1))
+                if (settings.shortcuts.IsMouseRightPressed())
                 {
                     // we are in pause mode => we need to use Time.unscaledDeltaTime instead of Time.deltaTime or otherwise the camera couldn't move
                     float time = Time.unscaledDeltaTime;
@@ -283,37 +283,40 @@ namespace Rowlan.PhotoSession
                     Transform cameraTransform = settings.photoCamera.transform;
 
                     // determine speed
-                    var fastMode = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
+                    var fastMode = settings.shortcuts.IsMoveFast();
                     var movementSpeed = fastMode ? this.settings.movementSpeedFast : this.settings.movementSpeed;
 
                     #region Keyboard
 
-                    if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
+
+
+
+                    if (settings.shortcuts.IsMoveLeft())
                     {
                         cameraTransform.position += -cameraTransform.right * movementSpeed * time;
                     }
 
-                    if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
+                    if (settings.shortcuts.IsMoveRight())
                     {
                         cameraTransform.position += cameraTransform.right * movementSpeed * time;
                     }
 
-                    if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow))
+                    if (settings.shortcuts.IsMoveForward())
                     {
                         cameraTransform.position += cameraTransform.forward * movementSpeed * time;
                     }
 
-                    if (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow))
+                    if (settings.shortcuts.IsMoveBack())
                     {
                         cameraTransform.position += -cameraTransform.forward * movementSpeed * time;
                     }
 
-                    if (Input.GetKey(KeyCode.E))
+                    if (settings.shortcuts.IsMoveUp())
                     {
                         cameraTransform.position += cameraTransform.up * movementSpeed * time;
                     }
 
-                    if (Input.GetKey(KeyCode.Q))
+                    if (settings.shortcuts.IsMoveDown())
                     {
                         cameraTransform.position += -cameraTransform.up * movementSpeed * time;
                     }
@@ -323,13 +326,13 @@ namespace Rowlan.PhotoSession
                     #region Mouse Movement
 
                     float newRotationX = cameraTransform.localEulerAngles.y +
-                                         Input.GetAxis("Mouse X") * settings.freeLookSensitivity;
+                                         settings.shortcuts.GetMouseAxisX() * settings.freeLookSensitivity;
                     float newRotationY = cameraTransform.localEulerAngles.x -
-                                         Input.GetAxis("Mouse Y") * settings.freeLookSensitivity;
+                                         settings.shortcuts.GetMouseAxisY() * settings.freeLookSensitivity;
 
                     cameraTransform.localEulerAngles = new Vector3(newRotationY, newRotationX, 0f);
 
-                    float axis = Input.GetAxis("Mouse ScrollWheel");
+                    float axis = settings.shortcuts.GetMouseAxisWheel();
                     if (axis != 0)
                     {
                         var zoomSensitivity =
@@ -341,7 +344,7 @@ namespace Rowlan.PhotoSession
                     #endregion Mouse Movement
                 }
 
-                if( Input.GetKeyDown( settings.shortcuts.guideKeyCode)) {
+                if(settings.shortcuts.IsGuide()) {
 
                     settings.compositionGuideIndex++;
 
@@ -354,7 +357,7 @@ namespace Rowlan.PhotoSession
 
                 }
 
-                if (Input.GetKeyDown(settings.shortcuts.autoFocusKeyCode))
+                if (settings.shortcuts.IsAutoFocus())
                 {
 
                     // iterate through the AutoFocusMode enum items
@@ -371,22 +374,22 @@ namespace Rowlan.PhotoSession
                 }
 
                 // manual key: first key press => switch to manual mode
-                if (Input.GetKey(settings.shortcuts.manualFocusKeyCode)) 
+                if (settings.shortcuts.IsManualFocus())
                 {
                     settings.autoFocus.mode = AutoFocusSettings.Mode.ManualPosition;
                     UpdateAutoFocusSetup();
                 }
 
                 // manual key: update focus position while the user presses the key
-                if (Input.GetKey(settings.shortcuts.manualFocusKeyCode))
+                if (settings.shortcuts.IsManualFocus())
                 {
-                    manualFocusPosition = Input.mousePosition;
+                    manualFocusPosition = settings.shortcuts.GetMousePosition();
                 }
 
                 #region Screenshot
 
                 // left mouse button takes screenshots
-                if (Input.GetMouseButtonDown(0))
+                if (settings.shortcuts.IsMouseLeftDown())
                 {
                     StartCoroutine( CaptureScreenshot());
                 }
