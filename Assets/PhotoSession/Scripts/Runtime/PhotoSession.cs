@@ -429,7 +429,7 @@ namespace Rowlan.PhotoSession
         /// <summary>
         /// Capture a screenshot and simulate a flashlight effect
         /// </summary>
-        IEnumerator CaptureScreenshot() 
+        public IEnumerator CaptureScreenshot() 
         {
             // stop flashlight, we don't want anything of the flashlight in the screenshot
             cameraFlash.StopCameraFlash(this);
