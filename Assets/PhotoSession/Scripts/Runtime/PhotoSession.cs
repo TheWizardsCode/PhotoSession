@@ -101,6 +101,17 @@ namespace Rowlan.PhotoSession
             UpdateTextComponents();
             UpdateCompositionGuideOverlay();
 
+            if (!settings.photoCamera)
+            {
+                settings.photoCamera = Camera.main;
+                if (settings.photoCamera)
+                {
+                    Debug.LogWarning("No camera is set in the PhotoSession settings. Automatically configured to use the main camera.");
+                } else
+                {
+                    Debug.LogError("No camera is set in the PhotoSession settings and there is no main camera in the scene. Either set the photoCamera or tag a camera as 'MainCamera'.");
+                }
+            }
         }
 
         private void RegisterModules() {
