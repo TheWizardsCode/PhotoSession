@@ -45,7 +45,7 @@ namespace Rowlan.PhotoSession
         /// <summary>
         /// Utility for capturing screenshots
         /// </summary>
-        private Screenshot screenshot = new Screenshot();
+        private Screenshot screenshot;
 
         /// <summary>
         /// A <see cref="CameraFlash"/> scene gameobject which will be used to simulate a flash.
@@ -87,6 +87,7 @@ namespace Rowlan.PhotoSession
 
         void Awake()
         {
+            screenshot = new Screenshot(this);
             screenshot.SetupPath();
         }
 
