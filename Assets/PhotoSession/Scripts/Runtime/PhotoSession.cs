@@ -139,6 +139,10 @@ namespace Rowlan.PhotoSession
             delayedPhotoModeInputCoroutine = StartCoroutine(DelayedPhotoModeInput());
 
             // player photo camera state so that it can be restored after we leave the session
+            if (!settings.photoCamera)
+            {
+                settings.ConfigureCamera();
+            }
             playerCameraState.Save(settings.photoCamera.transform);
 
             // clear original state registry
