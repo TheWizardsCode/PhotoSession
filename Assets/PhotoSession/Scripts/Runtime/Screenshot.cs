@@ -70,10 +70,6 @@ namespace Rowlan.PhotoSession
 
 		private void CaptureFlat(PhotoSessionSettings settings)
 		{
-			if (!settings.photoCamera)
-			{
-				settings.ConfigureCamera();
-			}
 			Camera camera = settings.photoCamera;
 
 			int width = settings.resolution.GetImageResolution(settings.aspectRatio).Width;

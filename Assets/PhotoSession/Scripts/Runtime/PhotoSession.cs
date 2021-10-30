@@ -103,7 +103,7 @@ namespace Rowlan.PhotoSession
 
             if (!settings.photoCamera)
             {
-                settings.ConfigureCamera();
+                AutoSetup.Execute(this);
             }
         }
 
@@ -141,7 +141,7 @@ namespace Rowlan.PhotoSession
             // player photo camera state so that it can be restored after we leave the session
             if (!settings.photoCamera)
             {
-                settings.ConfigureCamera();
+                AutoSetup.Execute(this);
             }
             playerCameraState.Save(settings.photoCamera.transform);
 

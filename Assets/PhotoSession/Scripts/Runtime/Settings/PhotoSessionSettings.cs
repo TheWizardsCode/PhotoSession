@@ -123,25 +123,6 @@ namespace Rowlan.PhotoSession
         public ShortcutSettings shortcuts = new ShortcutSettings();
 
 
-
-        /// <summary>
-        /// Attempt to autoconfigure the camera, if it is not already set.
-        /// Log a warning about needing to set the camera if successfull,
-        /// log an error if not successful.
-        /// </summary>
-        internal void ConfigureCamera()
-        {
-            photoCamera = Camera.main;
-            if (photoCamera)
-            {
-                Debug.LogWarning("No camera is set in the PhotoSession settings. Automatically configured to use the main camera.");
-            }
-            else
-            {
-                Debug.LogError("No camera is set in the PhotoSession settings and there is no main camera in the scene. Either set the photoCamera or tag a camera as 'MainCamera'.");
-            }
-        }
-
         #region HDRP
 
         public Hdrp.DepthOfFieldSettings hdrpDepthOfFieldSettings;
