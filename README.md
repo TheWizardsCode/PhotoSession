@@ -39,7 +39,10 @@ If you hit play in the Unity Editor or if you start a Build, hit the F12 key (de
 
 The captured screenshots will be stored in parallel to the Assets folder in the Editor or in parallel to the data folder in the Build in a dedicated Screenshots folder.
 
-The size of the screenshots depends on the game window.
+The resolution of the screenshots can be set to be the same as the game view, or it can be configured to a number of common resolutions.
+
+![image](https://user-images.githubusercontent.com/250240/139522891-f07a3a16-e302-49a0-b28f-c7e21abbf5ef.png)
+
 
 ## Controls
 
