@@ -45,7 +45,7 @@ namespace Rowlan.PhotoSession
         /// <summary>
         /// Utility for capturing screenshots
         /// </summary>
-        private Screenshot screenshot = new Screenshot();
+        private Screenshot screenshot;
 
         /// <summary>
         /// A <see cref="CameraFlash"/> scene gameobject which will be used to simulate a flash.
@@ -87,6 +87,7 @@ namespace Rowlan.PhotoSession
 
         void Awake()
         {
+            screenshot = new Screenshot(this);
             screenshot.SetupPath();
         }
 
@@ -101,6 +102,10 @@ namespace Rowlan.PhotoSession
             UpdateTextComponents();
             UpdateCompositionGuideOverlay();
 
+            if (!settings.photoCamera)
+            {
+                AutoSetup.Execute(this);
+            }
         }
 
         private void RegisterModules() {
@@ -135,6 +140,10 @@ namespace Rowlan.PhotoSession
             delayedPhotoModeInputCoroutine = StartCoroutine(DelayedPhotoModeInput());
 
             // player photo camera state so that it can be restored after we leave the session
+            if (!settings.photoCamera)
+            {
+                AutoSetup.Execute(this);
+            }
             playerCameraState.Save(settings.photoCamera.transform);
 
             // clear original state registry
@@ -421,7 +430,7 @@ namespace Rowlan.PhotoSession
         /// <summary>
         /// Capture a screenshot and simulate a flashlight effect
         /// </summary>
-        IEnumerator CaptureScreenshot() 
+        public IEnumerator CaptureScreenshot() 
         {
             // stop flashlight, we don't want anything of the flashlight in the screenshot
             cameraFlash.StopCameraFlash(this);

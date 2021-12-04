@@ -15,6 +15,7 @@ namespace Rowlan.PhotoSession
             "PlayerMovement", // Unity HDRP Demo
             "MFreeLookCamera", // Malbers FreeLookCameraRig
             "CameraWallStop", // Malbers FreeLookCameraRig
+            "CinemachineBrain"
             };
 
         public static void Execute(PhotoSession photoSession)
@@ -25,6 +26,11 @@ namespace Rowlan.PhotoSession
             AssignScriptBlacklist( photoSession);
         }
 
+        /// <summary>
+        /// Attempt to autoconfigure the camera, if it is not already set.
+        /// Log a warning about needing to set the camera if successfull,
+        /// log an error if not successful.
+        /// </summary>
         private static void AssignMainCamera(PhotoSession photoSession)
         {
 
@@ -50,6 +56,11 @@ namespace Rowlan.PhotoSession
             if (mainCamera)
             {
                 photoSession.settings.photoCamera = mainCamera;
+            }
+
+            if (!photoSession.settings.photoCamera)
+            {
+                Debug.LogError("No camera found in the scene.");
             }
         }
 

@@ -16,12 +16,18 @@ namespace Rowlan.PhotoSession
 
 		private readonly string ScreenshotsFolder = "Screenshots";
 		private string screenshotPath;
+        private PhotoSession photoSession;
 
-		/// <summary>
-		/// Screenshots path is parallel to the Assets path in edit mode or parallel to the data folder in build mode
-		/// </summary>
-		/// <returns></returns>
-		public string GetPath()
+        public Screenshot(PhotoSession photoSession)
+        {
+            this.photoSession = photoSession;
+        }
+
+        /// <summary>
+        /// Screenshots path is parallel to the Assets path in edit mode or parallel to the data folder in build mode
+        /// </summary>
+        /// <returns></returns>
+        public string GetPath()
 		{
 			string dataPath = Application.dataPath;
 
@@ -70,7 +76,12 @@ namespace Rowlan.PhotoSession
 
 		private void CaptureFlat(PhotoSessionSettings settings)
 		{
+			if (!settings.photoCamera)
+            {
+				AutoSetup.Execute(photoSession);
+            }
 			Camera camera = settings.photoCamera;
+
 			int width = settings.resolution.GetImageResolution(settings.aspectRatio).Width;
 			int height = settings.resolution.GetImageResolution(settings.aspectRatio).Height;
 			bool fieldOfViewOverride = settings.fieldOfViewOverride;
