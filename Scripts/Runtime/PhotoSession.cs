@@ -123,6 +123,22 @@ namespace Rowlan.PhotoSession
 #endif
         }
 
+        public void DisablePhotoMode()
+        {
+            photoMode = PhotoMode.Game;
+            DisableModules();
+            DisablePhotoCamera();
+            ResumeGame();
+        }
+
+        public void EnablePhotoMode()
+        {
+            photoMode = PhotoMode.Photo;
+            PauseGame();
+            EnablePhotoCamera();
+            EnableModules();
+        }
+
         void PauseGame()
         {
             Time.timeScale = settings.pauseTime;
@@ -246,21 +262,13 @@ namespace Rowlan.PhotoSession
                 // game mode: disable photo camera and resume game
                 if (photoMode == PhotoMode.Game)
                 {
-                    DisableModules();
-
-                    DisablePhotoCamera();
-
-                    ResumeGame();
+                    DisablePhotoMode();
 
                 }
                 // photo mode: pause game and enable photo camera
                 else if (photoMode == PhotoMode.Photo)
                 {
-                    PauseGame();
-
-                    EnablePhotoCamera();
-
-                    EnableModules();
+                    EnablePhotoMode();
                 }
             }
 
